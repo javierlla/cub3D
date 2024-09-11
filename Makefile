@@ -6,7 +6,7 @@
 #    By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 17:25:33 by jllarena          #+#    #+#              #
-#    Updated: 2024/09/05 17:45:05 by jllarena         ###   ########.fr        #
+#    Updated: 2024/09/11 19:01:27 by jllarena         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ HEADER_DIR  = includes/
 HEADER      = $(addprefix $(HEADER_DIR), $(HEADER_SRCS))
 
 
-MPATH_SRCS  = read.cub.file.c open_window.c main.c
+MPATH_SRCS  = read.cub.file.c open_window.c main.c parse_utils.c 
+				
 
 MPATH_DIR   = mandatory/
 MPATH       = $(addprefix $(MPATH_DIR), $(MPATH_SRCS))

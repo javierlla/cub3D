@@ -6,55 +6,13 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:33:35 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/05 17:23:16 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/09/11 19:17:18 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
 #define BUFFER_SIZE 1024
-
-void exit_with_error(const char *message)
-{
-    write(2, "Error\n", 6);
-    write(2, message, strlen(message));
-    write(2, "\n", 1);
-    exit(EXIT_FAILURE);
-}
-
-int parse_color(char *line) 
-{
-    int r, g, b;
-
-    r = ft_atoi(line);
-    line = ft_strchr(line, ',') + 1;
-    g = ft_atoi(line);
-    line = ft_strchr(line, ',') + 1;
-    b = ft_atoi(line);
-
-    if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
-        exit_with_error("Color values must be in the range [0, 255]");
-        
-    return ((r << 16) | (g << 8) | b);
-}
-
-char *trim_whitespace(char *str)
-{
-    while (*str == ' ' || *str == '\t')
-        str++;
-    return (str);
-}
-
-char *extract_path(char *line)
-{
-    line = trim_whitespace(line);
-    int len = ft_strlen(line);
-    char *path = (char *)malloc(len + 1);
-    if (!path)
-        exit_with_error("Memory allocation failed");
-    ft_strcpy(path, line);
-    return path;
-}
 
 //incrementamos la altura del mapa por cada nueva linea
 void parse_map_line(t_cub *cub, char *line)
@@ -194,29 +152,3 @@ void read_cub_file(t_cub *cub, const char *filename)
     validate_map(cub);
 }
 
-//funcion chatgpt para comprobar el parseo
-void print_cub_data(t_cub *cub)
-{
-    printf("North Texture: %s\n", cub->north_texture ? cub->north_texture : "Not Set");
-    printf("South Texture: %s\n", cub->south_texture ? cub->south_texture : "Not Set");
-    printf("West Texture: %s\n", cub->west_texture ? cub->west_texture : "Not Set");
-    printf("East Texture: %s\n", cub->east_texture ? cub->east_texture : "Not Set");
-
-    printf("Floor Color: R=%d, G=%d, B=%d\n", 
-        (cub->floor_color[0] >> 16) & 0xFF,
-        (cub->floor_color[0] >> 8) & 0xFF,
-        cub->floor_color[0] & 0xFF);
-
-    printf("Ceiling Color: R=%d, G=%d, B=%d\n", 
-        (cub->ceiling_color[0] >> 16) & 0xFF,
-        (cub->ceiling_color[0] >> 8) & 0xFF,
-        cub->ceiling_color[0] & 0xFF);
-
-    printf("Map:\n");
-    int i = 0;
-    while (i < cub->map_height)
-	{
-        printf("%s\n", cub->map[i]);
-        i++;
-    }
-}

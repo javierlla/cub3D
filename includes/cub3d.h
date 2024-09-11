@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/05 17:30:38 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/09/11 19:18:05 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,13 @@ void validate_map(t_cub *cub);
 void parse_line(t_cub *cub, char *line);
 void read_cub_file(t_cub *cub, const char *filename);
 void exit_with_error(const char *message);
+void normalize_map(t_cub *cub);
+void check_file_extension(const char *filename);
+void validate_closed_map(t_cub *cub);
+void free_resources(t_cub *cub);
+void print_cub_data(t_cub *cub);
+char *remove_spaces(char *line);
+char *trim_whitespace(char *str);
 
 //MLX
 void init_window(t_mlx *mlx);
