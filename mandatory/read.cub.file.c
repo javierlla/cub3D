@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:33:35 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/11 19:17:18 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/09/12 16:22:48 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,38 +15,38 @@
 #define BUFFER_SIZE 1024
 
 //incrementamos la altura del mapa por cada nueva linea
+
 void parse_map_line(t_cub *cub, char *line)
 {
-	char	**new_map;
-	int		i;
+    char *trimmed_line = remove_spaces(line);
 
-    if(cub->map == NULL)
+    if (cub->map == NULL)
     {
         cub->map_height = 0;
-        cub->map = (char **)malloc(sizeof(char *) * (/*cub->map_height*/+ 1));
+        cub->map = (char **)malloc(sizeof(char *) * 1);
         if (!cub->map)
             exit_with_error("Memory allocation failed");
     }
     else
     {
-        new_map = (char **)malloc(sizeof(char *) * (cub->map_height + 1));
-        if(!new_map)
+        char **new_map = (char **)malloc(sizeof(char *) * (cub->map_height + 1));
+        if (!new_map)
             exit_with_error("Memory allocation failed");
-		i = 0;
+        int i = 0;
         while (i < cub->map_height)
-		{
+        {
             new_map[i] = cub->map[i];
-			i++;
-		}
+            i++;
+        }
         free(cub->map);
         cub->map = new_map;
     }
-    cub->map[cub->map_height] = ft_strdup(line);
-    if(!cub->map[cub->map_height])
+    cub->map[cub->map_height] = ft_strdup(trimmed_line);
+    if (!cub->map[cub->map_height])
         exit_with_error("Memory allocation failed");
     cub->map_height++;
+    free(trimmed_line);
 }
-
 
 //valido que solo haya un jugador, que no haya caracter invalidos y que los bordes sean 1
 //hay que hacer más pruebas
@@ -111,13 +111,14 @@ void parse_line(t_cub *cub, char *line)
         exit_with_error("Invalid line in .cub file");
     }
 }
+
 /*me fala gestionar que argv[1] = mapname.cub
 gestionar que haya mapa, texturas y colores.
 buscar mas errores de mapas no gestionados
 */
+
 void read_cub_file(t_cub *cub, const char *filename)
 {
-	
     int fd = open(filename, O_RDONLY);
     if (fd < 0)
         exit_with_error("Failed to open .cub");
@@ -129,26 +130,32 @@ void read_cub_file(t_cub *cub, const char *filename)
     int line_start = 0;
 
     while ((bytes_read = read(fd, buffer, BUFFER_SIZE - 1)) > 0)
-	{
+    {
         buffer[bytes_read] = '\0';
 
         i = 0;
         while (i < bytes_read)
         {
             if (buffer[i] == '\n' || buffer[i] == '\0')
-			{
+            {
                 buffer[i] = '\0';
                 line = trim_whitespace(&buffer[line_start]);
                 if (*line != '\0')
                     parse_line(cub, line);
-                line_start = i + 1;
+                line_start = i + 1;  
             }
             i++;
         }
+        if (line_start < bytes_read)
+        {
+            line = trim_whitespace(&buffer[line_start]);
+            if (*line != '\0')
+                parse_line(cub, line);
+        }
+        line_start = 0;
     }
     if (bytes_read < 0)
         exit_with_error("Error reading file");
     close(fd);
     validate_map(cub);
 }
-

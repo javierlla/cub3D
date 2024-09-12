@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:44:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/11 19:14:29 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/09/12 16:24:43 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int parse_color(char *line)
     int r, g, b;
 
     if (count_commas(line) != 2)
-        exit_with_error("Invalid color format. Should be R,G,B");
+        exit_with_error("Should be R,G,B");
 
     r = ft_atoi(line);
     line = ft_strchr(line, ',') + 1;
@@ -95,7 +95,7 @@ void check_file_extension(const char *filename)
 {
     const char *ext = ft_strrchr(filename, '.');
     if (!ext || ft_strcmp(ext, ".cub") != 0)
-        exit_with_error("Invalid file extension. The map file must have a .cub extension");
+        exit_with_error("The map file must have a .cub extension");
 }
 
 char *remove_spaces(char *line)
@@ -104,7 +104,6 @@ char *remove_spaces(char *line)
     char *ptr;
     size_t len;
     
-    // Contar el número de caracteres sin espacios
     len = 0;
     ptr = line;
     while (*ptr)
@@ -127,7 +126,7 @@ char *remove_spaces(char *line)
     }
     *result = '\0';
 
-    return result - len;
+    return (result - len);
 }
 
 //funcion chatgpt para comprobar el parseo
