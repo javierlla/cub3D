@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+         #
+#    By: uxmancis <uxmancis@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 17:25:33 by jllarena          #+#    #+#              #
-#    Updated: 2024/09/05 17:45:05 by jllarena         ###   ########.fr        #
+#    Updated: 2024/09/14 17:52:17 by uxmancis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 NAME            = cub3D
 CC              = gcc
 RM              = rm -rf
-FLAGS           = -Wall -Wextra -Werror -Ilibft -Imlx -g3 #-fsanitize=address
+FLAGS           = -Wall -Wextra -Werror -Ilibft -Imlx -g3 -fsanitize=address
 
 # FILES AND PATH
 
@@ -24,7 +24,13 @@ HEADER_DIR  = includes/
 HEADER      = $(addprefix $(HEADER_DIR), $(HEADER_SRCS))
 
 
-MPATH_SRCS  = read.cub.file.c open_window.c main.c
+MPATH_SRCS  = main.c \
+			  open_window.c \
+			  player.c \
+			  put_secondary_window.c \
+			  read.cub.file.c \
+			  render.c \
+			  utils_mlx.c
 
 MPATH_DIR   = mandatory/
 MPATH       = $(addprefix $(MPATH_DIR), $(MPATH_SRCS))
