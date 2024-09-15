@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/14 18:24:53 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/09/15 15:32:53 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@
 #define HEIGHT_WINDOW 1280
 #define WIDTH_WINDOW 720
 /*---------- Dimensions | Window 2: Map (Debugging Purposes) --------*/
-#define HEIGHT_MAP 400
-#define WIDTH_MAP 400
+#define HEIGHT_MAP 840 /*Manually calculated for cheese_maze.cub. Canva allows us 40x40 smallest. 40px x 21 boxes = 840*/
+#define WIDTH_MAP 840
 
 
 
@@ -99,8 +99,10 @@ typedef struct s_data
 *-----------------------------------------------------*/
 typedef struct s_coordinates
 {
-    double x; 
-    double y;
+    double x_decimal; 
+    double y_decimal;
+    int x_index;
+    int y_index;
 }   t_coordinates;
 
 /*  We allow decimals for players' position. That's why
@@ -154,12 +156,14 @@ typedef struct s_mlx
 enum window_type
 {
 	GAME,
-	DEBUG_SCREEN_MAP
+	MAP
 };
-
 
 /* main.c */
 //void my_mlx_pixel_put(t_data *data, int x, int y, int colour);
+
+/* open_window.c */
+void init_all(t_mlx *mlx_game, t_mlx *map, t_cub *cub);
 
 //parseo
 void print_cub_data(t_cub *cub);
@@ -177,13 +181,19 @@ void mlx_loop_mine(t_mlx *mlx);
 int close_program(t_mlx *mlx);
 
 /* player.c */
-void get_player_map_position(t_cub *cub);
+void put_player_in_map(t_mlx *mlx_map);
+int is_map(t_cub *cub, int x, int y);
+int is_player_position(t_cub *cub, int x, int y);
+void init_player_position(t_cub *cub);
 
 /* render.c */
 void ft_render(t_cub *cub, t_mlx *mlx);
 
-/* put_secondary_window.c */
-void put_secondary_window(t_cub *cub, t_mlx *mlx);
+/* put_walls_map.c */
+int scale_x(/*t_mlx *mlx_2, */int x_index);
+int scale_y(/*t_mlx *mlx_2, */int y_index);
+void put_each_wall(t_mlx *mlx_2, int x_index, int y_index);
+void put_walls_in_map(t_mlx *mlx_2);
 
 /* utils_mlx.c */
 void	my_mlx_pixel_put(t_mlx *mlx, t_integer_position pixel_window, int colour);

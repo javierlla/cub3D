@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_window.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:14:32 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/14 17:29:36 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/09/15 16:17:31 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ int	key_handler(int keycode, t_mlx *mlx)
 	return (0);
 }
 
-
 //Javi's
 int close_program(t_mlx *mlx)
 {
@@ -100,7 +99,42 @@ void ft_events_init(t_mlx *mlx)
     mlx_key_hook(mlx->win_ptr, &key_handler, mlx);
 }
 
-void init_window(t_mlx *mlx, enum window_type for_size, t_cub *cub)
+/*  Initializes window with different size (height & width) depending
+*   on wether if window is for Cub3D game window (mlx_game) or
+*   for maze map window (mlx_map).
+*/
+void my_mlx_new_window(t_mlx *mlx, enum window_type game_or_map)
+{
+    //printf(GREEN"my_mlx_new_window\n");
+    mlx->win_ptr = NULL;
+    if (game_or_map == GAME)
+        mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, HEIGHT_WINDOW, WIDTH_WINDOW, "Cub3D");
+    else if (game_or_map == MAP)
+        mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, HEIGHT_MAP, WIDTH_MAP, "Map - Debugging purposes");
+    if (!mlx->win_ptr)
+        exit_with_error("Failed to create window\n");
+}
+
+/*  Initializes image with different size (height & width) depending
+*   on wether if image is for Cub3D game window (mlx_game) or
+*   for maze map window (mlx_map).
+*/
+void my_mlx_new_image(t_mlx *mlx, enum window_type game_or_map)
+{
+    //printf("image_ptr = %p\n", mlx->image_ptr);
+    mlx->image_ptr = NULL;
+    if (game_or_map == GAME)
+        mlx->image_ptr = mlx_new_image(mlx->mlx_ptr, HEIGHT_WINDOW, WIDTH_WINDOW);
+    else if (game_or_map == MAP)
+        mlx->image_ptr = mlx_new_image(mlx->mlx_ptr, HEIGHT_MAP, WIDTH_MAP);
+    if (!mlx->image_ptr)
+        exit_with_error("Failed to create image\n");
+    else
+        printf("IMAGE_PTR successfully created = %p\n", mlx->image_ptr);
+    //printf(MAGENTA"my_mlx_new_image\n");
+}
+
+void init_window(t_mlx *mlx, enum window_type game_or_map, t_cub *cub)
 {
     mlx->mlx_ptr = mlx_init();
     if (!mlx->mlx_ptr)
@@ -111,21 +145,11 @@ void init_window(t_mlx *mlx, enum window_type for_size, t_cub *cub)
     }
 
     /* Create New Window: mlx_new_window*/
-    if (for_size == GAME)
-    {
-        mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, HEIGHT_WINDOW, WIDTH_WINDOW, "Cub3D");
-        mlx->image_ptr = mlx_new_image(mlx->mlx_ptr, HEIGHT_WINDOW, WIDTH_WINDOW);
-        
-    }
-    else if (for_size == DEBUG_SCREEN_MAP)
-    {
-        mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, 800, 600, "Map - Debugging purposes");
-        mlx->image_ptr = mlx_new_image(mlx->mlx_ptr, 800, 600);
-    }
-    if (!mlx->win_ptr)
-        exit_with_error("Failed to create window");
+    // mlx->
+    my_mlx_new_window(mlx, game_or_map);
+    my_mlx_new_image(mlx, game_or_map);
 
-    /* Get Address */
+    /* Get Address: whatever mlx_game of mlx_map, works for both */
     mlx->pixels_ptr = mlx_get_data_addr(mlx->image_ptr, &mlx->bpp, &mlx->line_len, &mlx->endian);
 
     /* Tenemos 1 instancia de cub. Hacemos que ambas ventanas (mlx) apunten a esta misma única instancia de cub*/
@@ -133,6 +157,11 @@ void init_window(t_mlx *mlx, enum window_type for_size, t_cub *cub)
     
     /* Initialize events: key presses*/
     ft_events_init(mlx);
+
+    if (game_or_map == MAP)
+    {
+        put_walls_in_map(mlx);
+    }
     //mlx->cub = &cub;
 }
 
@@ -142,4 +171,17 @@ void init_window(t_mlx *mlx, enum window_type for_size, t_cub *cub)
 void mlx_loop_mine(t_mlx *mlx)
 {
     mlx_loop(mlx->mlx_ptr);
+}
+
+void init_all(t_mlx *mlx_game, t_mlx *mlx_map, t_cub *cub)
+{
+    /* Player's position is set in cub->map (x_index and y_index)*/
+    init_player_position(cub);
+    
+    /*Init_window: links cub to mlx*/
+    init_window(mlx_game, GAME, cub);
+    init_window(mlx_map, MAP, cub);
+
+    /* See results: */
+    put_player_in_map(mlx_map); //As cub has already been linked to mlx_map in init_window, sending mlx_map as parameter should be enough
 }

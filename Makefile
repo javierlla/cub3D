@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: uxmancis <uxmancis@student.42.fr>          +#+  +:+       +#+         #
+#    By: uxmancis <uxmancis>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 17:25:33 by jllarena          #+#    #+#              #
-#    Updated: 2024/09/14 17:52:17 by uxmancis         ###   ########.fr        #
+#    Updated: 2024/09/15 15:35:08 by uxmancis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ HEADER      = $(addprefix $(HEADER_DIR), $(HEADER_SRCS))
 MPATH_SRCS  = main.c \
 			  open_window.c \
 			  player.c \
-			  put_secondary_window.c \
+			  put_walls_map.c \
 			  read.cub.file.c \
 			  render.c \
 			  utils_mlx.c
