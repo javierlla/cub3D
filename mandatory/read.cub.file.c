@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read.cub.file.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:33:35 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/05 17:23:16 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/09/14 11:07:29 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,13 @@ void validate_map(t_cub *cub)
     }
 }
 
+/*
+*   1) Gets texture and colours' paths:
+*           > Textures: North-South-West-East
+*           > Colours: Floor-Ceiling
+*
+*   2) 
+*/
 void parse_line(t_cub *cub, char *line)
 {
     line = trim_whitespace(line);
