@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:33:35 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/12 16:22:48 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/09/17 17:04:04 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void validate_map(t_cub *cub)
     }
 }
 
-void parse_line(t_cub *cub, char *line)
+/*void parse_line(t_cub *cub, char *line)
 {
     line = trim_whitespace(line);
 
@@ -110,7 +110,58 @@ void parse_line(t_cub *cub, char *line)
     {
         exit_with_error("Invalid line in .cub file");
     }
+}*/
+
+void parse_line(t_cub *cub, char *line)
+{
+    line = trim_whitespace(line);
+
+    if (ft_strncmp(line, "NO ", 3) == 0)
+    {
+        if (cub->north_texture)
+            exit_with_error("Duplicated North texture");
+        cub->north_texture = extract_path(line + 3);
+    }
+    else if (ft_strncmp(line, "SO ", 3) == 0)
+    {
+        if (cub->south_texture)
+            exit_with_error("Duplicated South texture");
+        cub->south_texture = extract_path(line + 3);
+    }
+    else if (ft_strncmp(line, "WE ", 3) == 0)
+    {
+        if (cub->west_texture)
+            exit_with_error("Duplicated West texture");
+        cub->west_texture = extract_path(line + 3);
+    }
+    else if (ft_strncmp(line, "EA ", 3) == 0)
+    {
+        if (cub->east_texture)
+            exit_with_error("Duplicated East texture");
+        cub->east_texture = extract_path(line + 3);
+    }
+    else if (ft_strncmp(line, "F ", 2) == 0)
+    {
+        if (cub->floor_color != -1)
+            exit_with_error("Duplicated Floor color");
+        cub->floor_color = parse_color(line + 2);
+    }
+    else if (ft_strncmp(line, "C ", 2) == 0)
+    {
+        if (cub->ceiling_color != -1)
+            exit_with_error("Duplicated Ceiling color");
+        cub->ceiling_color = parse_color(line + 2);
+    }
+    else if (line[0] == '1' || line[0] == ' ') 
+    {
+        parse_map_line(cub, line);
+    } 
+    else if (*line != '\0')
+    {
+        exit_with_error("Invalid line in .cub file");
+    }
 }
+
 
 /*me fala gestionar que argv[1] = mapname.cub
 gestionar que haya mapa, texturas y colores.

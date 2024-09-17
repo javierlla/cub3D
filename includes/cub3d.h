@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/11 19:18:05 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/09/17 17:03:00 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ typedef struct s_cub
     char *south_texture;
     char *west_texture;
     char *east_texture;
-    int floor_color[3];
-    int ceiling_color[3];
+    int floor_color;
+    int ceiling_color;
     char **map;
     int map_height;
     int map_width;

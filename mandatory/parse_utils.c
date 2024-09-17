@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:44:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/12 16:24:43 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/09/17 17:04:44 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int parse_color(char *line)
     int r, g, b;
 
     if (count_commas(line) != 2)
-        exit_with_error("Should be R,G,B");
+        exit_with_error("Color should be in format R,G,B");
 
     r = ft_atoi(line);
     line = ft_strchr(line, ',') + 1;
@@ -51,6 +51,7 @@ int parse_color(char *line)
     return ((r << 16) | (g << 8) | b);
 }
 
+
 char *trim_whitespace(char *str)
 {
     while (*str == ' ' || *str == '\t')
@@ -61,6 +62,10 @@ char *trim_whitespace(char *str)
 char *extract_path(char *line)
 {
     line = trim_whitespace(line);
+    const char *ext = ft_strrchr(line, '.');
+    if (!ext || ft_strcmp(ext, ".xpm") != 0)
+        exit_with_error("Texture file must have a .xpm extension");
+    
     int len = ft_strlen(line);
     char *path = (char *)malloc(len + 1);
     if (!path)
@@ -68,6 +73,7 @@ char *extract_path(char *line)
     ft_strcpy(path, line);
     return path;
 }
+
 
 void free_resources(t_cub *cub)
 {
@@ -138,14 +144,14 @@ void print_cub_data(t_cub *cub)
     printf("East Texture: %s\n", cub->east_texture ? cub->east_texture : "Not Set");
 
     printf("Floor Color: R=%d, G=%d, B=%d\n", 
-        (cub->floor_color[0] >> 16) & 0xFF,
-        (cub->floor_color[0] >> 8) & 0xFF,
-        cub->floor_color[0] & 0xFF);
+        (cub->floor_color >> 16) & 0xFF,
+        (cub->floor_color >> 8) & 0xFF,
+        cub->floor_color & 0xFF);
 
     printf("Ceiling Color: R=%d, G=%d, B=%d\n", 
-        (cub->ceiling_color[0] >> 16) & 0xFF,
-        (cub->ceiling_color[0] >> 8) & 0xFF,
-        cub->ceiling_color[0] & 0xFF);
+        (cub->ceiling_color >> 16) & 0xFF,
+        (cub->ceiling_color >> 8) & 0xFF,
+        cub->ceiling_color & 0xFF);
 
     printf("Map:\n");
     int i = 0;
