@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:44:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/17 17:04:44 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/09/17 17:41:06 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,29 +51,42 @@ int parse_color(char *line)
     return ((r << 16) | (g << 8) | b);
 }
 
-
+/*
 char *trim_whitespace(char *str)
 {
     while (*str == ' ' || *str == '\t')
         str++;
     return str;
+}*/
+
+char *trim_whitespace(char *str)
+{
+    char	*end;
+	
+    while (*str == ' ' || *str == '\t')
+        str++;
+    if (*str == '\0')
+        return str;
+    end = str + ft_strlen(str) - 1;
+    while (end > str && (*end == ' ' || *end == '\t'))
+        end--;
+    
+    *(end + 1) = '\0';
+    
+    return (str);
 }
 
 char *extract_path(char *line)
 {
-    line = trim_whitespace(line);
-    const char *ext = ft_strrchr(line, '.');
-    if (!ext || ft_strcmp(ext, ".xpm") != 0)
-        exit_with_error("Texture file must have a .xpm extension");
-    
-    int len = ft_strlen(line);
-    char *path = (char *)malloc(len + 1);
-    if (!path)
-        exit_with_error("Memory allocation failed");
-    ft_strcpy(path, line);
-    return path;
-}
+    char *path = trim_whitespace(line);
 
+    int len = ft_strlen(path);
+    if (len < 4 || ft_strncmp(path + len - 4, ".xpm", 4) != 0)
+    {
+        exit_with_error("Texture file must have a .xpm extension");
+    }
+    return (ft_strdup(path));
+}
 
 void free_resources(t_cub *cub)
 {
