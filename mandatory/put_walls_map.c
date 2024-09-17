@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   put_walls_map.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 11:08:26 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/09/15 16:11:34 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/09/16 13:55:11 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 *   in map window (mlx_2):
 *
 *   Map_window dimensions are defined in cub3d.h:
-*       - HEIGHT_MAP = 400
-*       - WIDTH_MAP = 400
+*       - HEIGHT_MAP = 840
+*       - WIDTH_MAP = 840
 *
 *   Map I'm using for use case: cheese_maze
 *

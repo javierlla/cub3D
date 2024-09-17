@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 11:02:10 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/09/15 16:13:38 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/09/16 14:33:15 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,35 +85,42 @@ int is_player_position(t_cub *cub, int x, int y)
     }
     return (0);
 }
-
 void init_player_position(t_cub *cub)
 {
     int x_map_index;
     int y_map_index;
     
-    // printf(BLUE"\n\n/*---------- get_player_map_position:----------\n"RESET_COLOUR);
-    // printf("Map info:\n");
-    // printf(" > Height (Y) = %d\n", cub->map_height);
-    // printf(" > Width (X) = can vary on each line\n");
     y_map_index = 0;
-    while (y_map_index < cub->map_height) //each line of map
+    while (y_map_index < cub->map_height)
     {
         x_map_index = 0;
         while (is_map(cub, x_map_index, y_map_index))
         {
             if (is_player_position(cub, x_map_index, y_map_index))
             {
-                cub->player_position.x_index = x_map_index; //+1 as x starts from 0 (as map's index for iteration)
-                cub->player_position.y_index = y_map_index; //+1 as y starts from 0 (as map's index for iteration)
+                // Inicializa la posición del jugador con los índices
+                cub->player_position.x_index = x_map_index;
+                cub->player_position.y_index = y_map_index;
                 cub->player_direction = cub->map[y_map_index][x_map_index];
+                
+                // Inicializa el offset en 0 al comenzar
+                cub->player_position.offset_x = 0.0;
+                cub->player_position.offset_y = 0.0;
+                
+                // Calcula la posición decimal inicial (sin movimiento)
+                calculate_decimal_position(&cub->player_position);
+
                 break;
             }
             x_map_index++;
         }
         y_map_index++;
     }
+    
+    // Imprimir posición inicial del jugador
     printf(BLUE"\n > init_player_position result:\n"RESET_COLOUR);
     printf("Player's position (INDEX): x = %d, y = %d\n", cub->player_position.x_index, cub->player_position.y_index);
+    printf("Player's position (DECIMAL): x = %.2f, y = %.2f\n", cub->player_position.x_decimal, cub->player_position.y_decimal);
     printf("Player direction: %c\n", cub->player_direction);
     printf(BLUE"----------------------------------------------*/\n"RESET_COLOUR);
 }

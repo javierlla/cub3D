@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/15 15:32:53 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/09/16 14:29:21 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,10 +99,12 @@ typedef struct s_data
 *-----------------------------------------------------*/
 typedef struct s_coordinates
 {
-    double x_decimal; 
-    double y_decimal;
+    double x_decimal; //decimal dentro de todo el mapa ()
+    double y_decimal; // indice [3, 4] == [120, 180] + decimal dentro de la caja (entre 0 y 40)
     int x_index;
     int y_index;
+    double offset_x; // decimal dentro de la caja 
+    double offset_y;
 }   t_coordinates;
 
 /*  We allow decimals for players' position. That's why
@@ -185,6 +187,10 @@ void put_player_in_map(t_mlx *mlx_map);
 int is_map(t_cub *cub, int x, int y);
 int is_player_position(t_cub *cub, int x, int y);
 void init_player_position(t_cub *cub);
+
+/* player_double_position.c*/
+void calculate_decimal_position(t_coordinates *player);
+void update_player_position(t_coordinates *player, double move_x, double move_y);
 
 /* render.c */
 void ft_render(t_cub *cub, t_mlx *mlx);
