@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:44:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/17 17:41:06 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/09/17 17:59:21 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,6 @@ int parse_color(char *line)
         
     return ((r << 16) | (g << 8) | b);
 }
-
-/*
-char *trim_whitespace(char *str)
-{
-    while (*str == ' ' || *str == '\t')
-        str++;
-    return str;
-}*/
 
 char *trim_whitespace(char *str)
 {
