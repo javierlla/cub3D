@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read.cub.file.c                                    :+:      :+:    :+:   */
+/*   read_cub_file.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:33:35 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/14 11:07:29 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/09/21 16:27:10 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,7 @@ void read_cub_file(t_cub *cub, const char *filename)
                 buffer[i] = '\0';
                 line = trim_whitespace(&buffer[line_start]);
                 if (*line != '\0')
-                    parse_line(cub, line);
+                    parse_line(cub, line); //
                 line_start = i + 1;
             }
             i++;

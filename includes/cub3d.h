@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/16 14:29:21 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/09/21 18:18:51 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@
 #define WHITE_COLOR "\033[37m"
 #define RESET_COLOUR "\033[0m"
 #define AQUAMARINE "\033[0;96m"
-
 
 #define MOVE_SPEED 0.2
 
@@ -85,24 +84,26 @@ typedef struct s_img
 }			t_img;
 
 /* Pruebitas main 2.0 de uxu*/
-typedef struct s_data
-{
-    void *img; //result of mlx_new_image: Image is created
-    char *addr; //result of mlx_get_data_addr
-    int bits_per_pixel;
-    int line_length;
-    int endian;
-} t_data;
+// typedef struct s_data
+// {
+//     void *img; //result of mlx_new_image: Image is created
+//     char *addr; //result of mlx_get_data_addr
+//     int bits_per_pixel;
+//     int line_length;
+//     int endian;
+// } t_data;
 
 /*  We allow decimals for players' position. That's why
 *   we use double type variable.
 *-----------------------------------------------------*/
 typedef struct s_coordinates
 {
-    double x_decimal; //decimal dentro de todo el mapa ()
-    double y_decimal; // indice [3, 4] == [120, 180] + decimal dentro de la caja (entre 0 y 40)
     int x_index;
     int y_index;
+    double x_decimal; //decimal dentro de todo el mapa ()
+    double y_decimal; // indice [3, 4] == [120, 180] + decimal dentro de la caja (entre 0 y 40)
+    int x_pixel;
+    int y_pixel;
     double offset_x; // decimal dentro de la caja 
     double offset_y;
 }   t_coordinates;
@@ -110,11 +111,11 @@ typedef struct s_coordinates
 /*  We allow decimals for players' position. That's why
 *   we use double type variable.
 *-----------------------------------------------------*/
-typedef struct s_integer_position
+typedef struct s_int_x_y
 {
     int x; 
     int y;
-}   t_integer_position;
+}   t_int_x_y;
 
 typedef struct s_cub
 {
@@ -131,8 +132,10 @@ typedef struct s_cub
     int map_width;
 
     /* Player's info*/
-    t_coordinates player_position; //position
-    char player_direction; //N-S-E-W
+    t_coordinates *player_position; //Info about player's position in 2D Map
+    char initial_player_direction_in_map; //N-S-E-W
+    t_int_x_y *player_direction_vector; //N-S-E-W
+    
     //FOV, pending
 
     /* Mlx */
@@ -155,38 +158,59 @@ typedef struct s_mlx
     t_cub   *cub; //Así es como creo que tiene más sentido. Para vincular el mismo cub a las 2 ventanas.
 }   t_mlx;
 
+typedef struct s_data
+{
+    t_mlx *mlx_game;
+    t_mlx *mlx_map;
+    t_cub *cub;
+}   t_data;
+
 enum window_type
 {
 	GAME,
 	MAP
 };
 
+enum width_or_height
+{
+    X_WIDTH,
+    Y_HEIGHT
+};
+
 /* main.c */
 //void my_mlx_pixel_put(t_data *data, int x, int y, int colour);
 
 /* open_window.c */
-void init_all(t_mlx *mlx_game, t_mlx *map, t_cub *cub);
-
-//parseo
-void print_cub_data(t_cub *cub);
-int parse_color(char *line);
-char *extract_path(char *line);
-void parse_map_line(t_cub *cub, char *line);
-void validate_map(t_cub *cub);
-void parse_line(t_cub *cub, char *line);
-void read_cub_file(t_cub *cub, const char *filename);
-void exit_with_error(const char *message);
-
-//MLX
-void init_window(t_mlx *mlx, enum window_type for_size, t_cub *cub);
-void mlx_loop_mine(t_mlx *mlx);
+int	close_handler(t_mlx *mlx);
+void move_forward(t_data *data);
+int key_handler(int keycode, t_data *data);
 int close_program(t_mlx *mlx);
+int handle_keypress(int keycode, t_mlx *mlx);
+void ft_events_init(t_data *data);
+void my_mlx_new_window(t_mlx *mlx, enum window_type game_or_map);
+void my_mlx_new_image(t_mlx *mlx, enum window_type game_or_map);
+void init_window(t_mlx *mlx, enum window_type game_or_map, t_cub *cub);
+void mlx_loop_mine(t_mlx *mlx);
+void init_all(t_data *data);
+
+/* player_double_position.c*/
+void calculate_decimal_position(t_coordinates *player);
+void update_player_position(t_coordinates *player, double move_x, double move_y);
 
 /* player.c */
+char *get_path(t_mlx *mlx_map);
+void put_hannah_in_index(t_mlx *mlx_map);
 void put_player_in_map(t_mlx *mlx_map);
 int is_map(t_cub *cub, int x, int y);
 int is_player_position(t_cub *cub, int x, int y);
-void init_player_position(t_cub *cub);
+void set_initial_index_in_2d_map(t_cub *cub, int x_map_index, int y_map_index);
+void set_initial_player_direction(t_cub *cub, int x_map_index, int y_map_index);
+void set_initial_decimal_in_2d_map(t_cub *cub, int x_map_index, int y_map_index);
+int decimal_to_pixel(float decimal, enum width_or_height indicator);
+int pixel_to_decimal(int pixel, enum width_or_height indicator);
+void set_initial_pixel_in_map(t_data *data);
+void set_player_position_2(t_data *data, int x_map_index, int y_map_index);
+void set_player_position(t_data *data);
 
 /* player_double_position.c*/
 void calculate_decimal_position(t_coordinates *player);
@@ -201,7 +225,18 @@ int scale_y(/*t_mlx *mlx_2, */int y_index);
 void put_each_wall(t_mlx *mlx_2, int x_index, int y_index);
 void put_walls_in_map(t_mlx *mlx_2);
 
+/* read_cub_file.c */
+void exit_with_error(const char *message);
+int parse_color(char *line);
+char *trim_whitespace(char *str);
+char *extract_path(char *line);
+void parse_map_line(t_cub *cub, char *line);
+void validate_map(t_cub *cub);
+void parse_line(t_cub *cub, char *line);
+void read_cub_file(t_cub *cub, const char *filename);
+void print_cub_data(t_cub *cub);
+
 /* utils_mlx.c */
-void	my_mlx_pixel_put(t_mlx *mlx, t_integer_position pixel_window, int colour);
+void	my_mlx_pixel_put(t_mlx *mlx, int x_pixel, int y_pixel, int colour);
 
 #endif
