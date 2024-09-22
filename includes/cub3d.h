@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/21 18:18:51 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/09/22 14:30:24 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include "../mlx/mlx.h"
 # include <unistd.h>
 # include <stdio.h>
-# include <math.h>
+# include <math.h> //M_PI
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -38,6 +38,8 @@
 
 #define MOVE_SPEED 0.2
 
+#define PI 3.14159265358979323846
+
 /* Debugging purposes*/
 #define DEBUG_MODE 1
 
@@ -47,7 +49,6 @@
 /*---------- Dimensions | Window 2: Map (Debugging Purposes) --------*/
 #define HEIGHT_MAP 840 /*Manually calculated for cheese_maze.cub. Canva allows us 40x40 smallest. 40px x 21 boxes = 840*/
 #define WIDTH_MAP 840
-
 
 
 //# define MAX_ITERATIONS 100 //Impacts on image quality and rendering speed
@@ -61,8 +62,8 @@
 # define S_MOVE_BACKWARDS 115
 # define A_MOVE_LEFT 97
 # define D_MOVE_RIGHT 100
-# define ROTATE_LEFT 65361
-# define ROTATE_RIGHT 65363
+# define ROTATE_LEFT 65361 //Left arrow
+# define ROTATE_RIGHT 65363 //Right arrow
 //# define ESC 17
 /*Other events*/
 //# define CLOSE 17
@@ -111,11 +112,13 @@ typedef struct s_coordinates
 /*  We allow decimals for players' position. That's why
 *   we use double type variable.
 *-----------------------------------------------------*/
-typedef struct s_int_x_y
+typedef struct s_float_x_y
 {
-    int x; 
-    int y;
-}   t_int_x_y;
+    float x; 
+    float y;
+    int angle_degree;
+    int angle_radian;
+}   t_float_x_y;
 
 typedef struct s_cub
 {
@@ -134,7 +137,7 @@ typedef struct s_cub
     /* Player's info*/
     t_coordinates *player_position; //Info about player's position in 2D Map
     char initial_player_direction_in_map; //N-S-E-W
-    t_int_x_y *player_direction_vector; //N-S-E-W
+    t_float_x_y *player_direction_vector; //N-S-E-W
     
     //FOV, pending
 
@@ -179,21 +182,46 @@ enum width_or_height
 
 /* main.c */
 //void my_mlx_pixel_put(t_data *data, int x, int y, int colour);
+int ft_arg_checker(int argc);
 
-/* open_window.c */
-int	close_handler(t_mlx *mlx);
+/* 1_read_cub_file.c */
+void exit_with_error(const char *message);
+int parse_color(char *line);
+char *trim_whitespace(char *str);
+char *extract_path(char *line);
+void parse_map_line(t_cub *cub, char *line);
+void validate_map(t_cub *cub);
+void parse_line(t_cub *cub, char *line);
+void read_cub_file(t_cub *cub, const char *filename);
+void print_cub_data(t_cub *cub);
+
+/* 2_init_all.c */
+void init_all_default (t_data *data);
+void init_all(t_data *data);
+
+/* 2_init_mlx_events.c */
 void move_forward(t_data *data);
 int key_handler(int keycode, t_data *data);
+
+/* 2_init_mlx_utils.c */
+void	my_mlx_pixel_put(t_mlx *mlx, int x_pixel, int y_pixel, int colour);
 int close_program(t_mlx *mlx);
 int handle_keypress(int keycode, t_mlx *mlx);
+void mlx_loop_mine(t_mlx *mlx);
+int	close_handler(t_mlx *mlx);
+
+/* 2_init_mlx_window.c */
 void ft_events_init(t_data *data);
 void my_mlx_new_window(t_mlx *mlx, enum window_type game_or_map);
 void my_mlx_new_image(t_mlx *mlx, enum window_type game_or_map);
 void init_window(t_mlx *mlx, enum window_type game_or_map, t_cub *cub);
-void mlx_loop_mine(t_mlx *mlx);
-void init_all(t_data *data);
 
-/* player_double_position.c*/
+/* 2_init_player_info.c */
+void set_player_direction_vector(t_data *data);
+void set_player_position_2(t_data *data, int x_map_index, int y_map_index);
+void set_player_position(t_data *data);
+
+/* player_double_position.c */
 void calculate_decimal_position(t_coordinates *player);
 void update_player_position(t_coordinates *player, double move_x, double move_y);
 
@@ -207,36 +235,17 @@ void set_initial_index_in_2d_map(t_cub *cub, int x_map_index, int y_map_index);
 void set_initial_player_direction(t_cub *cub, int x_map_index, int y_map_index);
 void set_initial_decimal_in_2d_map(t_cub *cub, int x_map_index, int y_map_index);
 int decimal_to_pixel(float decimal, enum width_or_height indicator);
-int pixel_to_decimal(int pixel, enum width_or_height indicator);
-void set_initial_pixel_in_map(t_data *data);
-void set_player_position_2(t_data *data, int x_map_index, int y_map_index);
-void set_player_position(t_data *data);
+float pixel_to_decimal_map(int pixel, enum width_or_height indicator);
+void set_initial_pixel_in_map(t_data *data); //I think I don't use this one, as mlx not usable at this moment
 
-/* player_double_position.c*/
-void calculate_decimal_position(t_coordinates *player);
-void update_player_position(t_coordinates *player, double move_x, double move_y);
-
-/* render.c */
-void ft_render(t_cub *cub, t_mlx *mlx);
-
-/* put_walls_map.c */
+/* put_walls_map.c*/
 int scale_x(/*t_mlx *mlx_2, */int x_index);
 int scale_y(/*t_mlx *mlx_2, */int y_index);
 void put_each_wall(t_mlx *mlx_2, int x_index, int y_index);
 void put_walls_in_map(t_mlx *mlx_2);
 
-/* read_cub_file.c */
-void exit_with_error(const char *message);
-int parse_color(char *line);
-char *trim_whitespace(char *str);
-char *extract_path(char *line);
-void parse_map_line(t_cub *cub, char *line);
-void validate_map(t_cub *cub);
-void parse_line(t_cub *cub, char *line);
-void read_cub_file(t_cub *cub, const char *filename);
-void print_cub_data(t_cub *cub);
+/* render.c */
+void ft_render(t_cub *cub, t_mlx *mlx);
 
-/* utils_mlx.c */
-void	my_mlx_pixel_put(t_mlx *mlx, int x_pixel, int y_pixel, int colour);
 
 #endif

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_mlx.c                                        :+:      :+:    :+:   */
+/*   2_init_mlx_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/14 11:48:11 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/09/21 18:05:56 by uxmancis         ###   ########.fr       */
+/*   Created: 2024/09/22 11:57:25 by uxmancis          #+#    #+#             */
+/*   Updated: 2024/09/22 11:59:56 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,38 @@ void	my_mlx_pixel_put(t_mlx *mlx, int x_pixel, int y_pixel, int colour)
 	*(unsigned int *)dst = colour;
 }
 
-void ft_handle_pixel(t_coordinates window, t_cub *cub, int colour)
+//Javi's
+int close_program(t_mlx *mlx)
 {
-    (void)window;
-    (void)cub;
-    (void)colour;
+    if (mlx && mlx->win_ptr)
+        mlx_destroy_window(mlx->mlx_ptr, mlx->win_ptr);
+    exit(EXIT_SUCCESS);
+    return (0);
+}
+
+//Javi's
+int handle_keypress(int keycode, t_mlx *mlx)
+{
+    if (keycode == 65307) // ESC boton 
+        close_program(mlx);
+    return (0);
+}
+
+/*   Keeps application running, continuously listening for events
+*    like key presses, mouse movements, window close requests, etc.
+*-------------------------------------------------------------------*/
+void mlx_loop_mine(t_mlx *mlx)
+{
+    mlx_loop(mlx->mlx_ptr);
+}
+
+/* close_handler: ESC or x (window) are pressed
+*   from: Uxu's fractol
+*/
+int	close_handler(t_mlx *mlx)
+{
+	mlx_destroy_image(mlx->mlx_connection, mlx->mlx_ptr);
+	mlx_destroy_window(mlx->mlx_connection, mlx->win_ptr);
+	free(mlx->mlx_connection);
+	exit(EXIT_SUCCESS);
 }

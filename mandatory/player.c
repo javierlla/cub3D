@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 11:02:10 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/09/21 18:18:01 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/09/22 14:34:03 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,22 @@ char *get_path(t_mlx *mlx_map)
 {
     if (mlx_map->cub->initial_player_direction_in_map == 'N')
     {
-        printf("N - Player direction\n");
+        //printf("N - Player direction\n");
         return("./textures/others/North_Hannah.xpm");
     }
     else if(mlx_map->cub->initial_player_direction_in_map == 'S')
     {
-        printf("S - Player direction\n");
+        //printf("S - Player direction\n");
         return("./textures/others/South_Hannah.xpm");
     }
     else if(mlx_map->cub->initial_player_direction_in_map == 'E')
     {
-        printf("E - Player direction\n");
+        //printf("E - Player direction\n");
         return("./textures/others/East_Hannah.xpm");
     }
     else if(mlx_map->cub->initial_player_direction_in_map == 'W')
     {
-        printf("W - Player direction\n");
+        //printf("W - Player direction\n");
         return("./textures/others/West_Hannah.xpm");
     }
     else
@@ -142,12 +142,13 @@ int decimal_to_pixel(float decimal, enum width_or_height indicator)
 *
 *	Returns -1 = Error, not expected result
 */
-int pixel_to_decimal(int pixel, enum width_or_height indicator)
+float pixel_to_decimal_map(int pixel, enum width_or_height indicator)
 {
-	if (indicator == X_WIDTH)
-		return (pixel * 21.00 / WIDTH_MAP); //instead of 21.00 it should be as a defined in .h as well ideally
+	printf("📍pixel_to_decimal_map | Before: pixel(int) = %d\n", pixel);
+    if (indicator == X_WIDTH)
+		return ((float)pixel * 21.00 / WIDTH_MAP); //instead of 21.00 it should be as a defined in .h as well ideally
 	else if (indicator == Y_HEIGHT)
-		return (pixel * 21.00 / HEIGHT_MAP);//instead of 21.00 it should be as a defined in .h as well ideally
+		return ((float)pixel * 21.00 / HEIGHT_MAP);//instead of 21.00 it should be as a defined in .h as well ideally
 	else
 		return (-1);
 }
@@ -159,43 +160,3 @@ void set_initial_pixel_in_map(t_data *data)
     //my_mlx_pixel_put(data->mlx_map, data->cub->player_position->x_pixel, data->cub->player_position->y_pixel, 0x00FF0000); //ez dogu inprimiduko ze oindiok initializau gabe dago punterua
 }
 
-void set_player_position_2(t_data *data, int x_map_index, int y_map_index)
-{
-	printf(MAGENTA"\n > set_player_position result (Position in 2D Map):\n"RESET_COLOUR);
-    set_initial_index_in_2d_map(data->cub, x_map_index, y_map_index);
-	printf("Player's position (INDEX_2D_MAP): x = %d, y = %d\n", data->cub->player_position->x_index, data->cub->player_position->y_index);
-    set_initial_player_direction(data->cub, x_map_index, y_map_index);
-	printf("Player direction: %c\n", data->cub->initial_player_direction_in_map);
-
-    /*Initial decimal and pixel refer to same info. Will be printed in set_initial_pixel_in_map function*/
-    set_initial_decimal_in_2d_map(data->cub, x_map_index, y_map_index);
-	printf("Player's position (DECIMAL_2D_MAP): x = %.2f, y = %.2f\n", data->cub->player_position->x_decimal, data->cub->player_position->y_decimal);
-    set_initial_pixel_in_map(data);
-	printf("Player's position (PIXELS_2D_MAP): x = %d, y = %d\n", data->cub->player_position->x_pixel, data->cub->player_position->y_pixel);
-	printf(BLUE"----------------------------------------------*/\n"RESET_COLOUR);
-}
-
-void set_player_position(t_data *data)
-{
-    int x_map_index;
-    int y_map_index;
-    
-    printf(MAGENTA"set_player_position\n"RESET_COLOUR);
-    printf("cub->map_height = %d\n", data->cub->map_height);
-    
-    y_map_index = 0;
-    while (y_map_index < data->cub->map_height)
-    {
-        x_map_index = 0;
-        while (is_map(data->cub, x_map_index, y_map_index))
-        {
-            if (is_player_position(data->cub, x_map_index, y_map_index))
-            {
-                set_player_position_2(data, x_map_index, y_map_index);
-                break;
-            }
-            x_map_index++;
-        }
-        y_map_index++;
-    }
-}

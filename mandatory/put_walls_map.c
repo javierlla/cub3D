@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   put_walls_map.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 11:08:26 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/09/16 13:55:11 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/09/22 11:19:38 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 *   it because of the image size we're using. Ideal would be resizing.
 *
 */
-int scale_x(/*t_mlx *mlx_2, */int x_index)
+int scale_x(/*t_mlx *mlx_2, */int x_index) //2d map
 {
     int x;
     
