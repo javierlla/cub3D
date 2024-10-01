@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   player_double_position.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 13:58:47 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/16 14:31:02 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/09/21 11:02:37 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,29 +54,29 @@ void update_player_position(t_coordinates *player, double move_x, double move_y)
     calculate_decimal_position(player);
 }
 
-/*int main()
-{
-    t_coordinates player;
+// int main()
+// {
+//     t_coordinates player;
 
-    // Posición inicial del jugador en índices (en la celda 3, 4)
-    player.x_index = 3;
-    player.y_index = 4;
-    player.offset_x = 0.0;
-    player.offset_y = 0.0;
+//     // Posición inicial del jugador en índices (en la celda 3, 4)
+//     player.x_index = 3;
+//     player.y_index = 4;
+//     player.offset_x = 0.0;
+//     player.offset_y = 0.0;
 
-    Supongamos que el jugador se mueve 25 píxeles a la derecha y 15 píxeles hacia abajo,
-    en el momento que supere loss 40 pixeles offset, sumara 1 al indice, es decir pasará
-    a la siguiente caja
+//     // Supongamos que el jugador se mueve 25 píxeles a la derecha y 15 píxeles hacia abajo,
+//     // en el momento que supere loss 40 pixeles offset, sumara 1 al indice, es decir pasará
+//     // a la siguiente caja
     
-    double move_x = 25.0;
-    double move_y = 15.0;
+//     double move_x = 25.0;
+//     double move_y = 15.0;
 
-    // Actualizamos la posición del jugador con ese movimiento
-    update_player_position(&player, move_x, move_y);
+//     // Actualizamos la posición del jugador con ese movimiento
+//     update_player_position(&player, move_x, move_y);
 
-    printf("Nueva posición decimal del jugador: (%.2f, %.2f)\n", player.x_decimal, player.y_decimal);
-    printf("Nueva posición en índices: (%d, %d)\n", player.x_index, player.y_index);
-    printf("Offset dentro de la celda: (%.2f, %.2f)\n", player.offset_x, player.offset_y);
+//     printf("Nueva posición decimal del jugador: (%.2f, %.2f)\n", player.x_decimal, player.y_decimal);
+//     printf("Nueva posición en índices: (%d, %d)\n", player.x_index, player.y_index);
+//     printf("Offset dentro de la celda: (%.2f, %.2f)\n", player.offset_x, player.offset_y);
 
-    return 0;
-}*/
+//     return 0;
+// }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+         #
+#    By: uxmancis <uxmancis>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 17:25:33 by jllarena          #+#    #+#              #
-#    Updated: 2024/09/16 14:31:41 by jllarena         ###   ########.fr        #
+#    Updated: 2024/09/22 12:14:13 by uxmancis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,15 +24,17 @@ HEADER_DIR  = includes/
 HEADER      = $(addprefix $(HEADER_DIR), $(HEADER_SRCS))
 
 
-MPATH_SRCS  = main.c \
-			  open_window.c \
+MPATH_SRCS  = 0_main.c \
+			  1_read_cub_file.c \
+			  2_init_all.c \
+			  2_init_mlx_events.c \
+			  2_init_mlx_utils.c \
+			  2_init_mlx_window.c \
+			  2_init_player_info.c \
+			  player_double_position.c \
 			  player.c \
 			  put_walls_map.c \
-			  read.cub.file.c \
 			  render.c \
-			  utils_mlx.c \
-			  player_double_position.c \
-			  
 
 MPATH_DIR   = mandatory/
 MPATH       = $(addprefix $(MPATH_DIR), $(MPATH_SRCS))
