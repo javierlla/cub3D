@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/22 14:30:24 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/01 12:31:01 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,8 @@ typedef struct s_cub
     char *south_texture;
     char *west_texture;
     char *east_texture;
-    int floor_color[3];
-    int ceiling_color[3];
+    int floor_color;
+    int ceiling_color;
 
     /*Map*/
     char **map;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   2_init_mlx_events.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 11:58:24 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/09/22 14:54:02 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/01 12:35:06 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,17 +86,156 @@ void move_forward(t_data *data)
     
 // }
 
+void move_backward(t_data *data)
+{
+    float tmp_x;
+    float tmp_y;
+    
+    printf(MAGENTA"------------------------------ S - move_backward ------------------------------\n"RESET_COLOUR);
+    printf("            |  x_decimal|  x_pixel  |  y_decimal  |  y_pixel  |\n");
+    printf("> Before    |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
+
+    data->cub->player_position->y_pixel += 1; // Aumentar el valor de y_pixel para moverse hacia abajo
+    data->cub->player_position->y_decimal = pixel_to_decimal_map(data->cub->player_position->y_pixel, Y_HEIGHT);
+
+    printf("> After     |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
+
+    tmp_x = data->cub->player_position->x_pixel;
+    tmp_y = data->cub->player_position->y_pixel;
+    
+    while((tmp_x <= 840 && tmp_x >= 0) && (tmp_y <= 840 && tmp_y >= 0))
+    {
+        my_mlx_pixel_put(data->mlx_map, tmp_x, tmp_y, 0xFF0000);
+        tmp_x -= data->cub->player_direction_vector->x;
+        tmp_y -= data->cub->player_direction_vector->y;
+    }
+
+    put_walls_in_map(data->mlx_map);
+    char *relative_path = "./textures/others/5_pixel_by_5_pixel_red_dot_clear_back.xpm";
+    int img_width, img_height;
+    data->mlx_map->image_ptr = mlx_xpm_file_to_image(data->mlx_map->mlx_ptr, relative_path, &img_width, &img_height);
+    mlx_put_image_to_window(data->mlx_map->mlx_ptr, data->mlx_map->win_ptr, data->mlx_map->image_ptr, data->cub->player_position->x_pixel, data->cub->player_position->y_pixel);
+
+    printf(YELLOW"🧍Player info"RESET_COLOUR": Position (%.2f, %.2f), Direction vector (%.2f, %.2f)\n", data->cub->player_position->x_decimal, data->cub->player_position->y_decimal, data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
+}
+
+void move_left(t_data *data)
+{
+    float tmp_x;
+    float tmp_y;
+    
+    printf(MAGENTA"------------------------------ A - move_left ------------------------------\n"RESET_COLOUR);
+    printf("            |  x_decimal|  x_pixel  |  y_decimal  |  y_pixel  |\n");
+    printf("> Before    |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
+
+    data->cub->player_position->x_pixel -= 1; // Disminuir el valor de x_pixel para moverse hacia la izquierda
+    data->cub->player_position->x_decimal = pixel_to_decimal_map(data->cub->player_position->x_pixel, X_WIDTH);
+
+    printf("> After     |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
+
+    tmp_x = data->cub->player_position->x_pixel;
+    tmp_y = data->cub->player_position->y_pixel;
+    
+    while((tmp_x <= 840 && tmp_x >= 0) && (tmp_y <= 840 && tmp_y >= 0))
+    {
+        my_mlx_pixel_put(data->mlx_map, tmp_x, tmp_y, 0xFF0000);
+        tmp_x -= data->cub->player_direction_vector->y; // Cambiamos el vector para moverse horizontalmente
+        tmp_y += data->cub->player_direction_vector->x;
+    }
+
+    put_walls_in_map(data->mlx_map);
+    char *relative_path = "./textures/others/5_pixel_by_5_pixel_red_dot_clear_back.xpm";
+    int img_width, img_height;
+    data->mlx_map->image_ptr = mlx_xpm_file_to_image(data->mlx_map->mlx_ptr, relative_path, &img_width, &img_height);
+    mlx_put_image_to_window(data->mlx_map->mlx_ptr, data->mlx_map->win_ptr, data->mlx_map->image_ptr, data->cub->player_position->x_pixel, data->cub->player_position->y_pixel);
+
+    printf(YELLOW"🧍Player info"RESET_COLOUR": Position (%.2f, %.2f), Direction vector (%.2f, %.2f)\n", data->cub->player_position->x_decimal, data->cub->player_position->y_decimal, data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
+}
+
+
 /* rotate_right updates player's direction vector by rotating to the right
 *  where the player is looking at.
 *
 *  Also it is shown in 2d map visually.*/
-void rotate_right(t_data *data)
+/*void rotate_right(t_data *data)
 {
     printf("------------------------------ "YELLOW"Right arrow - rotate_right"RESET_COLOUR" ------------------------------\n");
     printf("Before: Direction vector: (%.2f, %.2f)\n", data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
 
     printf("After: Direction vector: (%.2f, %.2f)\n", data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
+}*/
+
+void rotate_right(t_data *data)
+{
+    printf("------------------------------ "YELLOW"Right arrow - rotate_right"RESET_COLOUR" ------------------------------\n");
+    printf("Before: Direction vector: (%.2f, %.2f)\n", data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
+
+    // Ángulo de rotación en radianes (90 grados)
+    float angle = -PI / 180; // -1 grado en radianes para rotar a la derecha
+
+    // Guardar la dirección actual
+    float old_x = data->cub->player_direction_vector->x;
+    float old_y = data->cub->player_direction_vector->y;
+
+    // Calcular la nueva dirección después de rotar a la derecha
+    data->cub->player_direction_vector->x = old_x * cos(angle) - old_y * sin(angle);
+    data->cub->player_direction_vector->y = old_x * sin(angle) + old_y * cos(angle);
+
+    printf("After: Direction vector: (%.2f, %.2f)\n", data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
 }
+
+
+void rotate_left(t_data *data)
+{
+    printf("------------------------------ "YELLOW"Left arrow - rotate_left"RESET_COLOUR" ------------------------------\n");
+    printf("Before: Direction vector: (%.2f, %.2f)\n", data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
+
+    float angle = PI / 180; // 1 grado en radianes
+
+    float old_x = data->cub->player_direction_vector->x;
+    float old_y = data->cub->player_direction_vector->y;
+
+    // Calcular la nueva dirección después de rotar a la izquierda
+    data->cub->player_direction_vector->x = old_x * cos(angle) - old_y * sin(angle);
+    data->cub->player_direction_vector->y = old_x * sin(angle) + old_y * cos(angle);
+
+    printf("After: Direction vector: (%.2f, %.2f)\n", data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
+}
+
+
+void move_right(t_data *data)
+{
+    float tmp_x;
+    float tmp_y;
+    
+    printf(MAGENTA"------------------------------ D - move_right ------------------------------\n"RESET_COLOUR);
+    printf("            |  x_decimal|  x_pixel  |  y_decimal  |  y_pixel  |\n");
+    printf("> Before    |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
+
+    data->cub->player_position->x_pixel += 1; // Aumentar el valor de x_pixel para moverse hacia la derecha
+    data->cub->player_position->x_decimal = pixel_to_decimal_map(data->cub->player_position->x_pixel, X_WIDTH);
+
+    printf("> After     |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
+
+    tmp_x = data->cub->player_position->x_pixel;
+    tmp_y = data->cub->player_position->y_pixel;
+    
+    while((tmp_x <= 840 && tmp_x >= 0) && (tmp_y <= 840 && tmp_y >= 0))
+    {
+        my_mlx_pixel_put(data->mlx_map, tmp_x, tmp_y, 0xFF0000);
+        tmp_x += data->cub->player_direction_vector->y; // Cambiamos el vector para moverse horizontalmente
+        tmp_y -= data->cub->player_direction_vector->x;
+    }
+
+    put_walls_in_map(data->mlx_map);
+    char *relative_path = "./textures/others/5_pixel_by_5_pixel_red_dot_clear_back.xpm";
+    int img_width, img_height;
+    data->mlx_map->image_ptr = mlx_xpm_file_to_image(data->mlx_map->mlx_ptr, relative_path, &img_width, &img_height);
+    mlx_put_image_to_window(data->mlx_map->mlx_ptr, data->mlx_map->win_ptr, data->mlx_map->image_ptr, data->cub->player_position->x_pixel, data->cub->player_position->y_pixel);
+
+    printf(YELLOW"🧍Player info"RESET_COLOUR": Position (%.2f, %.2f), Direction vector (%.2f, %.2f)\n", data->cub->player_position->x_decimal, data->cub->player_position->y_decimal, data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
+}
+
 
 
 /* key_handler:
@@ -115,7 +254,7 @@ void rotate_right(t_data *data)
 *			126 : Key Up
 */
 // int	key_handler(int keycode, t_mlx *mlx)
-int key_handler(int keycode, t_data *data)
+/*int key_handler(int keycode, t_data *data)
 {
 	printf("inside key_handler, keycode = %d\n", keycode);
     // if (keycode == ESC || keycode == CLOSE)
@@ -152,5 +291,28 @@ int key_handler(int keycode, t_data *data)
     // printf("y_index     |    %d      |    %d     |\n", data->mlx_game->cub->player_position->y_index, data->mlx_map->cub->player_position->y_index);
     // printf("y_decimal   |   %.2f    |   %.2f   |\n", data->mlx_game->cub->player_position->y_decimal, data->mlx_map->cub->player_position->y_decimal);
     // printf("y_pixel     |    %d      |    %d     |\n", data->mlx_game->cub->player_position->x_pixel, data->mlx_map->cub->player_position->x_pixel);
+    return (0);
+}*/
+
+int key_handler(int keycode, t_data *data)
+{
+    printf("inside key_handler, keycode = %d\n", keycode);
+
+    if (keycode == W_MOVE_FORWARD)
+        move_forward(data);
+    else if (keycode == S_MOVE_BACKWARDS)
+        move_backward(data);
+    else if (keycode == A_MOVE_LEFT)
+        move_left(data);
+    else if (keycode == D_MOVE_RIGHT)
+        move_right(data);
+    else if (keycode == ROTATE_LEFT)
+    {
+       // printf("Left arrow key pressed - Rotate LEFT\n");
+        rotate_left(data);
+    }
+    else if (keycode == ROTATE_RIGHT)
+        rotate_right(data);
+
     return (0);
 }

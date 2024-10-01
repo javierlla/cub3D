@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_cub_file.c                                    :+:      :+:    :+:   */
+/*   1_read_cub_file.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:33:35 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/21 16:27:10 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/01 12:31:58 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,9 +148,9 @@ void parse_line(t_cub *cub, char *line)
     else if (ft_strncmp(line, "EA ", 3) == 0)
         cub->east_texture = extract_path(line + 3);
     else if (ft_strncmp(line, "F ", 2) == 0)
-        cub->floor_color[0] = parse_color(line + 2);
+        cub->floor_color = parse_color(line + 2);
     else if (ft_strncmp(line, "C ", 2) == 0)
-        cub->ceiling_color[0] = parse_color(line + 2);
+        cub->ceiling_color = parse_color(line + 2);
     else if (line[0] == '1' || line[0] == ' ') 
     {
         parse_map_line(cub, line);
@@ -210,14 +210,14 @@ void print_cub_data(t_cub *cub)
     printf("East Texture: %s\n", cub->east_texture ? cub->east_texture : "Not Set");
 
     printf("Floor Color: R=%d, G=%d, B=%d\n", 
-        (cub->floor_color[0] >> 16) & 0xFF,
-        (cub->floor_color[0] >> 8) & 0xFF,
-        cub->floor_color[0] & 0xFF);
+        (cub->floor_color >> 16) & 0xFF,
+        (cub->floor_color >> 8) & 0xFF,
+        cub->floor_color & 0xFF);
 
     printf("Ceiling Color: R=%d, G=%d, B=%d\n", 
-        (cub->ceiling_color[0] >> 16) & 0xFF,
-        (cub->ceiling_color[0] >> 8) & 0xFF,
-        cub->ceiling_color[0] & 0xFF);
+        (cub->ceiling_color >> 16) & 0xFF,
+        (cub->ceiling_color >> 8) & 0xFF,
+        cub->ceiling_color & 0xFF);
 
     printf("Map:\n");
     int i = 0;

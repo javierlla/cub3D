@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pruebitas_punteros.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 12:09:06 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/09/14 17:26:25 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/01 11:40:15 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,4 @@ int main(void)
    dst2 = &src;
    printf("dst1 = %d, dst2 = %d\n", *dst1, *dst2);
    return (0);
-}
+} 
