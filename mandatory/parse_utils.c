@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:44:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/17 17:59:21 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/03 18:00:38 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,25 @@ char *extract_path(char *line)
 void free_resources(t_cub *cub)
 {
     if (cub->north_texture)
+    {
         free(cub->north_texture);
+        cub->north_texture = NULL; // Establecer en NULL después de liberar
+    }
     if (cub->south_texture)
+    {
         free(cub->south_texture);
+        cub->south_texture = NULL; 
+    }
     if (cub->west_texture)
+    {
         free(cub->west_texture);
+        cub->west_texture = NULL; 
+    }
     if (cub->east_texture)
+    {
         free(cub->east_texture);
+        cub->east_texture = NULL; 
+    }
     if (cub->map)
     {
         int i = 0;
