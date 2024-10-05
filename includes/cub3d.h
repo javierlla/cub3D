@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/03 18:50:32 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/05 17:02:59 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # define screenHeight 750
 # define TEX_WIDTH 64 // Ancho de las texturas
 # define TEX_HEIGHT 64 // Alto de las texturas
+#define NUM_TEXTURES 4
 
 typedef struct s_mlx
 {
