@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 11:02:10 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/09/22 14:34:03 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/09/22 16:55:36 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,10 +153,4 @@ float pixel_to_decimal_map(int pixel, enum width_or_height indicator)
 		return (-1);
 }
 
-void set_initial_pixel_in_map(t_data *data)
-{
-    data->cub->player_position->x_pixel = decimal_to_pixel(data->cub->player_position->x_decimal, X_WIDTH);
-    data->cub->player_position->y_pixel = decimal_to_pixel(data->cub->player_position->y_decimal, Y_HEIGHT);
-    //my_mlx_pixel_put(data->mlx_map, data->cub->player_position->x_pixel, data->cub->player_position->y_pixel, 0x00FF0000); //ez dogu inprimiduko ze oindiok initializau gabe dago punterua
-}
 

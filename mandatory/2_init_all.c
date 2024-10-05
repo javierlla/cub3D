@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 11:48:31 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/09/22 13:36:48 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/05 16:21:33 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,15 @@ void init_all_default (t_data *data)
     data->cub->player_direction_vector->y = 0;
     data->cub->player_direction_vector->angle_degree = 0;
     data->cub->player_direction_vector->angle_radian = 0;
+
+    data->cub->keyboard_flags = malloc(sizeof(t_keyboard_flags));
+    data->cub->keyboard_flags->w_flag = 0;
+    data->cub->keyboard_flags->a_flag = 0;
+    data->cub->keyboard_flags->s_flag = 0;
+    data->cub->keyboard_flags->d_flag = 0;
+    data->cub->keyboard_flags->r_flag = 0;
+    data->cub->keyboard_flags->l_flag = 0;
+    
     // data->cub->textures = malloc(sizeof(t_textures));
     // data->cub->textures->north = NULL;
     // data->cub->textures->south = NULL;

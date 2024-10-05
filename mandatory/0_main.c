@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:15:26 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/22 12:38:28 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/05 17:03:33 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,10 @@ int main(int argc, char **argv)
     *  - Both windowx (mlx) will point same unique cub instance of t_cub.
     *----------------------------------------------------------------------------*/
     init_all(data);
-
+    // while (1)
+    // {
+    //     move_player(data);
+    // }
 
 	/* In loop: get position, (re-calculate) render, move*/
     // while(1)
@@ -86,6 +89,9 @@ int main(int argc, char **argv)
         // put_walls_in_map(&mlx_map);
     
     /* #1 GAME WINDOW - Cub3D Project*/
+
+    // mlx_loop_hook(mlx_game->mlx_ptr, render_next_frame, data);
+    // mlx_loop_hook(mlx_map->mlx_ptr, render_next_frame, data);
     
 	/* Appication keeps running listening for events (key presses, mouse, 'x', ESC, etc.) */
     mlx_loop_mine(mlx_game);

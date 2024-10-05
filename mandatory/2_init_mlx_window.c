@@ -6,33 +6,11 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 11:55:13 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/09/22 13:22:12 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/09/22 16:43:39 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-// void ft_events_init(t_mlx *mlx)
-void ft_events_init(t_data *data)
-{
-    /* 'x' closing button: evento 17 */
-    mlx_hook(data->mlx_game->win_ptr, 17, 0, (int (*)(void *))close_program, data->mlx_game);//línea Javi
-    mlx_hook(data->mlx_map->win_ptr, 17, 0, (int (*)(void *))close_program, data->mlx_map);//línea Javi
-    //mlx_hook(mlx->win_ptr, 17, (1L << 17), &close_program, mlx); //también funciona, opción Uxue
-
-    /* ESC */
-    // Añadir un hook para cerrar con la tecla ESC (evento 2 para keypress)
-    //usar 1L<<0 activa específicamente la máscara para el evento de KeyPress.
-    mlx_hook(data->mlx_game->win_ptr, 2,  1L<<0, handle_keypress, data->mlx_game);
-    mlx_hook(data->mlx_map->win_ptr, 2,  1L<<0, handle_keypress, data->mlx_map);
-
-    /*Defines which is the function that is going to take care of keys: key_handler
-    * When key is pressed, it will be sent to key_handler.
-    *   Aim: with 2 lines, both windows can get key presses and cub will be updated for both
-    *------------------------------------------------------------------------------*/
-    mlx_key_hook(data->mlx_game->win_ptr, &key_handler, data);
-    mlx_key_hook(data->mlx_map->win_ptr, &key_handler, data);
-}
 
 /*  Initializes window with different size (height & width) depending
 *   on wether if window is for Cub3D game window (mlx_game) or

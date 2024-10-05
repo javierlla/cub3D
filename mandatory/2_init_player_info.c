@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 11:52:26 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/09/22 13:47:48 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/05 16:39:04 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,17 +29,16 @@ void get_initial_angle(t_cub *cub)
 {
     if(cub->initial_player_direction_in_map == 'N')
         cub->player_direction_vector->angle_degree = 90;
-    else if(cub->initial_player_direction_in_map == 'S')
+    if(cub->initial_player_direction_in_map == 'S')
         cub->player_direction_vector->angle_degree = 270;
-    else if(cub->initial_player_direction_in_map == 'W')
+    if(cub->initial_player_direction_in_map == 'W')
         cub->player_direction_vector->angle_degree = 180;
-    else if(cub->initial_player_direction_in_map == 'E')
+    if(cub->initial_player_direction_in_map == 'E')
         cub->player_direction_vector->angle_degree = 0;
-    else
-        return;
+    printf("Direction angle in degrees: %.2f\n", cub->player_direction_vector->angle_degree);
 }
 
-void update_direction_vector(t_data *data)
+void angle_to_rad(t_data *data)
 {
     data->cub->player_direction_vector->x = cos(deg_to_rad(data));
     data->cub->player_direction_vector->y = sin(deg_to_rad(data));
@@ -47,26 +46,39 @@ void update_direction_vector(t_data *data)
 
 void set_player_direction_vector(t_data *data)
 {
+    printf(RED"> About player direction vector:\n"RESET_COLOUR);
+	printf("Player direction: %c\n", data->cub->initial_player_direction_in_map);
+    
     get_initial_angle(data->cub);
-    update_direction_vector(data);
-    //printf(RED"Player direction vector: x = %.2f, y = %.2f\n"RESET_COLOUR, data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
+    angle_to_rad(data);
+    
+    printf("Player direction vector: x = %.2f, y = %.2f\n", data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
+    printf(RED"----------------------------------------------*/\n");
 }
 
 void set_player_position_2(t_data *data, int x_map_index, int y_map_index)
 {
-	printf(MAGENTA"\n > set_player_position result (Position in 2D Map):\n"RESET_COLOUR);
+	            printf(MAGENTA"\n > set_player_position result (Position in 2D Map):\n"RESET_COLOUR);
     set_initial_index_in_2d_map(data->cub, x_map_index, y_map_index);
-	printf("Player's position (INDEX_2D_MAP): x = %d, y = %d\n", data->cub->player_position->x_index, data->cub->player_position->y_index);
-    set_initial_player_direction(data->cub, x_map_index, y_map_index);
-	printf("Player direction: %c\n", data->cub->initial_player_direction_in_map);
+	            printf("Player's position (INDEX_2D_MAP): x = %d, y = %d\n", data->cub->player_position->x_index, data->cub->player_position->y_index);
 
+    set_initial_player_direction(data->cub, x_map_index, y_map_index);
+                //printf(RED"Player direction: %c\n"RESET_COLOUR, data->cub->initial_player_direction_in_map); //We set it now, but print if later in sset_player_directioin_vector, as it makes more sense
+    
     /*Initial decimal and pixel refer to same info. Will be printed in set_initial_pixel_in_map function*/
     set_initial_decimal_in_2d_map(data->cub, x_map_index, y_map_index);
-	printf("Player's position (DECIMAL_2D_MAP): x = %.2f, y = %.2f\n", data->cub->player_position->x_decimal, data->cub->player_position->y_decimal);
+	            printf("Player's position (DECIMAL_2D_MAP): x = %.2f, y = %.2f\n", data->cub->player_position->x_decimal, data->cub->player_position->y_decimal);
     set_initial_pixel_in_map(data);
-	printf("Player's position (PIXELS_2D_MAP): x = %d, y = %d\n", data->cub->player_position->x_pixel, data->cub->player_position->y_pixel);
-	printf(BLUE"----------------------------------------------*/\n"RESET_COLOUR);
+	            printf("Player's position (PIXELS_2D_MAP): x = %d, y = %d\n", data->cub->player_position->x_pixel, data->cub->player_position->y_pixel);
+	                printf(BLUE"----------------------------------------------*/\n"RESET_COLOUR);
 }
+
+void set_initial_pixel_in_map(t_data *data)
+{
+    data->cub->player_position->x_pixel = decimal_to_pixel(data->cub->player_position->x_decimal, X_WIDTH);
+    data->cub->player_position->y_pixel = decimal_to_pixel(data->cub->player_position->y_decimal, Y_HEIGHT);
+    //my_mlx_pixel_put(data->mlx_map, data->cub->player_position->x_pixel, data->cub->player_position->y_pixel, 0x00FF0000); //ez dogu inprimiduko ze oindiok initializau gabe dago punterua
+}        
 
 void set_player_position(t_data *data)
 {

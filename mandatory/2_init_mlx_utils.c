@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 11:57:25 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/09/22 11:59:56 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/05 16:27:43 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,13 @@ int close_program(t_mlx *mlx)
 }
 
 //Javi's
-int handle_keypress(int keycode, t_mlx *mlx)
-{
-    if (keycode == 65307) // ESC boton 
-        close_program(mlx);
-    return (0);
-}
+/* No more needed, not it's inside keypress*/
+// int handle_keypress(int keycode, t_mlx *mlx)
+// {
+//     if (keycode == 65307) // ESC boton 
+//         close_program(mlx);
+//     return (0);
+// }
 
 /*   Keeps application running, continuously listening for events
 *    like key presses, mouse movements, window close requests, etc.

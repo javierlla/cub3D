@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/22 14:30:24 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/05 21:00:43 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,15 +110,35 @@ typedef struct s_coordinates
 }   t_coordinates;
 
 /*  We allow decimals for players' position. That's why
-*   we use double type variable.
+*   we use double/float type variable.
 *-----------------------------------------------------*/
 typedef struct s_float_x_y
 {
+    /* Direction vector, D[x,y]*/
     float x; 
     float y;
-    int angle_degree;
-    int angle_radian;
+
+    /* Angle in degrees (360º) and in radians (2π)*/
+    float angle_degree;
+    float angle_radian;
+
+    /* Satellite dot's pixel position */
+    int x_satellite_pixel;
+    int y_satellite_pixel;
 }   t_float_x_y;
+
+/* Used to handle key press/release and generate movement
+*  only when flags are 1
+--------------------------------------------------------*/
+typedef struct keyboard_flags
+{
+    int		w_flag;
+	int		s_flag;
+	int		a_flag;
+	int		d_flag;
+	int		r_flag;
+	int		l_flag;
+}   t_keyboard_flags;
 
 typedef struct s_cub
 {
@@ -138,6 +158,7 @@ typedef struct s_cub
     t_coordinates *player_position; //Info about player's position in 2D Map
     char initial_player_direction_in_map; //N-S-E-W
     t_float_x_y *player_direction_vector; //N-S-E-W
+    t_keyboard_flags *keyboard_flags;
     
     //FOV, pending
 
@@ -200,6 +221,9 @@ void init_all_default (t_data *data);
 void init_all(t_data *data);
 
 /* 2_init_mlx_events.c */
+void render_update_2d_map(t_data *data, int satellite_case);
+void ft_events_init(t_data *data);
+void rotate_right(t_data *data);
 void move_forward(t_data *data);
 int key_handler(int keycode, t_data *data);
 
@@ -217,9 +241,13 @@ void my_mlx_new_image(t_mlx *mlx, enum window_type game_or_map);
 void init_window(t_mlx *mlx, enum window_type game_or_map, t_cub *cub);
 
 /* 2_init_player_info.c */
+void angle_to_rad(t_data *data);
 void set_player_direction_vector(t_data *data);
 void set_player_position_2(t_data *data, int x_map_index, int y_map_index);
 void set_player_position(t_data *data);
+
+/* 3_move_player.c*/
+int move_player (t_data *data);
 
 /* player_double_position.c */
 void calculate_decimal_position(t_coordinates *player);
