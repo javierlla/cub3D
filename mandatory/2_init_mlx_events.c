@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 11:58:24 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/05 21:00:24 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/06 13:17:26 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,6 @@ void put_dot_in_map(t_data *data)
     data->mlx_map->image_ptr = mlx_xpm_file_to_image(data->mlx_map->mlx_ptr, relative_path, &img_width, &img_height);
     mlx_put_image_to_window(data->mlx_map->mlx_ptr, data->mlx_map->win_ptr, data->mlx_map->image_ptr, data->cub->player_position->x_pixel, data->cub->player_position->y_pixel); //0,0 --> position where we're gonna put the image
 }
-
-/*    840 px -------------- 21.00 height-width
-*  Result px -------------- (whatever) height-width
-*
-*   Right now as width and height are the same, we can use the same function.
-*/ //ESTO NADAAAAAAAAAAAAAAAAAA, DECIMAL A PIXEL PERDEMOS PRECISIÓN, PERDEMOSS EL FLOAT. AL REVÉS
-//SIEMPRE!!! DE PIXXEL A DECIMAL. LO DEJO AQUÍ PARA FUTURE SELF DE UXU/JAVI.
-// int decimal_to_pixel_map(float decimal)
-// {
-//     int px;
-
-//     printf("decimal = %.2f\n", decimal);
-//     px = decimal * 840 / 21;
-//     printf("px = %d\n", px);
-//     return (px);
-// }
 
 void put_satellite_in_map(t_data *data)
 {
@@ -72,8 +56,8 @@ void put_circle_around_player(t_data *data)
         direction_vector_x = cos((i*PI)/180); //i * PI / 180 = deg to rad
         direction_vector_y = sin((i*PI)/180);//i * PI / 180 = deg to rad
 
-        put_blue_x_px = data->cub->player_position->x_pixel + (direction_vector_x)*10;
-        put_blue_y_px = data->cub->player_position->y_pixel + (direction_vector_y)*10;
+        put_blue_x_px = data->cub->player_position->x_pixel + (direction_vector_x) * DISTANCE_BLUE_CIRCLE;
+        put_blue_y_px = data->cub->player_position->y_pixel + (direction_vector_y) * DISTANCE_BLUE_CIRCLE;
         
         data->mlx_map->image_ptr = mlx_xpm_file_to_image(data->mlx_map->mlx_ptr, relative_path, &img_width, &img_height);
         mlx_put_image_to_window(data->mlx_map->mlx_ptr, data->mlx_map->win_ptr, data->mlx_map->image_ptr, put_blue_x_px, put_blue_y_px);
@@ -91,7 +75,7 @@ void render_update_2d_map(t_data *data, int satellite_case)
     mlx_clear_window(data->mlx_map->mlx_ptr, data->mlx_map->win_ptr);
     mlx_destroy_image(data->mlx_map->mlx_ptr, data->mlx_map->image_ptr);
     //free(data->mlx_map->image_ptr); //Liberar la imagen anterior
-    data->mlx_map->image_ptr = mlx_new_image(data->mlx_map->mlx_ptr, HEIGHT_MAP, WIDTH_MAP); //Crear nueva imagen
+    data->mlx_map->image_ptr = mlx_new_image(data->mlx_map->mlx_ptr, WIDTH_MAP, HEIGHT_MAP); //Crear nueva imagen
     
     /* Draw in image */
     put_walls_in_map(data->mlx_map); //Pintar las paredes
@@ -102,6 +86,31 @@ void render_update_2d_map(t_data *data, int satellite_case)
 
     /* Put image to window*/
     mlx_put_image_to_window(data->mlx_map->mlx_ptr, data->mlx_map->win_ptr, data->mlx_map->image_ptr, 0, 0); //0,0 --> position where we're gonna put the image
+}
+
+void render_update_game(t_data *data)
+{
+    printf(GREEN"render_update_game\n"RESET_COLOUR);
+    mlx_clear_window(data->mlx_game->mlx_ptr, data->mlx_game->win_ptr);
+    mlx_destroy_image(data->mlx_game->mlx_ptr, data->mlx_game->image_ptr);
+    data->mlx_game->image_ptr = mlx_new_image(data->mlx_game->mlx_ptr, WIDTH_WINDOW, HEIGHT_WINDOW); //Crear nueva imagen
+    
+    // int x;
+    
+    // x = 0;
+    // while (x < WIDTH_WINDOW)
+    // {
+    //     printf("hellowis\n");
+    //     my_mlx_pixel_put(data, x, 1, 0x00FF0000);
+    //     x++;
+    // }
+    
+    raycast(data);
+    
+    
+
+    
+    mlx_put_image_to_window(data->mlx_game->mlx_ptr, data->mlx_game->win_ptr, data->mlx_game->image_ptr, 0, 0);
 }
 
 
@@ -120,33 +129,45 @@ void move_forward(t_data *data)
     printf(MAGENTA"------------------------------ W - move_forward ------------------------------\n"RESET_COLOUR);
     printf("            |  x_decimal|  x_pixel  |  y_decimal  |  y_pixel  |\n");
     printf("> Before    |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
-    data->cub->player_position->y_pixel -= 1; //Decreases 1 pixel (minimum movement option in 2d map window);
+    /* Previous implementation, when movement was hardcoded, instead of based on direction vector */
+    //data->cub->player_position->y_pixel -= 1; //Decreases 1 pixel (minimum movement option in 2d map window);
+    //data->cub->player_position->y_decimal = pixel_to_decimal_map(data->cub->player_position->y_pixel, Y_HEIGHT);
+
+    /* Calculate new position: in pixels based on 2D Map Window's pixels*/
+    data->cub->player_position->x_pixel = data->cub->player_position->x_pixel + (data->cub->player_direction_vector->x) * SPEED_MOVE;
+    data->cub->player_position->y_pixel = data->cub->player_position->y_pixel + (data->cub->player_direction_vector->y) * SPEED_MOVE;
+
+    /* Get decimal position updated */
+    data->cub->player_position->x_decimal = pixel_to_decimal_map(data->cub->player_position->x_pixel, X_WIDTH);
     data->cub->player_position->y_decimal = pixel_to_decimal_map(data->cub->player_position->y_pixel, Y_HEIGHT);
+    
     printf("> After     |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
     
     render_update_2d_map(data, 0);
+    render_update_game(data);
         
     printf(YELLOW"🧍Player info"RESET_COLOUR": Position (%.2f, %.2f), Direction vector (%.2f, %.2f)\n", data->cub->player_position->x_decimal, data->cub->player_position->x_decimal, data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
 }
 
 void move_backward(t_data *data)
-{
-    /* To paint direction vector in while - to small to see anything*/
-    // float tmp_x;
-    // float tmp_y;
-    
-    printf(MAGENTA"------------------------------ W - move_forward ------------------------------\n"RESET_COLOUR);
+{   
+    printf(MAGENTA"------------------------------ S - move_backward ------------------------------\n"RESET_COLOUR);
     printf("            |  x_decimal|  x_pixel  |  y_decimal  |  y_pixel  |\n");
     printf("> Before    |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
-    data->cub->player_position->y_pixel += 1; //Decreases 1 pixel (minimum movement option in 2d map window);
+
+    /* Calculate new position: in pixels based on 2D Map Window's pixels*/
+    data->cub->player_position->x_pixel = data->cub->player_position->x_pixel + (data->cub->player_direction_vector->x) * SPEED_MOVE * (-1);
+    data->cub->player_position->y_pixel = data->cub->player_position->y_pixel + (data->cub->player_direction_vector->y) * SPEED_MOVE * (-1);
+
+    /* Get decimal position updated */
+    data->cub->player_position->x_decimal = pixel_to_decimal_map(data->cub->player_position->x_pixel, X_WIDTH);
     data->cub->player_position->y_decimal = pixel_to_decimal_map(data->cub->player_position->y_pixel, Y_HEIGHT);
+
     printf("> After     |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
     
     
     render_update_2d_map(data, 0);
-    
-    //mlx_put_image_to_window(mlx_2->mlx_ptr, mlx_2->win_ptr, mlx_2->image_ptr, 5000, 5000); //0,0 --> position where we're gonna put the image
-    
+    render_update_game(data);
 
     printf(YELLOW"🧍Player info"RESET_COLOUR": Position (%.2f, %.2f), Direction vector (%.2f, %.2f)\n", data->cub->player_position->x_decimal, data->cub->player_position->x_decimal, data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
 }
@@ -156,11 +177,18 @@ void move_right(t_data *data)
     printf(MAGENTA"------------------------------ W - move_forward ------------------------------\n"RESET_COLOUR);
     printf("            |  x_decimal|  x_pixel  |  y_decimal  |  y_pixel  |\n");
     printf("> Before    |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
-    data->cub->player_position->x_pixel += 1; //Decreases 1 pixel (minimum movement option in 2d map window);
-    data->cub->player_position->x_decimal = pixel_to_decimal_map(data->cub->player_position->y_pixel, Y_HEIGHT);
+    
+    /* Calculate new position: in pixels based on 2D Map Window's pixels*/
+    data->cub->player_position->x_pixel = data->cub->player_position->x_pixel + (data->cub->player_direction_vector->y) * SPEED_MOVE * (-1);
+    data->cub->player_position->y_pixel = data->cub->player_position->y_pixel + (data->cub->player_direction_vector->x) * SPEED_MOVE;
+
+    /* Get decimal position updated */
+    data->cub->player_position->x_decimal = pixel_to_decimal_map(data->cub->player_position->x_pixel, X_WIDTH);
+    data->cub->player_position->y_decimal = pixel_to_decimal_map(data->cub->player_position->y_pixel, Y_HEIGHT);
     printf("> After     |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
 
     render_update_2d_map(data, 0);
+    render_update_game(data);
 }
 
 void move_left(t_data *data)
@@ -168,20 +196,26 @@ void move_left(t_data *data)
     printf(MAGENTA"------------------------------ W - move_forward ------------------------------\n"RESET_COLOUR);
     printf("            |  x_decimal|  x_pixel  |  y_decimal  |  y_pixel  |\n");
     printf("> Before    |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
-    data->cub->player_position->x_pixel -= 1; //Decreases 1 pixel (minimum movement option in 2d map window);
-    data->cub->player_position->x_decimal = pixel_to_decimal_map(data->cub->player_position->y_pixel, Y_HEIGHT);
+    /* Calculate new position: in pixels based on 2D Map Window's pixels*/
+    data->cub->player_position->x_pixel = data->cub->player_position->x_pixel + (data->cub->player_direction_vector->y) * SPEED_MOVE;
+    data->cub->player_position->y_pixel = data->cub->player_position->y_pixel + (data->cub->player_direction_vector->x) * SPEED_MOVE * (-1);
+
+    /* Get decimal position updated */
+    data->cub->player_position->x_decimal = pixel_to_decimal_map(data->cub->player_position->x_pixel, X_WIDTH);
+    data->cub->player_position->y_decimal = pixel_to_decimal_map(data->cub->player_position->y_pixel, Y_HEIGHT);
     printf("> After     |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
 
     render_update_2d_map(data, 0);
+    render_update_game(data);
 }
 
 void update_direction_vector(t_data *data, int direction)
 {
     /* #1 Update angle in degrees*/
     if (direction == ROTATE_RIGHT)
-        data->cub->player_direction_vector->angle_degree -= 1;
+        data->cub->player_direction_vector->angle_degree += SPEED_ROTATE;
     else if (direction == ROTATE_LEFT)
-        data->cub->player_direction_vector->angle_degree += 1;
+        data->cub->player_direction_vector->angle_degree -= SPEED_ROTATE;
     
     /* #2 Update angle in radians */
     angle_to_rad(data);
@@ -190,23 +224,6 @@ void update_direction_vector(t_data *data, int direction)
     data->cub->player_direction_vector->x = cos(data->cub->player_direction_vector->angle_radian);
     data->cub->player_direction_vector->y = sin(data->cub->player_direction_vector->angle_radian);
     
-    
-    // float tmp_x;
-    // float tmp_y;
-    
-    // tmp_x = player_direction_vector->x;
-    // tmp_y = player_direction_vector->y;
-    
-    // if (direction == ROTATE_RIGHT)
-    // {
-    //     player_direction_vector->x = tmp_x * cos(ROTATE_ANGLE) - tmp_y * sin(ROTATE_ANGLE);
-    //     player_direction_vector->y = tmp_x * sin(ROTATE_ANGLE) + tmp_y * cos(ROTATE_ANGLE);
-    // }
-    // else if (direction == ROTATE_LEFT)
-    // {
-    //     player_direction_vector->x = tmp_x * cos(-ROTATE_ANGLE) - tmp_y * sin(-ROTATE_ANGLE);
-    //     player_direction_vector->y = tmp_x * sin(-ROTATE_ANGLE) + tmp_y * cos(-ROTATE_ANGLE);
-    // }
 }
 
 
@@ -224,31 +241,39 @@ void rotate_right(t_data *data)
 
     /* Show in 2D map */
     printf(YELLOW">> Where to show satelite?\n"RESET_COLOUR);
-    // char *relative_path;
-    // int img_width; //We store here image size
-    // int img_height;//We store here image size
-
-    // float tmp_x_dir; //Where to put satelite? (vector dirección)
-    // float tmp_y_dir;//Where to put satelite? (vector dirección)
-    
     printf(" Input 1 - Player position (DECIMAL): x = %.2f, y = %.2f\n", data->cub->player_position->x_decimal, data->cub->player_position->y_decimal);
     printf(" Input 2 - Player position (PIXELS in 2D Map): x = %d, y = %d\n\n", data->cub->player_position->x_pixel, data->cub->player_position->y_pixel);
     printf(" Input 3 - Direction vector: x = %.2f, y = %.2f\n", data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
 
-    data->cub->player_direction_vector->x_satellite_pixel = data->cub->player_position->x_pixel + (data->cub->player_direction_vector->x)*10;
-    data->cub->player_direction_vector->y_satellite_pixel = data->cub->player_position->y_pixel + (data->cub->player_direction_vector->y)*10;
+    data->cub->player_direction_vector->x_satellite_pixel = data->cub->player_position->x_pixel + (data->cub->player_direction_vector->x)*DISTANCE_BLUE_CIRCLE;
+    data->cub->player_direction_vector->y_satellite_pixel = data->cub->player_position->y_pixel + (data->cub->player_direction_vector->y)*DISTANCE_BLUE_CIRCLE;
     
     render_update_2d_map(data, 1);
+    render_update_game(data);
+}
+
+/* rotate_right updates player's direction vector by rotating to the right
+*  where the player is looking at.
+*
+*  Also it is shown in 2d map visually.*/
+void rotate_left(t_data *data)
+{
+    printf("------------------------------ "YELLOW"Left arrow - rotate_left"RESET_COLOUR" ------------------------------\n");
+    printf("Before: Direction vector: (%.2f, %.2f)\n", data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
+    update_direction_vector(data, ROTATE_LEFT);
+    printf("After: Direction vector: (%.2f, %.2f)\n", data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
+
+    /* Show in 2D map */
+    printf(YELLOW">> Where to show satelite?\n"RESET_COLOUR);
+    printf(" Input 1 - Player position (DECIMAL): x = %.2f, y = %.2f\n", data->cub->player_position->x_decimal, data->cub->player_position->y_decimal);
+    printf(" Input 2 - Player position (PIXELS in 2D Map): x = %d, y = %d\n\n", data->cub->player_position->x_pixel, data->cub->player_position->y_pixel);
+    printf(" Input 3 - Direction vector: x = %.2f, y = %.2f\n", data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
+
+    data->cub->player_direction_vector->x_satellite_pixel = data->cub->player_position->x_pixel + (data->cub->player_direction_vector->x)*DISTANCE_BLUE_CIRCLE;
+    data->cub->player_direction_vector->y_satellite_pixel = data->cub->player_position->y_pixel + (data->cub->player_direction_vector->y)*DISTANCE_BLUE_CIRCLE;
     
-    // tmp_x_dir = data->cub->player_position->x_pixel + data->cub->player_direction_vector->x;
-    // tmp_y_dir = data->cub->player_position->y_pixel + data->cub->player_direction_vector->y;
-    
-    
-    // printf("Satellite position (DECIMAL): x = %.2f, y = %.2f\n", tmp_x_dir, tmp_y_dir);
-    // put_walls_in_map(data->mlx_map);
-    // relative_path = "./textures/others/5_pixel_by_5_pixel_red_dot_clear_back.xpm";
-    // data->mlx_map->image_ptr = mlx_xpm_file_to_image(data->mlx_map->mlx_ptr, relative_path, &img_width, &img_height);
-    // mlx_put_image_to_window(data->mlx_map->mlx_ptr, data->mlx_map->win_ptr, data->mlx_map->image_ptr, tmp_x_dir, tmp_y_dir); //0,0 --> position where we're gonna put the image
+    render_update_2d_map(data, 1);
+    render_update_game(data);
 }
 
 
@@ -303,10 +328,12 @@ int key_handler(int keycode, t_data *data)
         move_right(data);
     }
         
-
     /* Se actualiza el vector de dirección */
     if (keycode == ROTATE_LEFT)
+    {
         printf("Left arrow key pressed - Rotate LEFT\n");
+        rotate_left(data);
+    }
     if (keycode == ROTATE_RIGHT)
     {
         printf("Right arrow key pressed - Rotate RIGHT\n");
@@ -413,6 +440,6 @@ void ft_events_init(t_data *data)
 	// mlx_hook(data->mlx_game->win_ptr, 3, 1L << 1, key_release, data);
 
     /*function 'move_player' is called in loop*/
-    mlx_loop_hook(data->mlx_game->mlx_ptr, move_player, data); 
+    //mlx_loop_hook(data->mlx_game->mlx_ptr, move_player, data); 
     /*now move_player, but idea is to call to EVERYTHING function that will include (move, raycasting, rendering)*/
 }

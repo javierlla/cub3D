@@ -6,7 +6,7 @@
 #    By: uxmancis <uxmancis>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 17:25:33 by jllarena          #+#    #+#              #
-#    Updated: 2024/10/05 17:00:08 by uxmancis         ###   ########.fr        #
+#    Updated: 2024/10/06 12:51:17 by uxmancis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 NAME            = cub3D
 CC              = gcc
 RM              = rm -rf
-FLAGS           = -Wall -Wextra -Werror -Ilibft -Imlx #-g3 -fsanitize=address
+FLAGS           = -Wall -Wextra -Werror -Ilibft -Imlx -g3 -fsanitize=address
 
 # FILES AND PATH
 
@@ -32,6 +32,7 @@ MPATH_SRCS  = 0_main.c \
 			  2_init_mlx_window.c \
 			  2_init_player_info.c \
 			  3_move_player.c \
+			  3_raycast.c \
 			  player_double_position.c \
 			  player.c \
 			  put_walls_map.c \

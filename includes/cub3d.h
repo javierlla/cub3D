@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/05 21:00:43 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/06 13:13:52 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,14 @@
 #define RESET_COLOUR "\033[0m"
 #define AQUAMARINE "\033[0;96m"
 
-#define MOVE_SPEED 0.2
-
 #define PI 3.14159265358979323846
 
 /* Debugging purposes*/
 #define DEBUG_MODE 1
 
 /*---------- Dimensions | Window 1: Cub D (Project--------*/
-#define HEIGHT_WINDOW 1280
-#define WIDTH_WINDOW 720
+#define HEIGHT_WINDOW 720
+#define WIDTH_WINDOW 1280
 /*---------- Dimensions | Window 2: Map (Debugging Purposes) --------*/
 #define HEIGHT_MAP 840 /*Manually calculated for cheese_maze.cub. Canva allows us 40x40 smallest. 40px x 21 boxes = 840*/
 #define WIDTH_MAP 840
@@ -67,6 +65,14 @@
 //# define ESC 17
 /*Other events*/
 //# define CLOSE 17
+
+/* ----- 2D Map Visualization ------*/
+#define DISTANCE_BLUE_CIRCLE 20 //Satellite
+#define SPEED_MOVE 3 //Speed of movement: each time W-A-S-D are pressed how many pixels will the player move
+#define SPEED_ROTATE 3 //Speed of rotation: each time left or right arrow are pressed how many degrees will the player rotate
+
+
+#define FOV_ANGLE 60 //Field of View
 
 /*
 *	IMAGE: pixels' buffer values from mlx_get_data_addr()
@@ -228,7 +234,7 @@ void move_forward(t_data *data);
 int key_handler(int keycode, t_data *data);
 
 /* 2_init_mlx_utils.c */
-void	my_mlx_pixel_put(t_mlx *mlx, int x_pixel, int y_pixel, int colour);
+// void	my_mlx_pixel_put(t_mlx *mlx, int x_pixel, int y_pixel, int colour);
 int close_program(t_mlx *mlx);
 int handle_keypress(int keycode, t_mlx *mlx);
 void mlx_loop_mine(t_mlx *mlx);
@@ -248,6 +254,10 @@ void set_player_position(t_data *data);
 
 /* 3_move_player.c*/
 int move_player (t_data *data);
+
+/* 3_raycast.c */
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void raycast(t_data *data);
 
 /* player_double_position.c */
 void calculate_decimal_position(t_coordinates *player);

@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 11:55:13 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/09/22 16:43:39 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/06 13:15:03 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void my_mlx_new_window(t_mlx *mlx, enum window_type game_or_map)
     //printf(GREEN"my_mlx_new_window\n");
     mlx->win_ptr = NULL;
     if (game_or_map == GAME)
-        mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, HEIGHT_WINDOW, WIDTH_WINDOW, "Cub3D");
+        mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, WIDTH_WINDOW, HEIGHT_WINDOW, "Cub3D");
     else if (game_or_map == MAP)
-        mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, HEIGHT_MAP, WIDTH_MAP, "Map - Debugging purposes");
+        mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, WIDTH_MAP, HEIGHT_MAP, "Map - Debugging purposes");
     if (!mlx->win_ptr)
         exit_with_error("Failed to create window\n");
 }
@@ -37,9 +37,9 @@ void my_mlx_new_image(t_mlx *mlx, enum window_type game_or_map)
     //printf("image_ptr = %p\n", mlx->image_ptr);
     mlx->image_ptr = NULL;
     if (game_or_map == GAME)
-        mlx->image_ptr = mlx_new_image(mlx->mlx_ptr, HEIGHT_WINDOW, WIDTH_WINDOW);
+        mlx->image_ptr = mlx_new_image(mlx->mlx_ptr, WIDTH_WINDOW, HEIGHT_WINDOW);
     else if (game_or_map == MAP)
-        mlx->image_ptr = mlx_new_image(mlx->mlx_ptr, HEIGHT_MAP, WIDTH_MAP);
+        mlx->image_ptr = mlx_new_image(mlx->mlx_ptr, WIDTH_MAP, HEIGHT_MAP);
     if (!mlx->image_ptr)
         exit_with_error("Failed to create image\n");
     //else
