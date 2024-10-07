@@ -9,7 +9,7 @@
 #define SCREEN_HEIGHT 600
 
 // Definición de la estructura t_cub
-typedef struct {
+/*typedef struct {
     double posX;
     double posY;
     double dirX;
@@ -93,4 +93,4 @@ int main() {
     free(cub.map);
 
     return 0;
-}
+}*/

@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/05 17:02:59 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/07 19:09:13 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 # include <stdlib.h>
 # include <string.h>
 
-# define screenWidth 1000
-# define screenHeight 750
+# define screenWidth 800
+# define screenHeight 600
 # define TEX_WIDTH 64 // Ancho de las texturas
 # define TEX_HEIGHT 64 // Alto de las texturas
 #define NUM_TEXTURES 4
