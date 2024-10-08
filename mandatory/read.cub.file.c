@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:33:35 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/02 14:01:05 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/08 18:50:54 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,35 +224,33 @@ void validate_map(t_cub *cub)
     int player_count = 0;
     int i = 0;
 
-    // Verifica los contenidos del mapa
-    while (i < cub->map_height) {
+    while (i < cub->map_height)
+    {
         int j = 0;
-        while (cub->map[i][j] != '\0') {
-            if (strchr("NSEW", cub->map[i][j])) {
+        while (cub->map[i][j] != '\0')
+        {
+            if (cub->map[i][j] == 'N' || cub->map[i][j] == 'S' || cub->map[i][j] == 'E' || cub->map[i][j] == 'W')
                 player_count++;
-            } else if (strchr("01 ", cub->map[i][j]) == NULL) {
-                exit_with_error("Carácter inválido en el mapa");
-            }
+            else if (cub->map[i][j] != '1' && cub->map[i][j] != '0' && cub->map[i][j] != ' ')
+                exit_with_error("Invalid character in map");
             j++;
         }
         i++;
     }
-
     if (player_count != 1)
-        exit_with_error("Debe haber exactamente una posición inicial del jugador (N, S, E, W)");
-
-    // Verifica los bordes del mapa
+        exit_with_error("There must be exactly one player start position (N, S, E, W)");
     i = 0;
-    while (i < cub->map_height) {
-        if (cub->map[i][0] != '1' || cub->map[i][cub->map_width - 1] != '1')
-            exit_with_error("El mapa debe estar rodeado de paredes (1)");
+    while (i < cub->map_height)
+    {
+        if (cub->map[i][0] != '1' || cub->map[i][ft_strlen(cub->map[i]) - 1] != '1')
+            exit_with_error("Map must be surrounded by walls (1)");
         i++;
     }
-
     int j = 0;
-    while (j < cub->map_width) {
+    while (cub->map[0][j] != '\0')
+    {
         if (cub->map[0][j] != '1' || cub->map[cub->map_height - 1][j] != '1')
-            exit_with_error("El mapa debe estar rodeado de paredes (1)");
+            exit_with_error("Map must be surrounded by walls (1)");
         j++;
     }
 }

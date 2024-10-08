@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/07 19:09:13 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/08 18:41:53 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 
 # define screenWidth 800
 # define screenHeight 600
-# define TEX_WIDTH 64 // Ancho de las texturas
-# define TEX_HEIGHT 64 // Alto de las texturas
+# define TEX_WIDTH 64 
+# define TEX_HEIGHT 64 
 #define NUM_TEXTURES 4
 
 typedef struct s_mlx
@@ -53,12 +53,11 @@ typedef struct s_cub
     int map_height;
     int map_width;
     t_mlx *mlx;               // Puntero a t_mlx (MLX)
-    
     // Variables necesarias para manejar texturas en MLX
     int bits_per_pixel;       // Bits por píxel (profundidad de color)
     int line_length;          // Longitud de una línea de la imagen
     int endian;               // Orden de bytes (endianness)
-
+    // variables jugador
     double posX;
     double posY;  // Posición inicial del jugador
     double dirX;
