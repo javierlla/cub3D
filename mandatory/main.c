@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:15:26 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/08 19:10:56 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/10 13:40:24 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,33 +179,14 @@ int perform_dda(t_cub *cub, int *mapX, int *mapY, int *side, double *sideDistX, 
     return 0; // No hit
 }*/
 
-
-void my_mlx_pixel_put(t_mlx *data, int x, int y, unsigned int color)
+/*void raycast(t_cub *cub)
 {
-    char *dst;
-    if (x >= 0 && x < screenWidth && y >= 0 && y < screenHeight)
-    {
-        dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-        *(unsigned int *)dst = color;
-    }
-}
-
-void raycast(t_cub *cub)
-{
-
-    cub->posX = 5;
-    cub->posY = 3;
-    cub->dirX = 0.8;
-    cub->dirY = 0.1;
-    cub->planeX = 0;
-    cub->planeY = 0.66;
-    
     if (cub->map == NULL)
     {
         printf("Error: El mapa no está inicializado.\n");
         return;
     }
-    for (int x = 0; x < screenHeight; x++)
+    for (int x = 0; x < screenWidth; x++)
     {
         // Calcular la dirección del rayo
         double cameraX = 2 * x / (double)screenWidth - 1; // Coordenada de cámara
@@ -338,16 +319,20 @@ void raycast(t_cub *cub)
         // Comprobar límites
         if (texX < 0) texX = 0;
         if (texX >= TEX_WIDTH) texX = TEX_WIDTH - 1;
-        if (texX < 0 || texX >= TEX_WIDTH || texY < 0 || texY >= TEX_HEIGHT)
-            {
-            printf("Error: Coordenadas de textura fuera de límites: texX=%d, texY=%d\n", texX, texY);
-            continue; // O maneja el error como prefieras
-            }
+       // if (texX < 0 || texX >= TEX_WIDTH || texY < 0 || texY >= TEX_HEIGHT)
+            //{
+                //printf("Error: Coordenadas de textura fuera de límites: texX=%d, texY=%d\n", texX, texY);
+                if (texX < 0) texX = 0;
+                if (texX >= TEX_WIDTH) texX = TEX_WIDTH - 1;
+                if (texY < 0) texY = 0;
+                if (texY >= TEX_HEIGHT) texY = TEX_HEIGHT - 1;
+           // }
         if (texY < 0) texY = 0;
         if (texY >= TEX_HEIGHT) texY = TEX_HEIGHT - 1;
 
         // Imprimir información de depuración
         printf("TexX: %d, TexY: %d, TEX_WIDTH: %d, TEX_HEIGHT: %d\n", texX, texY, TEX_WIDTH, TEX_HEIGHT);
+        printf("bits_per_pixel: %d, line_length: %d\n", cub->bits_per_pixel, cub->line_length);
 
         // Continuar con el procesamiento de la textura
         unsigned int color = get_texture_color(cub, texNum, texX, texY);
@@ -356,11 +341,162 @@ void raycast(t_cub *cub)
         // Usar mlx_pixel_put o similar para dibujar el color en el pixel (x, y)
         for (int y = drawStart; y < drawEnd; y++)
         {
-            //mlx_pixel_put(cub->mlx->mlx_ptr, cub->mlx->win_ptr, x, y, color);
+           // mlx_pixel_put(cub->mlx->mlx_ptr, cub->mlx->win_ptr, x, y, color);
             my_mlx_pixel_put(cub->mlx, x, y, color);
         }
     }
+}*/
+
+void my_mlx_pixel_put(t_mlx *data, int x, int y, unsigned int color)
+{
+    char *dst;
+    if (x >= 0 && x < screenWidth && y >= 0 && y < screenHeight)
+    {
+        dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+        *(unsigned int *)dst = color;
+    }
 }
+
+void raycast(t_cub *cub)
+{
+    if (cub->map == NULL)
+    {
+        printf("Error: El mapa no está inicializado.\n");
+        return;
+    }
+
+    int x = 0; // Inicializar x para el bucle while
+
+    while (x < screenWidth)
+    {
+        // Calcular la dirección del rayo
+        double cameraX = 2 * x / (double)screenWidth - 1; // Coordenada de cámara
+        double rayDirX = cub->dirX + cub->planeX * cameraX; // Añadir desplazamiento de cámara
+        double rayDirY = cub->dirY + cub->planeY * cameraX;
+
+        // Posición inicial del rayo en la cuadrícula del mapa
+        int mapX = (int)cub->posX;
+        int mapY = (int)cub->posY;
+
+        // Longitud del rayo en el espacio
+        double sideDistX, sideDistY;
+
+        // Calcular las distancias para la dirección del rayo
+        double deltaDistX = fabs(1 / rayDirX);
+        double deltaDistY = fabs(1 / rayDirY);
+        int stepX, stepY;
+
+        int hit = 0; // Variable para saber si el rayo ha colisionado
+        int side;    // Variable para saber desde qué lado se ha golpeado
+
+        // Determinar la dirección del rayo y calcular las distancias iniciales
+        if (rayDirX < 0) {
+            stepX = -1;
+            sideDistX = (cub->posX - mapX) * deltaDistX;
+        } else {
+            stepX = 1;
+            sideDistX = (mapX + 1.0 - cub->posX) * deltaDistX;
+        }
+
+        if (rayDirY < 0) {
+            stepY = -1;
+            sideDistY = (cub->posY - mapY) * deltaDistY;
+        } else {
+            stepY = 1;
+            sideDistY = (mapY + 1.0 - cub->posY) * deltaDistY;
+        }
+
+        // Bucle de DDA (Digital Differential Analyzer)
+        while (hit == 0)
+        {
+            // Avanza en la dirección del rayo
+            if (sideDistX < sideDistY) {
+                sideDistX += deltaDistX;
+                mapX += stepX;
+                side = 0; // 0 significa que se golpeó una pared vertical
+            } else {
+                sideDistY += deltaDistY;
+                mapY += stepY;
+                side = 1; // 1 significa que se golpeó una pared horizontal
+            }
+
+            // Asegúrate de que mapX y mapY estén dentro de los límites
+            if (mapX < 0 || mapX >= cub->map_width || mapY < 0 || mapY >= cub->map_height) {
+                hit = 1; // Terminar el bucle si el rayo sale del mapa
+                break;   // O puedes manejar esto como prefieras
+            }
+
+            // Comprobar si el rayo ha golpeado un muro
+            if (cub->map[mapY][mapX] > '0') {
+                hit = 1; // El rayo ha golpeado un muro
+            }
+        }
+
+        // Calcular la distancia perpendicular desde el jugador a la pared
+        double perpWallDist;
+        if (side == 0)
+            perpWallDist = (mapX - cub->posX + (1 - stepX) / 2) / rayDirX;
+        else
+            perpWallDist = (mapY - cub->posY + (1 - stepY) / 2) / rayDirY;
+
+        if (perpWallDist <= 0)
+            perpWallDist = 1; // Asegúrate de evitar la división por cero
+
+        // Calcular la altura de la pared en la pantalla
+        int lineHeight = (int)(screenHeight / perpWallDist);
+
+        // Determinar el inicio y el final de la línea a dibujar
+        int drawStart = -lineHeight / 2 + screenHeight / 2;
+        if (drawStart < 0) drawStart = 0;
+        int drawEnd = lineHeight / 2 + screenHeight / 2;
+        if (drawEnd >= screenHeight) drawEnd = screenHeight - 1;
+
+        // Calcular las coordenadas de textura
+        double wallX;
+        if (side == 0) {
+            wallX = cub->posY + perpWallDist * rayDirY;
+        } else {
+            wallX = cub->posX + perpWallDist * rayDirX;
+        }
+        wallX -= floor(wallX); // Obtener solo la parte fraccionaria
+
+        // Coordenadas de textura
+        int texX = (int)(wallX * (double)TEX_WIDTH);
+        if (side == 0 && rayDirX > 0) texX = TEX_WIDTH - texX - 1;
+        if (side == 1 && rayDirY < 0) texX = TEX_WIDTH - texX - 1;
+
+        // Asegurarse de que las coordenadas de textura estén dentro de los límites
+        if (texX < 0) texX = 0;
+        if (texX >= TEX_WIDTH) texX = TEX_WIDTH - 1;
+
+        // Obtener la textura correspondiente a la pared golpeada
+        int texNum = (side == 0) ? ((rayDirX < 0) ? 2 : 3) : ((rayDirY < 0) ? 0 : 1); // 0: Norte, 1: Sur, 2: Oeste, 3: Este
+
+        // Dibujar la pared línea por línea
+        int y = drawStart;
+        while (y < drawEnd)
+        {
+            // Ajuste mejorado para texY
+            int d = y * 256 - screenHeight * 128 + lineHeight * 128; // Calcular 'd' para evitar artefactos
+            int texY = ((d * TEX_HEIGHT) / lineHeight) / 256;         // Ajuste para la coordenada texY
+
+            // Asegurarse de que texY esté dentro de los límites
+            if (texY < 0) texY = 0;
+            if (texY >= TEX_HEIGHT) texY = TEX_HEIGHT - 1;
+
+            unsigned int color = get_texture_color(cub, texNum, texX, texY); // Obtener el color de la textura
+
+            // Dibuja el color en el pixel correspondiente
+            my_mlx_pixel_put(cub->mlx, x, y, color);
+
+            y++; // Incrementar y
+        }
+
+        x++; // Incrementar x
+    }
+}
+
+
 
 void render_sky_and_floor(t_cub *cub)
 {
@@ -379,7 +515,6 @@ void render_sky_and_floor(t_cub *cub)
         }
         y++;
     }
-
     while (y < screenHeight)
 	{
         x = 0;
@@ -394,21 +529,22 @@ void render_sky_and_floor(t_cub *cub)
 
 unsigned int get_texture_color(t_cub *cub, int texNum, int texX, int texY)
 {
-    if (texNum < 0 || texNum >= 4) {
-        printf("Error: texNum fuera de límites: %d\n", texNum);
+    if (texNum < 0 || texNum >= 4)
+    {
+        printf("Error: texturas fuera de límites: %d\n", texNum);
         return 0;
     }
-
-    if (cub->textures_data[texNum] == NULL) {
+    if (cub->textures_data[texNum] == NULL)
+    {
         printf("Error: La textura %d no está cargada.\n", texNum);
         return 0;
     }
 
-    if (texX < 0 || texX >= TEX_WIDTH || texY < 0 || texY >= TEX_HEIGHT) {
+    if (texX < 0 || texX >= TEX_WIDTH || texY < 0 || texY >= TEX_HEIGHT)
+    {
         printf("Error: Coordenadas de textura fuera de límites: texX=%d, texY=%d\n", texX, texY);
         return 0;
     }
-
     unsigned int color = *(unsigned int *)(cub->textures_data[texNum] + (texY * cub->line_length + texX * (cub->bits_per_pixel / 8)));
     return color;
 }
@@ -439,7 +575,8 @@ int load_texture(t_cub *cub, int index, char *texture_path)
     }
 
     cub->textures_data[index] = mlx_get_data_addr(cub->textures[index], &cub->bits_per_pixel, &cub->line_length, &cub->endian);
-    if (!cub->textures_data[index]) {
+    if (!cub->textures_data[index])
+    {
         printf("Error: No se pudo obtener los datos de la textura en %s\n", texture_path);
         return -1;
     }
@@ -451,78 +588,40 @@ void load_textures(t_cub *cub)
 {
     cub->textures = malloc(sizeof(void *) * 4);
     cub->textures_data = malloc(sizeof(char *) * 4);
-    
 
-    if (!cub->textures || !cub->textures_data) {
+    if (!cub->textures || !cub->textures_data)
+    {
         printf("Error: No se pudo asignar memoria para las texturas.\n");
         exit(EXIT_FAILURE);
     }
-
-    for (int i = 0; i < 4; i++) {
-        cub->textures[i] = NULL; 
-        cub->textures_data[i] = NULL;
-    }
-
-    if (load_texture(cub, 0, cub->north_texture))
-    {
-        printf("Error: No se pudo cargar la textura del Norte: %s\n", cub->north_texture);
-    }
-    if (load_texture(cub, 1, cub->south_texture)) {
-        printf("Error: No se pudo cargar la textura del Sur: %s\n", cub->south_texture);
-    }
-    if (load_texture(cub, 2, cub->west_texture)) {
-        printf("Error: No se pudo cargar la textura del Oeste: %s\n", cub->west_texture);
-    }
-
-    if (load_texture(cub, 3, cub->east_texture)) {
-        printf("Error: No se pudo cargar la textura del Este: %s\n", cub->east_texture);
-    }
+    int i; 
     
-    // Comprobación de que todas las texturas están cargadas
-    for (int i = 0; i < 4; i++) {
-        if (!cub->textures[i] || !cub->textures_data[i]) {
+    i = 0;
+    while (i < 4)
+    {
+        cub->textures[i] = NULL;
+        cub->textures_data[i] = NULL;
+        i++;
+    }
+    if (load_texture(cub, 0, cub->north_texture))
+        printf("Error: No se pudo cargar la textura del Norte: %s\n", cub->north_texture);
+    if (load_texture(cub, 1, cub->south_texture))
+        printf("Error: No se pudo cargar la textura del Sur: %s\n", cub->south_texture);
+    if (load_texture(cub, 2, cub->west_texture))
+        printf("Error: No se pudo cargar la textura del Oeste: %s\n", cub->west_texture);
+    if (load_texture(cub, 3, cub->east_texture))
+        printf("Error: No se pudo cargar la textura del Este: %s\n", cub->east_texture);
+    i = 0;
+    while (i < 4)
+    {
+        if (!cub->textures[i] || !cub->textures_data[i])
+        {
             printf("Error: La textura %d no se ha cargado correctamente.\n", i);
-            return; 
+            return;
         }
+        i++;
     }
 }
-
-/*int *render_next_frame(t_mlx *mlx, t_cub *cub)
-{
-    if (!mlx || !cub)
-    {
-        printf("Error: Puntero a mlx o cub es nulo.\n");
-        //return -1; 
-    }
-  
-   for (int i = 0; i < 4; i++)
-   {
-        if (!cub->textures[i] || !cub->textures_data[i]) {
-            printf("Error: La textura %d no se ha cargado correctamente: %p, %p\n", i, cub->textures[i], cub->textures_data[i]);
-           // return -1; 
-        }
-   }
-    
-    if (!mlx->img)
-    {
-        printf("Error: La imagen no se ha cargado correctamente.\n");
-       // return -1;
-    }
-
-    raycast(cub);
-
-    if (!mlx->mlx_ptr || !mlx->win_ptr)
-    {
-        printf("Error: mlx_ptr o win_ptr no están inicializados.\n");
-       // return -1;
-    }
-    mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
-
-    
-   // mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
-
-    return 0; 
-}*/
 
 int *render_next_frame(t_mlx *mlx, t_cub *cub)
 {
@@ -558,13 +657,15 @@ int main(int argc, char **argv)
 
     cub.floor_color = -1;
     cub.ceiling_color = -1;
+    cub.posX = -1;
+    cub.posY = -1;
     read_cub_file(&cub, argv[1]);
-
+    
     if (!cub.north_texture || !cub.south_texture || !cub.west_texture || !cub.east_texture ||
-        cub.floor_color == -1 || cub.ceiling_color == -1 || cub.map == NULL)
-		{
-        exit_with_error("Missing textures, colors, or map");
-    }
+    cub.floor_color == -1 || cub.ceiling_color == -1 || cub.map == NULL ||
+    cub.posX == -1 || cub.posY == -1) 
+        exit_with_error("Missing textures, colors, map or player start position");
+
 
     print_cub_data(&cub);
 

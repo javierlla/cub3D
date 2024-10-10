@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:44:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/03 18:00:38 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/10 13:36:41 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,11 +135,9 @@ char *remove_spaces(char *line)
             len++;
         ptr++;
     }
-
     result = (char *)malloc(len + 1);
     if (!result)
         exit_with_error("Memory allocation failed");
-
     ptr = line;
     while (*ptr)
     {

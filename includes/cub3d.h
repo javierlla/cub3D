@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/08 18:41:53 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/10 11:41:22 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,7 @@ void free_resources(t_cub *cub);
 void print_cub_data(t_cub *cub);
 char *remove_spaces(char *line);
 char *trim_whitespace(char *str);
+void checker_position(t_cub *cub);
 
 //raycast
 void calculate_step_and_side_dist(t_cub *cub, double rayDirX, double rayDirY,
