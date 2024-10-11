@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:14:32 by jllarena          #+#    #+#             */
-/*   Updated: 2024/09/20 13:40:06 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/11 15:41:39 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,21 +51,25 @@ void mlx_loop_mine(t_mlx *mlx)
     mlx_loop(mlx->mlx_ptr);
 }*/
 
-int close_program(t_mlx *mlx) {
-    if (mlx && mlx->win_ptr) {
+int close_program(t_mlx *mlx)
+{
+    if (mlx && mlx->win_ptr)
+    {
         mlx_destroy_window(mlx->mlx_ptr, mlx->win_ptr);
         mlx->win_ptr = NULL;
     }
     exit(EXIT_SUCCESS);
 }
 
-int handle_keypress(int keycode, t_mlx *mlx) {
+int handle_keypress(int keycode, t_mlx *mlx)
+{
     if (keycode == 65307) // ESC botón
         close_program(mlx);
     return (0);
 }
 
-void init_window(t_mlx *mlx) {
+void init_window(t_mlx *mlx)
+{
     mlx->mlx_ptr = mlx_init();
     if (!mlx->mlx_ptr)
         exit_with_error("Failed to initialize mlx");

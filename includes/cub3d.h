@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/10 11:41:22 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/11 14:55:55 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,25 +45,25 @@ typedef struct s_cub
     char *south_texture;
     char *west_texture;
     char *east_texture;
-    void **textures;          // Arreglo para las texturas
-    char **textures_data;     // Datos de las texturas (imagen cruda)
+    void **textures;  
+    char **textures_data;
     int floor_color;
     int ceiling_color;
     char **map;
     int map_height;
     int map_width;
-    t_mlx *mlx;               // Puntero a t_mlx (MLX)
+    t_mlx *mlx;  
     // Variables necesarias para manejar texturas en MLX
-    int bits_per_pixel;       // Bits por píxel (profundidad de color)
-    int line_length;          // Longitud de una línea de la imagen
-    int endian;               // Orden de bytes (endianness)
+    int bits_per_pixel;
+    int line_length; 
+    int endian;       // Orden de bytes (endianness)
     // variables jugador
     double posX;
-    double posY;  // Posición inicial del jugador
+    double posY;  
     double dirX;
-    double dirY;   // Dirección inicial (mirando hacia la izquierda)
+    double dirY;   
     double planeX;
-    double planeY; // Plano de la cámara (campo de visión)
+    double planeY;
 }   t_cub;
 
 
@@ -76,18 +76,14 @@ void validate_map(t_cub *cub);
 void parse_line(t_cub *cub, char *line);
 void read_cub_file(t_cub *cub, const char *filename);
 void exit_with_error(const char *message);
-void normalize_map(t_cub *cub);
 void check_file_extension(const char *filename);
-void validate_closed_map(t_cub *cub);
 void free_resources(t_cub *cub);
 void print_cub_data(t_cub *cub);
 char *remove_spaces(char *line);
 char *trim_whitespace(char *str);
-void checker_position(t_cub *cub);
-
-//raycast
+/*
 void calculate_step_and_side_dist(t_cub *cub, double rayDirX, double rayDirY,
-                                    int *stepX, int *stepY, double *sideDistX,
+                                   int *stepX, int *stepY, double *sideDistX,
                                     double *sideDistY, int mapX, int mapY);
 int perform_dda(t_cub *cub, int *mapX, int *mapY, int *side, double *sideDistX, double *sideDistY,
                 int stepX, int stepY, double rayDirX, double rayDirY);
@@ -96,20 +92,16 @@ int calculate_draw_start(int lineHeight);
 int calculate_draw_end(int lineHeight);
 int determine_texture_side(double rayDirX, double rayDirY, int side);
 double calculate_wallX(t_cub *cub, double perpWallDist, double rayDirX, double rayDirY, int side);
-int calculate_texture_y(int lineHeight);
-
+int calculate_texture_y(int lineHeight);*/
 
 // Funciones de carga de texturas
 int load_texture(t_cub *cub, int index, char *texture_path);
-void free_textures(t_cub *cub);
 void load_textures(t_cub *cub);
 
 // Función para obtener el color de una textura
 unsigned int get_texture_color(t_cub *cub, int texNum, int texX, int texY);
-
 // MLX
 void init_window(t_mlx *mlx);
-void mlx_loop_mine(t_mlx *mlx);
 int close_program(t_mlx *mlx);
 
 #endif
