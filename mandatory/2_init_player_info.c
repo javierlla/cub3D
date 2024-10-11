@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 11:52:26 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/05 16:39:04 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/11 20:27:51 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,12 @@ void set_player_direction_vector(t_data *data)
     printf(RED"----------------------------------------------*/\n");
 }
 
+void set_initial_satellite_pixel_in_window(t_data *data)
+{
+    data->cub->player_direction_vector->x_satellite_pixel = data->cub->player_position->x_pixel + (data->cub->player_direction_vector->x)*DISTANCE_BLUE_CIRCLE;
+    data->cub->player_direction_vector->y_satellite_pixel = data->cub->player_position->y_pixel + (data->cub->player_direction_vector->y)*DISTANCE_BLUE_CIRCLE;
+}
+
 void set_player_position_2(t_data *data, int x_map_index, int y_map_index)
 {
 	            printf(MAGENTA"\n > set_player_position result (Position in 2D Map):\n"RESET_COLOUR);
@@ -68,15 +74,48 @@ void set_player_position_2(t_data *data, int x_map_index, int y_map_index)
     /*Initial decimal and pixel refer to same info. Will be printed in set_initial_pixel_in_map function*/
     set_initial_decimal_in_2d_map(data->cub, x_map_index, y_map_index);
 	            printf("Player's position (DECIMAL_2D_MAP): x = %.2f, y = %.2f\n", data->cub->player_position->x_decimal, data->cub->player_position->y_decimal);
-    set_initial_pixel_in_map(data);
-	            printf("Player's position (PIXELS_2D_MAP): x = %d, y = %d\n", data->cub->player_position->x_pixel, data->cub->player_position->y_pixel);
-	                printf(BLUE"----------------------------------------------*/\n"RESET_COLOUR);
+    set_initial_pixel_in_window(data);
+	            printf("Player's position (PIXELS_WINDOW): x = %d, y = %d\n", data->cub->player_position->x_pixel, data->cub->player_position->y_pixel);
+	            
+                printf(BLUE"----------------------------------------------*/\n"RESET_COLOUR);
 }
 
-void set_initial_pixel_in_map(t_data *data)
+/* set_initial_pixel_in_map
+*
+*     *****************
+*     *****************
+*     *****************
+*     *****************
+*     *****************
+*     **********MAPMAPM
+*     **********APMAPMA
+*     **********PMAPMAP
+*
+*     MAP starts in (1720, 600) in whole window
+*
+*     That's why we need to sum 1720 and 600 to the pixel position
+*     in order to get the pixel position in the whole window.
+*/
+void set_initial_pixel_in_window(t_data *data)
 {
-    data->cub->player_position->x_pixel = decimal_to_pixel(data->cub->player_position->x_decimal, X_WIDTH);
-    data->cub->player_position->y_pixel = decimal_to_pixel(data->cub->player_position->y_decimal, Y_HEIGHT);
+    int tmp_x_pixel;
+    int tmp_y_pixel;
+
+    
+    /* If 2D Map were a single window itself, the pixel positions would be the following: */
+    tmp_x_pixel = decimal_to_pixel(data->cub->player_position->x_decimal, X_WIDTH);
+    tmp_y_pixel = decimal_to_pixel(data->cub->player_position->y_decimal, Y_HEIGHT);
+
+    // printf(YELLOW"Before regla 3, x_pixel = %d\n"RESET_COLOUR, tmp_x_pixel);
+    // printf(YELLOW"Before regla 3, y_pixel = %d\n"RESET_COLOUR, tmp_y_pixel);
+
+    /* Taking into account 2D Map is located in a particular part of window, which starts in 
+    (1720, 600) in whole window, rule of 3 must be implemented.*/
+    data->cub->player_position->x_pixel = 1720 + tmp_x_pixel;
+    data->cub->player_position->y_pixel = 600 + tmp_y_pixel;
+
+    // printf(BLUE"regla 3, x_pixel = %d\n"RESET_COLOUR, data->cub->player_position->x_pixel);
+    // printf(BLUE"regla 3, y_pixel = %d\n"RESET_COLOUR, data->cub->player_position->y_pixel);
     //my_mlx_pixel_put(data->mlx_map, data->cub->player_position->x_pixel, data->cub->player_position->y_pixel, 0x00FF0000); //ez dogu inprimiduko ze oindiok initializau gabe dago punterua
 }        
 

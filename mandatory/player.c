@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/14 11:02:10 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/09/22 16:55:36 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/11 17:05:20 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,24 +17,24 @@
 *
 *  There will be 4 Hannahs: North_Hannah, South_Hannah, West_Hannah, East_Hannah
 **/
-char *get_path(t_mlx *mlx_map)
+char *get_path(t_data *data)
 {
-    if (mlx_map->cub->initial_player_direction_in_map == 'N')
+    if (data->cub->initial_player_direction_in_map == 'N')
     {
         //printf("N - Player direction\n");
         return("./textures/others/North_Hannah.xpm");
     }
-    else if(mlx_map->cub->initial_player_direction_in_map == 'S')
+    else if(data->cub->initial_player_direction_in_map == 'S')
     {
         //printf("S - Player direction\n");
         return("./textures/others/South_Hannah.xpm");
     }
-    else if(mlx_map->cub->initial_player_direction_in_map == 'E')
+    else if(data->cub->initial_player_direction_in_map == 'E')
     {
         //printf("E - Player direction\n");
         return("./textures/others/East_Hannah.xpm");
     }
-    else if(mlx_map->cub->initial_player_direction_in_map == 'W')
+    else if(data->cub->initial_player_direction_in_map == 'W')
     {
         //printf("W - Player direction\n");
         return("./textures/others/West_Hannah.xpm");
@@ -43,30 +43,24 @@ char *get_path(t_mlx *mlx_map)
         return(NULL);
 }
 
-void put_hannah_in_index(t_mlx *mlx_map)
+void put_hannah_in_index(t_data *data)
 {
     char *relative_path;
     int img_width; //We store here image size
     int img_height;//We store here image size
 
-    relative_path = get_path(mlx_map);  //según nora dauan begira, argazki desberdina
+    relative_path = get_path(data);  //según nora dauan begira, argazki desberdina
     // printf(YELLOW"relative_path = %s\n", relative_path);
     // printf("mlx_ptr = %p\n", mlx_map->mlx_ptr);
     // printf("win_ptr = %p\n", mlx_map->win_ptr);
     // printf("image_ptr = %p\n"RESET_COLOUR, mlx_map->image_ptr);
-    mlx_map->image_ptr = mlx_xpm_file_to_image(mlx_map->mlx_ptr, relative_path, &img_width, &img_height);
-    mlx_put_image_to_window(mlx_map->mlx_ptr, mlx_map->win_ptr, mlx_map->image_ptr, scale_x(mlx_map->cub->player_position->x_index), scale_y(mlx_map->cub->player_position->y_index)); //0,0 --> position where we're gonna put the image
+    data->mlx->image_ptr = mlx_xpm_file_to_image(data->mlx->mlx_ptr, relative_path, &img_width, &img_height);
+    mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win_ptr, data->mlx->image_ptr, scale_x(data->cub->player_position->x_index), scale_y(data->cub->player_position->y_index)); //0,0 --> position where we're gonna put the image
 }
 
-
-// void put_red_dot_in_decimal(t_mlx *mlx_map)
-// {
-    
-// }
-
-void put_player_in_map(t_mlx *mlx_map)
+void put_player_in_map(t_data *data)
 {
-    put_hannah_in_index(mlx_map);
+    put_hannah_in_index(data);
     // put_red_dot_in_decimal(mlx_map);
 }
 

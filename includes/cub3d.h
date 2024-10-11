@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/06 13:13:52 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/11 20:28:37 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@
 #define DEBUG_MODE 1
 
 /*---------- Dimensions | Window 1: Cub D (Project--------*/
-#define HEIGHT_WINDOW 720
-#define WIDTH_WINDOW 1280
+#define HEIGHT_WINDOW 1440
+#define WIDTH_WINDOW 2560
 /*---------- Dimensions | Window 2: Map (Debugging Purposes) --------*/
 #define HEIGHT_MAP 840 /*Manually calculated for cheese_maze.cub. Canva allows us 40x40 smallest. 40px x 21 boxes = 840*/
 #define WIDTH_MAP 840
@@ -100,7 +100,9 @@ typedef struct s_img
 //     int endian;
 // } t_data;
 
-/*  We allow decimals for players' position. That's why
+/*  Player's position coordinates - 2D Map
+*
+*   We allow decimals for players' position. That's why
 *   we use double type variable.
 *-----------------------------------------------------*/
 typedef struct s_coordinates
@@ -185,13 +187,12 @@ typedef struct s_mlx
     int		bpp; //following fractal
     int		endian; //following fractal
 	int		line_len; //following fractal
-    t_cub   *cub; //Así es como creo que tiene más sentido. Para vincular el mismo cub a las 2 ventanas.
+    // t_cub   *cub; //Así es como creo que tiene más sentido. Para vincular el mismo cub a las 2 ventanas. Como ya solo voy a tener 1 ventana, no lo necesito. Tengo data donde tengo mlx y cub las 2.
 }   t_mlx;
 
 typedef struct s_data
 {
-    t_mlx *mlx_game;
-    t_mlx *mlx_map;
+    t_mlx *mlx;
     t_cub *cub;
 }   t_data;
 
@@ -227,30 +228,32 @@ void init_all_default (t_data *data);
 void init_all(t_data *data);
 
 /* 2_init_mlx_events.c */
-void render_update_2d_map(t_data *data, int satellite_case);
+// void render_update_2d_map(t_data *data, int satellite_case);
+void render_update_2d_map(t_data *data/*, int satellite_case*/);
 void ft_events_init(t_data *data);
 void rotate_right(t_data *data);
 void move_forward(t_data *data);
 int key_handler(int keycode, t_data *data);
 
 /* 2_init_mlx_utils.c */
-// void	my_mlx_pixel_put(t_mlx *mlx, int x_pixel, int y_pixel, int colour);
+// void	my_mlx_pixel_put(t_mlx *mlx, int get_pathx_pixel, int y_pixel, int colour);
 int close_program(t_mlx *mlx);
 int handle_keypress(int keycode, t_mlx *mlx);
 void mlx_loop_mine(t_mlx *mlx);
 int	close_handler(t_mlx *mlx);
 
 /* 2_init_mlx_window.c */
-void ft_events_init(t_data *data);
+// void ft_events_init(t_data *data);
 void my_mlx_new_window(t_mlx *mlx, enum window_type game_or_map);
 void my_mlx_new_image(t_mlx *mlx, enum window_type game_or_map);
-void init_window(t_mlx *mlx, enum window_type game_or_map, t_cub *cub);
+void init_window(t_data *data);
 
 /* 2_init_player_info.c */
 void angle_to_rad(t_data *data);
 void set_player_direction_vector(t_data *data);
 void set_player_position_2(t_data *data, int x_map_index, int y_map_index);
 void set_player_position(t_data *data);
+void set_initial_satellite_pixel_in_window(t_data *data);
 
 /* 3_move_player.c*/
 int move_player (t_data *data);
@@ -264,9 +267,9 @@ void calculate_decimal_position(t_coordinates *player);
 void update_player_position(t_coordinates *player, double move_x, double move_y);
 
 /* player.c */
-char *get_path(t_mlx *mlx_map);
-void put_hannah_in_index(t_mlx *mlx_map);
-void put_player_in_map(t_mlx *mlx_map);
+char *get_path(t_data *data);
+void put_hannah_in_index(t_data *data);
+void put_player_in_map(t_data *data);
 int is_map(t_cub *cub, int x, int y);
 int is_player_position(t_cub *cub, int x, int y);
 void set_initial_index_in_2d_map(t_cub *cub, int x_map_index, int y_map_index);
@@ -274,16 +277,17 @@ void set_initial_player_direction(t_cub *cub, int x_map_index, int y_map_index);
 void set_initial_decimal_in_2d_map(t_cub *cub, int x_map_index, int y_map_index);
 int decimal_to_pixel(float decimal, enum width_or_height indicator);
 float pixel_to_decimal_map(int pixel, enum width_or_height indicator);
-void set_initial_pixel_in_map(t_data *data); //I think I don't use this one, as mlx not usable at this moment
+void set_initial_pixel_in_window(t_data *data); //I think I don't use this one, as mlx not usable at this moment
 
 /* put_walls_map.c*/
 int scale_x(/*t_mlx *mlx_2, */int x_index);
 int scale_y(/*t_mlx *mlx_2, */int y_index);
-void put_each_wall(t_mlx *mlx_2, int x_index, int y_index);
-void put_walls_in_map(t_mlx *mlx_2);
+void put_each_wall(t_data *data, int x_index, int y_index);
+void put_walls_in_map(t_data *data/*, int x, int y*/);
 
 /* render.c */
-void ft_render(t_cub *cub, t_mlx *mlx);
+void render_initial(t_data *data);
+void render_update_window(t_data *data);
 
 
 #endif

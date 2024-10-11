@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/15 11:08:26 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/09/22 11:19:38 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/11 19:00:57 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,13 @@
 
 /*
 *   Returns x = x pixel position where image must be displayed
-*   in map window (mlx_2):
+*   in 2d map in the window (mlx):
 *
-*   Map_window dimensions are defined in cub3d.h:
+*   Window dimensions are defined in cub3d.h:
+*       - HEIGHT_WINDOW = 1440
+*       - WIDTH_WINDOW = 2560
+*
+*   Map dimensions are defined in cub3d.h:
 *       - HEIGHT_MAP = 840
 *       - WIDTH_MAP = 840
 *
@@ -38,7 +42,7 @@ int scale_x(/*t_mlx *mlx_2, */int x_index) //2d map
     int x;
     
     //printf("x_index = %d, ", x_index);
-    x = 0;
+    x = 1720;
     while (x_index)
     {
         x += 40;
@@ -48,11 +52,19 @@ int scale_x(/*t_mlx *mlx_2, */int x_index) //2d map
     return(x);
 }
 
-int scale_y(/*t_mlx *mlx_2, */int y_index)
+
+/*  scale_y
+*
+*   The initial position of the map in the window is in the following
+*   coordinates: (1720, 600)
+*           x = WIDTH_WINDOW - WIDTH_MAP = 2560 - 840 = 1720    (x = 1720)
+*           y = HEIGHT_WINDOW - HEIGHT_MAP = 1440 - 840 = 600    (y = 600)
+*/
+int scale_y(int y_index)
 {
     int y;
     
-    y = 0;
+    y = 600;
     //printf("y_index = %d, ", y_index);
     while (y_index)
     {
@@ -63,33 +75,41 @@ int scale_y(/*t_mlx *mlx_2, */int y_index)
     return(y);
 }
 
-
-/* x_index and y_index are the indexes in 2d map.
-*   E.g.: map[x_index][y_index];
-**/
-void put_each_wall(t_mlx *mlx_2, int x_index, int y_index)
+void put_each_wall(t_data *data, int x_index, int y_index)
 {
     char *relative_path;
-    int img_width; //We store here image size
-    int img_height;//We store here image size
+    int img_width; //40px width
+    int img_height;//40px height
+    void *img_wall;
 
     relative_path = "./textures/others/1_wall_smallest_40x40px.xpm";
-    mlx_2->image_ptr = mlx_xpm_file_to_image(mlx_2->mlx_ptr, relative_path, &img_width, &img_height);
+    //printf(BLUE"img_width = %d, img_height = %d\n"RESET_COLOUR, img_width, img_height);
+    img_wall = mlx_xpm_file_to_image(data->mlx->mlx_ptr, relative_path, &img_width, &img_height);
+    if (!img_wall)
+        printf(RED"Error: img is NULL\n"RESET_COLOUR);
     //printf(YELLOW"IMAGE_PTR = %p - put_each_wall (put_walls_map.c)\n"RESET_COLOUR, mlx_2->image_ptr);
     //printf(YELLOW"WIN_PTR = %p\n"RESET_COLOUR, mlx_2->win_ptr);
     //printf(YELLOW"MLX_PTR = %p\n"RESET_COLOUR, mlx_2->mlx_ptr);
-    mlx_put_image_to_window(mlx_2->mlx_ptr, mlx_2->win_ptr, mlx_2->image_ptr, scale_x(x_index), scale_y(y_index)); //0,0 --> position where we're gonna put the image
+    mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win_ptr, img_wall, scale_x(x_index), scale_y(y_index)); //0,0 --> position where we're gonna put the image
     //mlx_put_image_to_window(mlx_2->mlx_ptr, mlx_2->win_ptr, mlx_2->image_ptr, 5000, 5000); //0,0 --> position where we're gonna put the image
 }
 
+/* New version */
 
-void put_walls_in_map(t_mlx *mlx_2)
+/* put_walls_in_map
+*
+*   It's the #1 step to visualize 2d map in window  
+*
+*   The funcion iterates through 2d map .cub input file and calls put_each_wall
+*   function to display each wall when '1' found.
+*/
+void put_walls_in_map(t_data *data)
 {
     int y_nb_of_boxes; //Map Height
     int x_index;
     int y_index;
 
-    y_nb_of_boxes = mlx_2->cub->map_height;
+    y_nb_of_boxes = data->cub->map_height;
     //printf(MAGENTA"y_nb_of_boxes = %d\n", y_nb_of_boxes);¡
     
     /* Iterate through each line of 2d map*/
@@ -97,11 +117,11 @@ void put_walls_in_map(t_mlx *mlx_2)
     while (y_nb_of_boxes > 0)
     {
         x_index = 0;
-        while (is_map(mlx_2->cub, x_index, y_index))
+        while (is_map(data->cub, x_index, y_index))
         {
             //printf(BLUE"Let's see Map[%d][%d] = %d\n"RESET_COLOUR, x_index, y_index, mlx_2->cub->map[x_index][y_index]);
-            if (mlx_2->cub->map[x_index][y_index] == '1')
-                put_each_wall(mlx_2, x_index, y_index);
+            if (data->cub->map[x_index][y_index] == '1')
+                put_each_wall(data, x_index, y_index);
             //else
                 //printf(RED"doesn't enter here = NO WALL\n"RESET_COLOUR);
             x_index++;

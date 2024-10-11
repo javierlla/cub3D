@@ -6,7 +6,7 @@
 #    By: uxmancis <uxmancis>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 17:25:33 by jllarena          #+#    #+#              #
-#    Updated: 2024/10/06 12:51:17 by uxmancis         ###   ########.fr        #
+#    Updated: 2024/10/11 17:09:39 by uxmancis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,6 @@ MPATH_SRCS  = 0_main.c \
 			  2_init_player_info.c \
 			  3_move_player.c \
 			  3_raycast.c \
-			  player_double_position.c \
 			  player.c \
 			  put_walls_map.c \
 			  render.c \

@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:15:26 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/05 17:03:33 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/11 16:59:31 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,6 @@ int ft_arg_checker(int argc)
     return 0;
 }
 
-// int main(void)
-// {
-//     printf("pi = %f\n", M_PI);
-//     return (0);
-// }
-
 /*
 *   mlx_map: Map (Bonus: Debugging purposes)
 *   mlx_game: Cub3D Project (Primary mandatory window)
@@ -37,27 +31,23 @@ int main(int argc, char **argv)
 {
     t_data *data;
     t_cub *cub;
-    t_mlx *mlx_map; /* grahical interface handler */
-    t_mlx *mlx_game; /* grahical interface handler */
+    t_mlx *mlx; /* grahical interface handler */
     
     if (ft_arg_checker(argc) == EXIT_FAILURE)
         return EXIT_FAILURE;
 
     data = malloc(sizeof(t_data));
     cub = malloc(sizeof(t_cub));
-    mlx_map = malloc(sizeof(t_mlx));
-    mlx_game = malloc(sizeof(t_mlx));
-    if (!data || !cub || !mlx_map || !mlx_game)
+    mlx = malloc(sizeof(t_mlx));
+    if (!data || !cub || !mlx)
     {
         perror("Failed to allocate memory for data");
         exit(1);
     }
     /* Clears memory so as to start */
     ft_memset(cub, 0, sizeof(t_cub));
-    ft_memset(mlx_map, 0, sizeof(t_mlx));
-    ft_memset(mlx_game, 0, sizeof(t_mlx));
-    data->mlx_game = mlx_game;
-	data->mlx_map = mlx_map;
+    ft_memset(mlx, 0, sizeof(t_mlx));
+    data->mlx = mlx;
     data->cub = cub;
 	
     
@@ -71,30 +61,12 @@ int main(int argc, char **argv)
     *  - Both windowx (mlx) will point same unique cub instance of t_cub.
     *----------------------------------------------------------------------------*/
     init_all(data);
-    // while (1)
-    // {
-    //     move_player(data);
-    // }
 
-	/* In loop: get position, (re-calculate) render, move*/
-    // while(1)
-    // {
-    //     if ()
-    // }
-    
-    //ft_render(&cub, &mlx);
-	
-    /* #2 MAP WINDOW - Debugging purposes*/
-	// if (DEBUG_MODE == 1)
-        // put_walls_in_map(&mlx_map);
-    
-    /* #1 GAME WINDOW - Cub3D Project*/
 
     // mlx_loop_hook(mlx_game->mlx_ptr, render_next_frame, data);
     // mlx_loop_hook(mlx_map->mlx_ptr, render_next_frame, data);
     
 	/* Appication keeps running listening for events (key presses, mouse, 'x', ESC, etc.) */
-    mlx_loop_mine(mlx_game);
-    mlx_loop_mine(mlx_map);
+    mlx_loop_mine(data->mlx);
     return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/06 11:00:00 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/06 13:52:27 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/11 17:04:37 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,41 @@
 
 /* my_mlx_pixel_put: Puts a pixel in our image.
 *
-*       line_len = width of the image in bytes
-*       bpp = bits per pixel
+*       > data->mlx_game->pixels_ptr: points to actual pixels
+*                Apunta al primer byte de la memoria donde se almacenan
+*                todos los píxeles de la imagen (el buffer de la imagen).       
+*
+*       > x and y are pixel coordinates --> 
+*           x and y (0,0) are top left corner of the image           
+*
+*       line_len and bpp are image setup.
+*       > data->mlx_game->line_len = width of the image in bytes.
+*       NO es el número de píxeles. Sí es el número de bytes
+*       que ocupa una fila completa de píxeles en la memoria.
+*
+*       > bpp = bits per pixel. La cantidad de bits que se usan para
+*       almacenar la información de un píxel en la memoria. En nuestro
+*       caso son 32 bits por píxel = 4 bytes por píxel.
 *            · 32 bits per pixel
 *            · 32 / 8 = 4 bytes per pixel
+*
+*
+*       pixels_ptr = mlx_get_data_addr 
+*          // Pointer that points to 1st byte in image buffer.
+*          // char * pointer type, when doing ++, we move in bytes
+*
+*       y * line_len = number of bytes we have to move from beginning
+*                      of pixels_ptr to get to the correct line of pixels.
+*
+*       x * (bpp / 8) =
+*                 > bpp / 8: 1 pixel's size in bytes 
 */
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*pixel;
+    int		move_y;
+	int		move_x;
+	int 	total_move;
     
     //printf("mlx->pixels_ptr = %p\n", data->mlx_game->pixels_ptr);
 
@@ -30,49 +57,28 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
     {
         return;
     }
-    
-    // printf("line_len = %d\n", data->mlx_game->line_len);
-    // printf("bpp = %d\n", data->mlx_game->bpp);
+
+    //printf(GREEN"pixels_ptr: %p, line_len: %d, bpp: %d\n"RESET_COLOUR, data->mlx_game->pixels_ptr, data->mlx_game->line_len, data->mlx_game->bpp);
     
     /* Make sure pointer is valid*/
-    if (data->mlx_game->pixels_ptr == NULL)
-    {
-        return;
-    }
-
     /* Make sure valid bpp and line_len values */
-    if (data->mlx_game->line_len < 0 || data->mlx_game->bpp < 0)
+    /* Error: we're not working with 32 bits per pixel images*/
+    if (data->mlx->pixels_ptr == NULL || data->mlx->line_len < 0 || data->mlx->bpp < 0 || data->mlx->bpp != 32)
     {
         return;
     }
 
-    /* Error: we're not working with 32 bits per pixel images*/
-    if (data->mlx_game->bpp != 32)
-    {
-        return;
-    }
-    
-	pixel = data->mlx_game->pixels_ptr + (y * data->mlx_game->line_len
-			+ x * (data->mlx_game->bpp / 8));
+	move_x = x * (data->mlx->bpp / 8);
+	move_y = y * data->mlx->line_len;
+	total_move = move_x + move_y;
+    /* y * line_len: para movernos a la línea correcta de píxeles, coordenada Y
+    *  */
+	pixel = data->mlx->pixels_ptr + total_move;
 
     /* Trying alternatives to solve segfault*/        
 	*(unsigned int *)pixel = color;
     // ft_memcpy(pixel, &color, sizeof(unsigned int)); //10 is the size of the color. E.g. 0x00FF0000
 }
-
-/* my_mlx_pixel_put: Puts a pixel in our image.*/
-// void	my_mlx_pixel_put(t_data *data, int x_pixel, int y_pixel, int colour)
-// {
-// 	char	*dst;
-
-//     // printf(RED"mlx->pixels_ptr = %p\n", mlx->pixels_ptr);
-//     // printf("mlx->line_len = %d\n", mlx->line_len);
-//     // printf("mlx->bpp = %d\n", mlx->bpp);
-//     // printf("x_pixel = %d\n", x_pixel);
-//     // printf("y_pixel = %d\n"RESET_COLOUR, y_pixel);
-// 	dst = data->mlx_game->pixels_ptr + (y_pixel * data->mlx_game->line_len + x_pixel * (data->mlx_game->bpp / 8));
-// 	*(unsigned int *)dst = colour;
-// }
 
 /* Normalizes angle making sure it's between [0-360] degrees*/
 double	nor_angle(double angle)
@@ -103,7 +109,7 @@ void draw_vertical_line(t_data *data, int x, double *wall)
     int wall_height;
     int floor_height;
     
-    printf("draw_vertical_line, beginning, x = %2.f, y = %2.f\n", wall[0], wall[1]);
+    //printf("draw_vertical_line, beginning, x = %2.f, y = %2.f\n", wall[0], wall[1]);
     
     y = 0;
     sky_height = wall[0];
@@ -118,7 +124,7 @@ void draw_vertical_line(t_data *data, int x, double *wall)
         sky_height--;
     }
     
-    printf("y after sky = %d\n", y);
+    //printf("y after sky = %d\n", y);
     /* Amarillito */
     while (wall_height > 0)
     {
@@ -127,7 +133,7 @@ void draw_vertical_line(t_data *data, int x, double *wall)
         wall_height--;
     }
 
-    printf("y after wall = %d\n", y);
+   // printf("y after wall = %d\n", y);
     /* Moradito */
     while (floor_height > 0)
     {
