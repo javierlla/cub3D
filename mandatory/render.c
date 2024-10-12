@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:20:01 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/12 21:21:54 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/12 21:38:56 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,24 +122,20 @@ void put_each_wall(t_data *data, int x_index, int y_index)
     int img_width; //40px width
     int img_height;//40px height
     void *img_wall;
-    int result_x;
-    int result_y;
 
     relative_path = "./textures/others/1_wall_smallest_40x40px.xpm";
     //printf(BLUE"img_width = %d, img_height = %d\n"RESET_COLOUR, img_width, img_height);
     img_wall = mlx_xpm_file_to_image(data->mlx->mlx_ptr, relative_path, &img_width, &img_height);
     if (!img_wall)
         printf(RED"Error: img is NULL\n"RESET_COLOUR);
-    printf(YELLOW"IMAGE_PTR = %p - put_each_wall (put_walls_map.c)\n"RESET_COLOUR, data->mlx->img);
-    printf(YELLOW"WIN_PTR = %p\n"RESET_COLOUR, data->mlx->win_ptr);
-    printf(YELLOW"MLX_PTR = %p\n"RESET_COLOUR,data->mlx->mlx_ptr);
+    // printf(YELLOW"IMAGE_PTR = %p - put_each_wall (put_walls_map.c)\n"RESET_COLOUR, data->mlx->img);
+    // printf(YELLOW"WIN_PTR = %p\n"RESET_COLOUR, data->mlx->win_ptr);
+    // printf(YELLOW"MLX_PTR = %p\n"RESET_COLOUR,data->mlx->mlx_ptr);
     
-    printf("x_index = %d, y_index = %d\n", x_index, y_index);
-    result_x = scale_x(x_index);
-    result_y = scale_y(y_index);
-    printf("result_x = %d, result_y = %d\n", result_x, result_y);
+    // printf("x_index = %d, y_index = %d\n", x_index, y_index);
+    // printf("result_x = %d, result_y = %d\n", , );
     
-    mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win_ptr, img_wall, result_x, result_y); //0,0 --> position where we're gonna put the image
+    mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win_ptr, img_wall, scale_x(x_index), scale_y(y_index)); //0,0 --> position where we're gonna put the image
     //mlx_put_image_to_window(mlx_2->mlx_ptr, mlx_2->win_ptr, mlx_2->image_ptr, 5000, 5000); //0,0 --> position where we're gonna put the image
 }
 

@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:33:35 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/12 20:34:16 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/12 21:43:21 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,29 +71,37 @@ void validate_player_position(t_cub *cub, int *player_count, int i, int j)
 
         if (cub->map[i][j] == 'N')
         {
-            cub->x_dir_dec = -1; //uxue pondría: 0
-            cub->y_dir_dec = 0; //uxue pondría: 1
+            // cub->x_dir_dec = -1; //uxue pondría: 0
+            cub->x_dir_dec = 0; //uxue pondría: 0
+            // cub->y_dir_dec = 0; //uxue pondría: 1
+            cub->y_dir_dec = 1; //uxue pondría: 1
             cub->planeX = 0;
             cub->planeY = 0.66;
         }
         else if (cub->map[i][j] == 'S')
         {
-            cub->x_dir_dec = 1; //uxue pondría: 0
-            cub->y_dir_dec = 0; //uxue pondría: -1
+            // cub->x_dir_dec = 1; //uxue pondría: 0
+            cub->x_dir_dec = 0; //uxue pondría: 0
+            // cub->y_dir_dec = 0; //uxue pondría: -1
+            cub->y_dir_dec = -1; //uxue pondría: -1
             cub->planeX = 0;
             cub->planeY = -0.66;
         }
         else if (cub->map[i][j] == 'E')
         {
-            cub->x_dir_dec = 0; //uxue pondría: 1
-            cub->y_dir_dec = 1; //uxue pondría: 0
+            // cub->x_dir_dec = 0; //uxue pondría: 1
+            cub->x_dir_dec = 1; //uxue pondría: 1
+            // cub->y_dir_dec = 1; //uxue pondría: 0
+            cub->y_dir_dec = 0; //uxue pondría: 0
             cub->planeX = 0.66;
             cub->planeY = 0;
         }
         else if (cub->map[i][j] == 'W')
         {
-            cub->x_dir_dec = 0; //uxue pondría: -1
-            cub->y_dir_dec = -1; //uxue pondría: 0
+            // cub->x_dir_dec = 0; //uxue pondría: -1
+            cub->x_dir_dec = -1; //uxue pondría: -1
+            // cub->y_dir_dec = -1; //uxue pondría: 0
+            cub->y_dir_dec = 0; //uxue pondría: 0
             cub->planeX = -0.66;
             cub->planeY = 0;
         }
