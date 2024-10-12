@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/11 14:55:55 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/12 21:32:14 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,50 @@
 # include <stdlib.h>
 # include <string.h>
 
-# define screenWidth 800
-# define screenHeight 600
+#define GRAY "\033[0;90m"
+#define RED "\033[0;31m"
+#define GREEN "\033[0;92m"
+#define YELLOW "\033[0;93m"
+#define BLUE "\033[0;94m"
+#define MAGENTA "\033[0;95m"
+#define CYAN "\033[0;96m"
+#define WHITE "\033[0;97m"
+#define WHITE_COLOR "\033[37m"
+#define RESET_COLOUR "\033[0m"
+#define AQUAMARINE "\033[0;96m"
+
+#define PI 3.14159265358979323846
+
+/*---------- Dimensions | Window 1: Cub D (Project--------*/
+# define screenWidth 2560 //HEIGHT_WINDOW in Uxu's branch
+# define screenHeight 1440 //HEIGHT_WINDOW in Uxu's branch
+/*---------- Dimensions | Window 2: Map (Debugging Purposes) --------*/
+#define HEIGHT_MAP 840 /*Manually calculated for cheese_maze.cub. Canva allows us 40x40 smallest. 40px x 21 boxes = 840*/
+#define WIDTH_MAP 840
+
+/* ----- 2D Map Visualization ------*/
+#define DISTANCE_BLUE_CIRCLE 20 //Satellite
+#define SPEED_MOVE 3 //Speed of movement: each time W-A-S-D are pressed how many pixels will the player move
+#define SPEED_ROTATE 3 //Speed of rotation: each time left or right arrow are pressed how many degrees will the player rotate
+
+
 # define TEX_WIDTH 64 
 # define TEX_HEIGHT 64 
 #define NUM_TEXTURES 4
+
+/*Keyboard events*/
+# define W_MOVE_FORWARD 119
+# define S_MOVE_BACKWARDS 115
+# define A_MOVE_LEFT 97
+# define D_MOVE_RIGHT 100
+# define ROTATE_LEFT 65361 //Left arrow
+# define ROTATE_RIGHT 65363 //Right arrow
+
+enum width_or_height
+{
+    X_WIDTH,
+    Y_HEIGHT
+};
 
 typedef struct s_mlx
 {
@@ -57,15 +96,35 @@ typedef struct s_cub
     int bits_per_pixel;
     int line_length; 
     int endian;       // Orden de bytes (endianness)
-    // variables jugador
-    double posX;
-    double posY;  
-    double dirX;
-    double dirY;   
+    
+    
+    /************************************* Info about Player *************************************/
+    /*Position in 2D Map*/
+    double x_pos_dec; //x_position_decimal
+    double y_pos_dec;
+    int x_pos_ind; //x_position_index
+    int y_pos_ind;
+    int x_pos_pixel; //x_position_pixel in window
+    int y_pos_pixel;
+    int x_satellite_pixel;
+    int y_satellite_pixel;
+
+    /* Direction vector */
+    double x_dir_dec;
+    double y_dir_dec;
+    char direction;
+    float angle_degree;
+    float angle_radian;
+    
     double planeX;
     double planeY;
 }   t_cub;
 
+typedef struct s_data
+{
+    t_mlx *mlx;
+    t_cub *cub;
+}   t_data;
 
 // Prototipos de funciones
 void print_cub_data(t_cub *cub);
@@ -103,5 +162,35 @@ unsigned int get_texture_color(t_cub *cub, int texNum, int texX, int texY);
 // MLX
 void init_window(t_mlx *mlx);
 int close_program(t_mlx *mlx);
+
+/* 0_main.c */
+
+/* 1_read_cub_file.c */
+
+/* 2_init.c */
+void init_all_default(t_data *data);
+void init_all(t_data *data);
+int is_map(t_cub *cub, int x, int y);
+void angle_to_rad(t_data *data);
+
+/* 3_events.c */
+void ft_events_init(t_data *data);
+int key_handler(int keycode, t_data *data);
+float pixel_to_decimal_map(int pixel, enum width_or_height indicator);
+
+/* raycast.c */
+void raycast(t_data *data);
+
+/* render.c */
+void render_sky_and_floor(t_data *data);
+int *render_next_frame(t_data *data);
+
+/* textures.c */
+unsigned int get_texture_color(t_cub *cub, int texNum, int texX, int texY);
+int load_texture(t_cub *cub, int index, char *texture_path);
+void load_textures(t_cub *cub);
+
+/* 99_utils.c */
+void my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color);
 
 #endif

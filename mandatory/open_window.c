@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_window.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:14:32 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/11 15:41:39 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/12 17:33:10 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,27 @@ void init_window(t_mlx *mlx)
 {
     mlx->mlx_ptr = mlx_init();
     if (!mlx->mlx_ptr)
+    {
         exit_with_error("Failed to initialize mlx");
-
+        free(mlx->mlx_ptr);
+        free(mlx);
+    }
     mlx->win_ptr = mlx_new_window(mlx->mlx_ptr, screenWidth, screenHeight, "Cub3D");
     if (!mlx->win_ptr)
         exit_with_error("Failed to create window");
+        
+    mlx->img = mlx_new_image(mlx->mlx_ptr, screenWidth, screenHeight);
+    if (!mlx->img)
+        exit_with_error("Failed to create image.\n");
 
+    mlx->addr = mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
+    if (!mlx->addr)
+        exit_with_error("Failed to get image address.\n");
+
+    /* 'x' closing button: evento 17 */
     mlx_hook(mlx->win_ptr, 17, 0, (int (*)(void *))close_program, mlx);
+
+    /* 'ESC' */
     mlx_hook(mlx->win_ptr, 2, 1L<<0, handle_keypress, mlx);
+
 }

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+         #
+#    By: uxmancis <uxmancis>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 17:25:33 by jllarena          #+#    #+#              #
-#    Updated: 2024/10/04 19:28:23 by jllarena         ###   ########.fr        #
+#    Updated: 2024/10/12 20:42:09 by uxmancis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 NAME            = cub3D
 CC              = gcc
 RM              = rm -rf
-FLAGS           = -Wall -Wextra -Werror -Ilibft -Imlx -g3 #-fsanitize=address
+FLAGS           = -Wall -Wextra -Werror -Ilibft -Imlx -g3 -fsanitize=address
 
 # FILES AND PATH
 
@@ -24,9 +24,17 @@ HEADER_DIR  = includes/
 HEADER      = $(addprefix $(HEADER_DIR), $(HEADER_SRCS))
 
 
-MPATH_SRCS  = read.cub.file.c open_window.c main.c parse_utils.c 
+MPATH_SRCS  = 0_main.c \
+			  1_read_cub_file.c \
+			  2_init.c \
+			  3_events.c \
+			  99_utils.c \
+		      open_window.c \
+			  parse_utils.c \
+			  raycast.c \
+			  render.c \
+			  textures.c
 				
-
 MPATH_DIR   = mandatory/
 MPATH       = $(addprefix $(MPATH_DIR), $(MPATH_SRCS))
 OBJ_M       = $(MPATH:.c=.o)
