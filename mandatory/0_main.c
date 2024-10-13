@@ -6,67 +6,57 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:15:26 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/11 16:59:31 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/13 13:53:44 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
 
-/* ft_arg_checker returns EXIT_FAILURE if argc is not 2 as expected.*/
-int ft_arg_checker(int argc)
-{
-    if (argc != 2)
-    {
-        write(2, "Usage: ./cub3D <map.cub>\n", 26);
-        return EXIT_FAILURE; 
-    }
-    return 0;
-}
-
-/*
-*   mlx_map: Map (Bonus: Debugging purposes)
-*   mlx_game: Cub3D Project (Primary mandatory window)
-*/
 int main(int argc, char **argv)
 {
+    if (argc != 2) {
+        write(2, "Usage: ./cub3D <map.cub>\n", 26);
+        return EXIT_FAILURE;
+    }
+
     t_data *data;
     t_cub *cub;
-    t_mlx *mlx; /* grahical interface handler */
+    t_mlx *mlx;
     
-    if (ft_arg_checker(argc) == EXIT_FAILURE)
-        return EXIT_FAILURE;
-
     data = malloc(sizeof(t_data));
     cub = malloc(sizeof(t_cub));
     mlx = malloc(sizeof(t_mlx));
-    if (!data || !cub || !mlx)
-    {
-        perror("Failed to allocate memory for data");
-        exit(1);
-    }
-    /* Clears memory so as to start */
     ft_memset(cub, 0, sizeof(t_cub));
     ft_memset(mlx, 0, sizeof(t_mlx));
     data->mlx = mlx;
     data->cub = cub;
-	
-    
+
+    data->cub->x_pos_dec = -1;
+    data->cub->y_pos_dec = -1;
+    data->cub->floor_color = -1;
+    data->cub->ceiling_color = -1;
+
     /* - Open argv[1] file*/
-    read_cub_file(data->cub, argv[1]);
+    read_cub_file(cub, argv[1]);
+    
+    // if (!cub->north_texture || !cub->south_texture || !cub->west_texture || !cub->east_texture ||
+    // cub->floor_color == -1 || cub->ceiling_color == -1 || cub->map == NULL ||
+    // cub->x_pos_dec == -1 || cub->y_pos_dec == -1) 
+    //     exit_with_error("Missing textures, colors, map or player start position");
 
     /* - Prints read result: textures, colours and map in 'cub' structure. */
-    print_cub_data(data->cub); //Javi: puts info in standard output, terminal
+    print_cub_data(cub);
 
-    /* - Initializes mlx, events: Opens window, 'x' button and ESC closing are set
-    *  - Both windowx (mlx) will point same unique cub instance of t_cub.
-    *----------------------------------------------------------------------------*/
     init_all(data);
 
+    cub->mlx = mlx;
+    load_textures(cub); 
 
-    // mlx_loop_hook(mlx_game->mlx_ptr, render_next_frame, data);
-    // mlx_loop_hook(mlx_map->mlx_ptr, render_next_frame, data);
-    
-	/* Appication keeps running listening for events (key presses, mouse, 'x', ESC, etc.) */
-    mlx_loop_mine(data->mlx);
+    mlx_loop_hook(mlx->mlx_ptr, ((void *)render_next_frame(data)), cub); 
+    mlx_loop(mlx->mlx_ptr); 
+
     return 0;
 }
+
+
+

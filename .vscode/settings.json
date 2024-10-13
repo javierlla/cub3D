@@ -3,6 +3,7 @@
         "fcntl.h": "c",
         "unistd.h": "c",
         "cub3d.h": "c",
-        "stdio.h": "c"
+        "stdio.h": "c",
+        "stdlib.h": "c"
     }
 }

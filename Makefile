@@ -6,7 +6,7 @@
 #    By: uxmancis <uxmancis>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 17:25:33 by jllarena          #+#    #+#              #
-#    Updated: 2024/10/11 17:09:39 by uxmancis         ###   ########.fr        #
+#    Updated: 2024/10/12 20:42:09 by uxmancis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,17 +26,15 @@ HEADER      = $(addprefix $(HEADER_DIR), $(HEADER_SRCS))
 
 MPATH_SRCS  = 0_main.c \
 			  1_read_cub_file.c \
-			  2_init_all.c \
-			  2_init_mlx_events.c \
-			  2_init_mlx_utils.c \
-			  2_init_mlx_window.c \
-			  2_init_player_info.c \
-			  3_move_player.c \
-			  3_raycast.c \
-			  player.c \
-			  put_walls_map.c \
+			  2_init.c \
+			  3_events.c \
+			  99_utils.c \
+		      open_window.c \
+			  parse_utils.c \
+			  raycast.c \
 			  render.c \
-
+			  textures.c
+				
 MPATH_DIR   = mandatory/
 MPATH       = $(addprefix $(MPATH_DIR), $(MPATH_SRCS))
 OBJ_M       = $(MPATH:.c=.o)

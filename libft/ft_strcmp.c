@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pruebitas_punteros.c                               :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/14 12:09:06 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/09/14 17:26:25 by uxmancis         ###   ########.fr       */
+/*   Created: 2024/09/11 16:39:37 by jllarena          #+#    #+#             */
+/*   Updated: 2024/09/11 16:41:24 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-
-int main(void)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-   int *dst1;
-   int *dst2;
-   int src = 3;
-
-   dst1 = &src;
-   dst2 = &src;
-   printf("dst1 = %d, dst2 = %d\n", *dst1, *dst2);
-   return (0);
+	while (*s1 && (*s1 == *s2))
+	{
+		s1++;
+		s2++;
+	}
+	return ((unsigned char)(*s1) - (unsigned char)(*s2));
 }
