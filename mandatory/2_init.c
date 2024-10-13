@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:43:44 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/12 20:40:42 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/13 13:56:26 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,9 +196,9 @@ float deg_to_rad(t_data *data)
 void get_initial_angle(t_data *data)
 {
     if(data->cub->direction == 'N')
-        data->cub->angle_degree = 90;
-    if(data->cub->direction == 'S')
         data->cub->angle_degree = 270;
+    if(data->cub->direction == 'S')
+        data->cub->angle_degree = 90;
     if(data->cub->direction == 'W')
         data->cub->angle_degree = 180;
     if(data->cub->direction == 'E')
@@ -237,9 +237,21 @@ void init_all(t_data *data)
     init_all_default(data);
 
     set_player_position(data);
-    //set_player_direction_vector(data); //not necessary for now, managed in validate_player_position function
+    printf("> Player's direction vector: x = %.2f, y = %.2f\n", data->cub->x_dir_dec, data->cub->y_dir_dec);
+    set_player_direction_vector(data); //not necessary for now, managed in validate_player_position function
     set_initial_satellite_pixel_in_window(data);
-    printf("Satellite's position (PIXELS_WINDOW): x = %d, y = %d\n", data->cub->x_satellite_pixel, data->cub->y_satellite_pixel);
+    printf("> Satellite's position (PIXELS_WINDOW): x = %d, y = %d\n", data->cub->x_satellite_pixel, data->cub->y_satellite_pixel);
+    
+
+    printf(YELLOW"\n 🧍Player information"RESET_COLOUR"  |   POSITION (dec)  |   POSITION (pixel)  | Map position (INDEX) | Map position (dec)  | DIRECTION |  DirVector (dec)   |    SAT. (pixel)   |\n");
+    printf("                      | x= %2.f, y = %.2f  |  x = %d, y = %d |     x = %d, y = %d    | x = %.2f, y = %.2f |     %c     | x = %.2f, y = %.2f |x = %d, y = %d |\n", 
+    data->cub->x_pos_dec, data->cub->y_pos_dec,
+    data->cub->x_pos_pixel, data->cub->y_pos_pixel,
+    data->cub->x_pos_ind, data->cub->y_pos_ind,
+    data->cub->x_pos_dec, data->cub->y_pos_dec,
+    data->cub->direction,
+    data->cub->x_dir_dec, data->cub->y_dir_dec,
+    data->cub->x_satellite_pixel, data->cub->y_satellite_pixel);
     
     init_window(data->mlx);
     ft_events_init(data);

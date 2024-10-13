@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:20:01 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/12 21:38:56 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/13 11:59:17 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,7 +173,7 @@ void put_walls_in_map(t_data *data)
         y_index++;
         y_nb_of_boxes--;
     }
-    printf(GREEN"finished visualizing walls in 2d map\n"RESET_COLOUR);
+    // printf(GREEN"finished visualizing walls in 2d map\n"RESET_COLOUR);
 }
 
 void put_dot_in_map(t_data *data)
@@ -184,7 +184,7 @@ void put_dot_in_map(t_data *data)
     void *img_dot;
 
     
-    printf(BLUE"put_dot_in_map | player's position in 2D Map, x_pixel = %d, y_pixel = %d\n"RESET_COLOUR, data->cub->x_pos_pixel, data->cub->y_pos_pixel);
+    // printf(BLUE"put_dot_in_map | player's position in 2D Map, x_pixel = %d, y_pixel = %d\n"RESET_COLOUR, data->cub->x_pos_pixel, data->cub->y_pos_pixel);
     
     relative_path = "./textures/others/5_pixel_by_5_pixel_red_dot_clear_back.xpm";
     img_dot = mlx_xpm_file_to_image(data->mlx->mlx_ptr, relative_path, &img_width, &img_height);
@@ -232,7 +232,7 @@ void put_satellite_in_map(t_data *data)
     int img_height;//We store here image size
     void *img_satellite;
 
-    printf(BLUE"satellite position, x = %d, y = %d\n"RESET_COLOUR, data->cub->x_satellite_pixel, data->cub->y_satellite_pixel);
+    // printf(BLUE"satellite position, x = %d, y = %d\n"RESET_COLOUR, data->cub->x_satellite_pixel, data->cub->y_satellite_pixel);
     
     relative_path = "./textures/others/5_pixel_by_5_pixel_red_dot_clear_back.xpm";
     img_satellite = mlx_xpm_file_to_image(data->mlx->mlx_ptr, relative_path, &img_width, &img_height);
@@ -262,11 +262,11 @@ void render_update_2d_map(t_data *data)
     int x;
     int y;
 
-    printf(YELLOW"render_update_2d_map\n"RESET_COLOUR);
+    //printf(YELLOW"render_update_2d_map\n"RESET_COLOUR);
     x_start_2d_map = screenWidth - WIDTH_MAP;
     y_start_2d_map = screenHeight - HEIGHT_MAP;
 
-    printf("x start = %d, y start = %d\n", x_start_2d_map, y_start_2d_map);
+    // printf("x start = %d, y start = %d\n", x_start_2d_map, y_start_2d_map);
     /* Pintar 2d map en el mismo window*/
     y = 0;
     while (y < screenHeight)
@@ -300,7 +300,7 @@ void render_update_2d_map(t_data *data)
 
 int *render_next_frame(t_data *data)
 {
-    printf(MAGENTA"agaaaain\n"RESET_COLOUR);
+    //printf(MAGENTA"agaaaain\n"RESET_COLOUR);
     
     if (!data->mlx || !data->cub)
     {
@@ -310,6 +310,16 @@ int *render_next_frame(t_data *data)
 
     render_update_game(data);
     render_update_2d_map(data);
+
+    //printf(YELLOW"\n Player information"RESET_COLOUR"  |   POSITION (dec)  |   POSITION (pixel)  | Map position (INDEX) | Map position (dec)  | DIRECTION |  DirVector (dec)   |    SAT. (pixel)   |\n");
+    printf("                     | x= %2.f, y = %.2f  |  x = %d, y = %d |     x = %d, y = %d    | x = %.2f, y = %.2f |     %c     | x = %.2f, y = %.2f |x = %d, y = %d |\n", 
+    data->cub->x_pos_dec, data->cub->y_pos_dec,
+    data->cub->x_pos_pixel, data->cub->y_pos_pixel,
+    data->cub->x_pos_ind, data->cub->y_pos_ind,
+    data->cub->x_pos_dec, data->cub->y_pos_dec,
+    data->cub->direction,
+    data->cub->x_dir_dec, data->cub->y_dir_dec,
+    data->cub->x_satellite_pixel, data->cub->y_satellite_pixel);
 
     
     return 0;

@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/12 21:32:14 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/13 12:04:44 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@
 
 /* ----- 2D Map Visualization ------*/
 #define DISTANCE_BLUE_CIRCLE 20 //Satellite
-#define SPEED_MOVE 3 //Speed of movement: each time W-A-S-D are pressed how many pixels will the player move
-#define SPEED_ROTATE 3 //Speed of rotation: each time left or right arrow are pressed how many degrees will the player rotate
+#define SPEED_MOVE 1 //Speed of movement: each time W-A-S-D are pressed how many pixels will the player move
+#define SPEED_ROTATE 10 //Speed of rotation: each time left or right arrow are pressed how many degrees will the player rotate
 
 
 # define TEX_WIDTH 64 

@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:33:35 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/12 21:43:21 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/13 13:53:49 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,23 @@ void parse_map_line(t_cub *cub, char *line)
     free(trimmed_line);
 }
 
+/*
+*                  1
+*   (0,0)          N
+*                  |
+*                  |
+*                  |
+*                  |
+*  -1 W __________________________ E   1
+*                  |
+*                  |
+*                  |
+*                  |
+*                  |
+*                  S
+*                 -1
+*
+*/
 void validate_player_position(t_cub *cub, int *player_count, int i, int j)
 {
     if (*player_count == 0)
@@ -69,21 +86,21 @@ void validate_player_position(t_cub *cub, int *player_count, int i, int j)
         cub->x_pos_dec = j + 0.5;
         cub->y_pos_dec = i + 0.5;
 
-        if (cub->map[i][j] == 'N')
+        if (cub->map[i][j] == 'N') /* N --> y-- en cuanto a pixeles en la pantalla, la pantalla comienza (0,0) arriba a la izq. */
         {
             // cub->x_dir_dec = -1; //uxue pondría: 0
             cub->x_dir_dec = 0; //uxue pondría: 0
             // cub->y_dir_dec = 0; //uxue pondría: 1
-            cub->y_dir_dec = 1; //uxue pondría: 1
+            cub->y_dir_dec = -1; //uxue pondría: 1
             cub->planeX = 0;
             cub->planeY = 0.66;
         }
-        else if (cub->map[i][j] == 'S')
+        else if (cub->map[i][j] == 'S')/* S --> y++ en cuanto a pixeles en la pantalla, la pantalla comienza (0,0) arriba a la izq. */
         {
             // cub->x_dir_dec = 1; //uxue pondría: 0
             cub->x_dir_dec = 0; //uxue pondría: 0
             // cub->y_dir_dec = 0; //uxue pondría: -1
-            cub->y_dir_dec = -1; //uxue pondría: -1
+            cub->y_dir_dec = 1; //uxue pondría: -1
             cub->planeX = 0;
             cub->planeY = -0.66;
         }
@@ -231,5 +248,5 @@ void read_cub_file(t_cub *cub, const char *filename)
         exit_with_error("Error al leer el archivo");
 
     close(fd);
-    validate_map(cub);
+    // validate_map(cub);
 }

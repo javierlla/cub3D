@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:17:54 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/12 17:18:22 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/13 12:01:17 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int load_texture(t_cub *cub, int index, char *texture_path)
     cub->textures[index] = mlx_xpm_file_to_image(cub->mlx->mlx_ptr, texture_path, &width, &height);
         
     if (cub->textures[index])
-        printf("%p\n",  cub->textures[index]);
+        // printf("%p\n",  cub->textures[index]);
     if (!(cub->textures[index])) {
         printf("Error: No se pudo cargar la textura en %s\n", texture_path);
         return -1;

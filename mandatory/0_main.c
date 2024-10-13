@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:15:26 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/12 20:57:28 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/13 13:53:44 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,10 @@ int main(int argc, char **argv)
     /* - Open argv[1] file*/
     read_cub_file(cub, argv[1]);
     
-    if (!cub->north_texture || !cub->south_texture || !cub->west_texture || !cub->east_texture ||
-    cub->floor_color == -1 || cub->ceiling_color == -1 || cub->map == NULL ||
-    cub->x_pos_dec == -1 || cub->y_pos_dec == -1) 
-        exit_with_error("Missing textures, colors, map or player start position");
+    // if (!cub->north_texture || !cub->south_texture || !cub->west_texture || !cub->east_texture ||
+    // cub->floor_color == -1 || cub->ceiling_color == -1 || cub->map == NULL ||
+    // cub->x_pos_dec == -1 || cub->y_pos_dec == -1) 
+    //     exit_with_error("Missing textures, colors, map or player start position");
 
     /* - Prints read result: textures, colours and map in 'cub' structure. */
     print_cub_data(cub);

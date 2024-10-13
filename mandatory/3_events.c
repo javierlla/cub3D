@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 20:40:50 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/12 21:32:37 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/13 13:41:17 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ void move_forward(t_data *data)
     
     render_next_frame(data);
         
-    printf(YELLOW"🧍Player info"RESET_COLOUR": Position (%.2f, %.2f), Direction vector (%.2f, %.2f)\n", data->cub->x_pos_dec, data->cub->y_pos_dec, data->cub->x_dir_dec, data->cub->y_dir_dec);
+    // printf(YELLOW"🧍Player info"RESET_COLOUR": Position (%.2f, %.2f), Direction vector (%.2f, %.2f)\n", data->cub->x_pos_dec, data->cub->y_pos_dec, data->cub->x_dir_dec, data->cub->y_dir_dec);
 }
 
 void move_backward(t_data *data)
@@ -137,6 +137,9 @@ void move_left(t_data *data)
 
 void update_direction_vector(t_data *data, int direction)
 {
+    printf(BLUE"update_direction_vector\n");
+    printf("> Before: Direction vector: x = %.2f, y = %.2f\n"RESET_COLOUR, data->cub->x_dir_dec, data->cub->y_dir_dec);
+    
     /* #1 Update angle in degrees*/
     if (direction == ROTATE_RIGHT)
         data->cub->angle_degree += SPEED_ROTATE;
@@ -149,6 +152,7 @@ void update_direction_vector(t_data *data, int direction)
     /* #3 Update direction vector */
     data->cub->x_dir_dec = cos(data->cub->angle_radian);
     data->cub->y_dir_dec = sin(data->cub->angle_radian);
+    printf("> After: Direction vector: x = %.2f, y = %.2f\n", data->cub->x_dir_dec, data->cub->y_dir_dec);
     
 }
 
