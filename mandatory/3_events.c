@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 20:40:50 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/13 13:41:17 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/13 16:27:16 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void move_forward(t_data *data)
     // printf("            |  x_decimal|  x_pixel  |  y_decimal  |  y_pixel  |\n");
     // printf("> Before    |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
 
+    
+    
     /* Calculate new position: in pixels based on 2D Map Window's pixels*/
     data->cub->x_pos_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec) * SPEED_MOVE;
     data->cub->y_pos_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec) * SPEED_MOVE;
@@ -54,6 +56,10 @@ void move_forward(t_data *data)
     /* Get decimal position updated */
     data->cub->x_pos_dec = pixel_to_decimal_map(data->cub->x_pos_pixel, X_WIDTH);
     data->cub->y_pos_dec = pixel_to_decimal_map(data->cub->y_pos_pixel, Y_HEIGHT);
+
+    /* Get map index updated */
+    data->cub->x_pos_ind = (int)data->cub->x_pos_dec;
+    data->cub->y_pos_ind = (int)data->cub->y_pos_dec;
 
     /* Satellite position must be updated as well */
     data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec)*DISTANCE_BLUE_CIRCLE;
@@ -137,8 +143,8 @@ void move_left(t_data *data)
 
 void update_direction_vector(t_data *data, int direction)
 {
-    printf(BLUE"update_direction_vector\n");
-    printf("> Before: Direction vector: x = %.2f, y = %.2f\n"RESET_COLOUR, data->cub->x_dir_dec, data->cub->y_dir_dec);
+    // printf(BLUE"update_direction_vector\n");
+    // printf("> Before: Direction vector: x = %.2f, y = %.2f\n"RESET_COLOUR, data->cub->x_dir_dec, data->cub->y_dir_dec);
     
     /* #1 Update angle in degrees*/
     if (direction == ROTATE_RIGHT)
@@ -152,7 +158,7 @@ void update_direction_vector(t_data *data, int direction)
     /* #3 Update direction vector */
     data->cub->x_dir_dec = cos(data->cub->angle_radian);
     data->cub->y_dir_dec = sin(data->cub->angle_radian);
-    printf("> After: Direction vector: x = %.2f, y = %.2f\n", data->cub->x_dir_dec, data->cub->y_dir_dec);
+    // printf("> After: Direction vector: x = %.2f, y = %.2f\n", data->cub->x_dir_dec, data->cub->y_dir_dec);
     
 }
 
