@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 20:40:50 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/13 16:27:16 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/15 22:02:38 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,23 +39,13 @@ float pixel_to_decimal_map(int pixel, enum width_or_height indicator)
 * starts up on the left and increases by going right/down on the window (pixel language)*/
 void move_forward(t_data *data)
 {
-    /* To paint direction vector in while - to small to see anything*/
-    // float tmp_x;
-    // float tmp_y;
-    
-    // printf(MAGENTA"------------------------------ W - move_forward ------------------------------\n"RESET_COLOUR);
-    // printf("            |  x_decimal|  x_pixel  |  y_decimal  |  y_pixel  |\n");
-    // printf("> Before    |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
+    /* Calculate new position: in decimals based on 2D Map's dimensions (index > decimal > pixel)*/
+    data->cub->x_pos_dec = data->cub->x_pos_dec - data->cub->x_dir_dec * SPEED_MOVE * (-1);
+    data->cub->y_pos_dec = data->cub->y_pos_dec - data->cub->y_dir_dec * SPEED_MOVE * (-1);
 
-    
-    
-    /* Calculate new position: in pixels based on 2D Map Window's pixels*/
-    data->cub->x_pos_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec) * SPEED_MOVE;
-    data->cub->y_pos_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec) * SPEED_MOVE;
-
-    /* Get decimal position updated */
-    data->cub->x_pos_dec = pixel_to_decimal_map(data->cub->x_pos_pixel, X_WIDTH);
-    data->cub->y_pos_dec = pixel_to_decimal_map(data->cub->y_pos_pixel, Y_HEIGHT);
+    /* Get px position updated */
+    data->cub->x_pos_pixel = decimal_to_pixel(data, data->cub->x_pos_dec, X_PX);
+    data->cub->y_pos_pixel = decimal_to_pixel(data, data->cub->y_pos_dec, Y_PX);
 
     /* Get map index updated */
     data->cub->x_pos_ind = (int)data->cub->x_pos_dec;
@@ -65,53 +55,48 @@ void move_forward(t_data *data)
     data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec)*DISTANCE_BLUE_CIRCLE;
     data->cub->y_satellite_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec)*DISTANCE_BLUE_CIRCLE;
     
-    // printf("> After     |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->x_pos_dec, data->cub->x_pos_pixel, data->cub->y_pos_dec, data->cub->y_pos_pixel);
     
     render_next_frame(data);
         
-    // printf(YELLOW"🧍Player info"RESET_COLOUR": Position (%.2f, %.2f), Direction vector (%.2f, %.2f)\n", data->cub->x_pos_dec, data->cub->y_pos_dec, data->cub->x_dir_dec, data->cub->y_dir_dec);
 }
 
+//I must calculate the new position in decimals, then convert it to pixels
 void move_backward(t_data *data)
 {   
-    // printf(MAGENTA"------------------------------ S - move_backward ------------------------------\n"RESET_COLOUR);
-    // printf("            |  x_decimal|  x_pixel  |  y_decimal  |  y_pixel  |\n");
-    // printf("> Before    |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
+    /* Calculate new position: in decimals based on 2D Map's dimensions (index > decimal > pixel)*/
+    data->cub->x_pos_dec = data->cub->x_pos_dec - data->cub->x_dir_dec * SPEED_MOVE; //to me, this one should be *(-1), but for some reason it works on the other direction
+    data->cub->y_pos_dec = data->cub->y_pos_dec - data->cub->y_dir_dec * SPEED_MOVE;
 
-    /* Calculate new position: in pixels based on 2D Map Window's pixels*/
-    data->cub->x_pos_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec) * SPEED_MOVE * (-1);
-    data->cub->y_pos_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec) * SPEED_MOVE * (-1);
+    /* Get px position updated */
+    data->cub->x_pos_pixel = decimal_to_pixel(data, data->cub->x_pos_dec, X_PX);
+    data->cub->y_pos_pixel = decimal_to_pixel(data, data->cub->y_pos_dec, Y_PX);
 
-    /* Get decimal position updated */
-    data->cub->x_pos_dec = pixel_to_decimal_map(data->cub->x_pos_pixel, X_WIDTH);
-    data->cub->y_pos_dec = pixel_to_decimal_map(data->cub->y_pos_pixel, Y_HEIGHT);
+    /* Get map index updated */
+    data->cub->x_pos_ind = (int)data->cub->x_pos_dec;
+    data->cub->y_pos_ind = (int)data->cub->y_pos_dec;
 
     /* Satellite position must be updated as well */
     data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec)*DISTANCE_BLUE_CIRCLE;
     data->cub->y_satellite_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec)*DISTANCE_BLUE_CIRCLE;
 
-    // printf("> After     |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
     
     render_next_frame(data);
 
-    // printf(YELLOW"🧍Player info"RESET_COLOUR": Position (%.2f, %.2f), Direction vector (%.2f, %.2f)\n", data->cub->player_position->x_decimal, data->cub->player_position->x_decimal, data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
 }
 
 void move_right(t_data *data)
-{
-    // printf(MAGENTA"------------------------------ W - move_forward ------------------------------\n"RESET_COLOUR);
-    // printf("            |  x_decimal|  x_pixel  |  y_decimal  |  y_pixel  |\n");
-    // printf("> Before    |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
-    
-    /* Calculate new position: in pixels based on 2D Map Window's pixels*/
-    data->cub->x_pos_pixel = data->cub->x_pos_pixel + (data->cub->y_dir_dec) * SPEED_MOVE * (-1);
-    data->cub->y_pos_pixel = data->cub->y_pos_pixel + (data->cub->x_dir_dec) * SPEED_MOVE;
+{    
+    /* Calculate new position: in decimals based on 2D Map's dimensions (index > decimal > pixel)*/
+    data->cub->x_pos_dec = data->cub->x_pos_dec + (data->cub->y_dir_dec) * SPEED_MOVE * (-1);
+    data->cub->y_pos_dec = data->cub->y_pos_dec + (data->cub->x_dir_dec) * SPEED_MOVE;
 
-    /* Get decimal position updated */
-    data->cub->x_pos_dec = pixel_to_decimal_map(data->cub->x_pos_pixel, X_WIDTH);
-    data->cub->y_pos_dec = pixel_to_decimal_map(data->cub->y_pos_pixel, Y_HEIGHT);
-    // printf("> After     |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
+    /* Get px position updated */
+    data->cub->x_pos_pixel = decimal_to_pixel(data, data->cub->x_pos_dec, X_PX);
+    data->cub->y_pos_pixel = decimal_to_pixel(data, data->cub->y_pos_dec, Y_PX);
 
+    /* Get map index updated */
+    data->cub->x_pos_ind = (int)data->cub->x_pos_dec;
+    data->cub->y_pos_ind = (int)data->cub->y_pos_dec;
 
     /* Satellite position must be updated as well */
     data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec)*DISTANCE_BLUE_CIRCLE;
@@ -122,17 +107,17 @@ void move_right(t_data *data)
 
 void move_left(t_data *data)
 {
-    // printf(MAGENTA"------------------------------ W - move_forward ------------------------------\n"RESET_COLOUR);
-    // printf("            |  x_decimal|  x_pixel  |  y_decimal  |  y_pixel  |\n");
-    // printf("> Before    |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
-    /* Calculate new position: in pixels based on 2D Map Window's pixels*/
-    data->cub->x_pos_pixel = data->cub->x_pos_pixel + (data->cub->y_dir_dec) * SPEED_MOVE;
-    data->cub->y_pos_pixel = data->cub->y_pos_pixel + (data->cub->x_dir_dec) * SPEED_MOVE * (-1);
+    /* Calculate new position: in decimals based on 2D Map's dimensions (index > decimal > pixel)*/
+    data->cub->x_pos_dec = data->cub->x_pos_dec + (data->cub->y_dir_dec) * SPEED_MOVE;
+    data->cub->y_pos_dec = data->cub->y_pos_dec + (data->cub->x_dir_dec) * SPEED_MOVE * (-1);
 
-    /* Get decimal position updated */
-    data->cub->x_pos_dec = pixel_to_decimal_map(data->cub->x_pos_pixel, X_WIDTH);
-    data->cub->y_pos_dec = pixel_to_decimal_map(data->cub->y_pos_pixel, Y_HEIGHT);
-    // printf("> After     |  %.2f     |     %d    |     %.2f    |     %d    |\n", data->cub->player_position->x_decimal, data->cub->player_position->x_pixel, data->cub->player_position->y_decimal, data->cub->player_position->y_pixel);
+    /* Get px position updated */
+    data->cub->x_pos_pixel = decimal_to_pixel(data, data->cub->x_pos_dec, X_PX);
+    data->cub->y_pos_pixel = decimal_to_pixel(data, data->cub->y_pos_dec, Y_PX);
+
+    /* Get map index updated */
+    data->cub->x_pos_ind = (int)data->cub->x_pos_dec;
+    data->cub->y_pos_ind = (int)data->cub->y_pos_dec;
 
     /* Satellite position must be updated as well */
     data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec)*DISTANCE_BLUE_CIRCLE;
