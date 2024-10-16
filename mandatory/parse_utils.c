@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:44:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/10 13:36:41 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/16 10:57:31 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,39 +80,27 @@ char *extract_path(char *line)
     return (ft_strdup(path));
 }
 
-void free_resources(t_cub *cub)
+void free_resources(t_data *data)
 {
-    if (cub->north_texture)
+    int i;
+    
+    if (data)
     {
-        free(cub->north_texture);
-        cub->north_texture = NULL; // Establecer en NULL después de liberar
-    }
-    if (cub->south_texture)
-    {
-        free(cub->south_texture);
-        cub->south_texture = NULL; 
-    }
-    if (cub->west_texture)
-    {
-        free(cub->west_texture);
-        cub->west_texture = NULL; 
-    }
-    if (cub->east_texture)
-    {
-        free(cub->east_texture);
-        cub->east_texture = NULL; 
-    }
-    if (cub->map)
-    {
-        int i = 0;
-        while (i < cub->map_height)
+        i = 0;
+        while(i < 4)
         {
-            free(cub->map[i]);
+            if (data->cub->textures[i])
+                mlx_destroy_image(data->mlx->mlx_ptr, data->cub->textures[i]);
             i++;
         }
-        free(cub->map);
+        free(data->cub->textures);
+        free(data->cub->textures_data);
+        free(data->cub);
+        free(data->mlx);
+        free(data);
     }
 }
+
 
 void check_file_extension(const char *filename)
 {

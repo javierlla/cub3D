@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   2_init.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:43:44 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/13 13:56:26 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/16 11:42:49 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,43 @@
 *   21.00 ---------------- 840
 *   (whatever) ----------- result
 *
+*   Total nb of vertical boxes (width) ---------- WIDTH_MAP px
+*   1 box ------------------------------ decimal px (position in 2d map, based on map indexes, but decimal format, +0.5).
+*
+*
 *	Returns -1 = Error, not expected result
 */
-int decimal_to_pixel(float decimal, enum width_or_height indicator)
+int decimal_to_pixel(t_data *data, float decimal, enum width_or_height indicator)
 {
-	if (indicator == X_WIDTH)
-		return (decimal * WIDTH_MAP / 21.00); //instead of 21.00 it should be as a defined in .h as well ideally
-	else if (indicator == Y_HEIGHT)
-		return (decimal * HEIGHT_MAP / 21.00);//instead of 21.00 it should be as a defined in .h as well ideally
+	int height_column;
+    int width_row;
+    
+    
+    if (indicator == X_PX)
+    {
+        /* Get that line's height-width, for */
+        width_row = data->cub->map_width; //i think this would not work fot maps that are not square. That's why in this line the height/column should be specified/calculated somehow.
+        return (decimal * WIDTH_MAP / width_row);
+    }
+	else if (indicator == Y_PX)
+    {
+        height_column = data->cub->map_height;
+        return (decimal * HEIGHT_MAP / height_column);//instead of 21.00 it should be as a defined in .h as well ideally
+    }
 	else
 		return (-1);
 }
 
 /* set_initial_pixel_in_window
 *
+*     MAPMAPM**********
+*     APMAPMA**********
+*     PMAPMAP**********
 *     *****************
 *     *****************
 *     *****************
 *     *****************
 *     *****************
-*     **********MAPMAPM
-*     **********APMAPMA
-*     **********PMAPMAP
 *
 *     MAP starts in (1720, 600) in whole window
 *
@@ -48,25 +63,8 @@ int decimal_to_pixel(float decimal, enum width_or_height indicator)
 */
 void set_initial_pixel_in_window(t_data *data)
 {
-    int tmp_x_pixel;
-    int tmp_y_pixel;
-
-    
-    /* If 2D Map were a single window itself, the pixel positions would be the following: */
-    tmp_x_pixel = decimal_to_pixel(data->cub->x_pos_dec, X_WIDTH);
-    tmp_y_pixel = decimal_to_pixel(data->cub->y_pos_dec, Y_HEIGHT);
-
-    // printf(YELLOW"Before regla 3, x_pixel = %d\n"RESET_COLOUR, tmp_x_pixel);
-    // printf(YELLOW"Before regla 3, y_pixel = %d\n"RESET_COLOUR, tmp_y_pixel);
-
-    /* Taking into account 2D Map is located in a particular part of window, which starts in 
-    (1720, 600) in whole window, rule of 3 must be implemented.*/
-    data->cub->x_pos_pixel = 1720 + tmp_x_pixel;
-    data->cub->y_pos_pixel = 600 + tmp_y_pixel;
-
-    // printf(BLUE"regla 3, x_pixel = %d\n"RESET_COLOUR, data->cub->player_position->x_pixel);
-    // printf(BLUE"regla 3, y_pixel = %d\n"RESET_COLOUR, data->cub->player_position->y_pixel);
-    //my_mlx_pixel_put(data->mlx_map, data->cub->player_position->x_pixel, data->cub->player_position->y_pixel, 0x00FF0000); //ez dogu inprimiduko ze oindiok initializau gabe dago punterua
+    data->cub->x_pos_pixel = decimal_to_pixel(data, data->cub->x_pos_dec, X_PX);
+    data->cub->y_pos_pixel = decimal_to_pixel(data, data->cub->y_pos_dec, Y_PX);
 }    
 
 void set_initial_decimal_in_2d_map(t_cub *cub, int x_map_index, int y_map_index)
@@ -243,16 +241,19 @@ void init_all(t_data *data)
     printf("> Satellite's position (PIXELS_WINDOW): x = %d, y = %d\n", data->cub->x_satellite_pixel, data->cub->y_satellite_pixel);
     
 
-    printf(YELLOW"\n 🧍Player information"RESET_COLOUR"  |   POSITION (dec)  |   POSITION (pixel)  | Map position (INDEX) | Map position (dec)  | DIRECTION |  DirVector (dec)   |    SAT. (pixel)   |\n");
-    printf("                      | x= %2.f, y = %.2f  |  x = %d, y = %d |     x = %d, y = %d    | x = %.2f, y = %.2f |     %c     | x = %.2f, y = %.2f |x = %d, y = %d |\n", 
-    data->cub->x_pos_dec, data->cub->y_pos_dec,
-    data->cub->x_pos_pixel, data->cub->y_pos_pixel,
-    data->cub->x_pos_ind, data->cub->y_pos_ind,
-    data->cub->x_pos_dec, data->cub->y_pos_dec,
-    data->cub->direction,
-    data->cub->x_dir_dec, data->cub->y_dir_dec,
-    data->cub->x_satellite_pixel, data->cub->y_satellite_pixel);
+    printf(YELLOW"\n 🧍Player information"RESET_COLOUR"| Map Position (INDEX) | Map position (dec)  |Window Position (PIXEL)  | DIRECTION |   DirVector (dec)   |    SAT. (pixel)   |\n");
+    printf("                     "BLUE"|      x = %d, y = %d   | x = %.2f, y = %.2f |   x = %d, y = %d       |     %c     | x = %.2f, y = %.2f |   x = %d, y = %d |\n"RESET_COLOUR, 
     
+    data->cub->x_pos_ind, data->cub->y_pos_ind, //Map position (INDEX) %d
+    data->cub->x_pos_dec, data->cub->y_pos_dec, //Map position (dec) %.2f
+    data->cub->x_pos_pixel, data->cub->y_pos_pixel, //Window Position (pixel) %d
+    data->cub->direction, //DIRECTION
+    data->cub->x_dir_dec, data->cub->y_dir_dec, //DirVector (dec)
+    data->cub->x_satellite_pixel, data->cub->y_satellite_pixel); //SAT. (pixel)
+    
+   
     init_window(data->mlx);
     ft_events_init(data);
+
+    // printf(MAGENTA"hey\n"RESET_COLOUR);
 }

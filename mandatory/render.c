@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:20:01 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/13 11:59:17 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/15 21:53:05 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,6 +241,104 @@ void put_satellite_in_map(t_data *data)
     mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win_ptr, img_satellite, data->cub->x_satellite_pixel, data->cub->y_satellite_pixel); //0,0 --> position where we're gonna put the image
 }
 
+void put_2d_map_background(t_data *data)
+{
+    int x;
+    int y;
+
+    x = 0;
+    y = 0;
+    // printf(BLUE"hey\n"RESET_COLOUR);
+    while (x < WIDTH_MAP)
+    {
+        y = 0;
+        while (y < HEIGHT_MAP)
+        {
+            my_mlx_pixel_put(data, x, y, 0x00FFFFCC);
+            y++;
+        }
+        x++;
+    }
+    mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win_ptr, data->mlx->img, 0, 0);
+}
+
+/* put_vertical_lines
+*
+*   Applies rule of 3 to get the x position where vertical lines
+*   must be displayed in 2d map in the window (mlx).
+*
+*   Total nb of boxes (width) ---------- WIDTH_MAP px
+*   1 box ------------------------------ horizontal_size_box px
+*
+*/
+void put_vertical_lines(t_data *data)
+{
+    int tmp_nb_columns;
+    int hor_size_box; //horizontal size of each box
+    int total_added_size;
+    int x;
+    int y;
+
+    tmp_nb_columns = data->cub->map_width;
+    //printf(YELLOW"number of columns = %d\n"RESET_COLOUR, tmp_nb_columns);
+
+    hor_size_box = WIDTH_MAP / tmp_nb_columns;
+    total_added_size = 0;
+    x = 0;
+    while (total_added_size < WIDTH_MAP)
+    {
+        y = 0;
+        //printf("barruan - VERTICAL, x = %d\n", x);
+        while (y < HEIGHT_MAP)
+        {
+            my_mlx_pixel_put(data, x, y, 0x00FF0000);
+            y++;
+        }
+        x = x + hor_size_box; //let's go to next vertical line
+        total_added_size = total_added_size + hor_size_box; //to tell while where to stop
+    }
+    
+}
+
+/* put_horizontal_lines
+*
+*   Applies rule of 3 to get the y position where vertical lines
+*   must be displayed in 2d map in the window (mlx).
+*
+*   Total nb of boxes (height) ---------- HEIGHT_MAP px
+*   1 box ------------------------------ vertical_size_box px
+*
+*/
+void put_horizontal_lines(t_data *data)
+{
+    int tmp_nb_rows;
+    int vert_size_box; //vertical size of each box
+    int total_added_size;
+    int x;
+    int y;
+
+    tmp_nb_rows = data->cub->map_height;
+    //printf(YELLOW"number of rows = %d\n"RESET_COLOUR, tmp_nb_rows);
+
+    vert_size_box = HEIGHT_MAP / tmp_nb_rows;
+    total_added_size = 0;
+    y = 0;
+    while (total_added_size < HEIGHT_MAP)
+    {
+        x = 0;
+        //printf("barruan - HORIZONTAL, y = %d\n", y);
+        while (x < WIDTH_MAP)
+        {
+            
+            my_mlx_pixel_put(data, x, y, 0x00FF0000);
+            x++;
+        }
+        y = y + vert_size_box; //let's go to next vertical line
+        total_added_size = total_added_size + vert_size_box; //to tell while where to stop
+    }
+    
+}
+
 /* Whole window has the following dimensions, as defined in .h file:
 *       
 *       #define HEIGHT_WINDOW 1440
@@ -257,41 +355,10 @@ void put_satellite_in_map(t_data *data)
 */
 void render_update_2d_map(t_data *data)
 {
-    int x_start_2d_map;
-    int y_start_2d_map;
-    int x;
-    int y;
-
-    //printf(YELLOW"render_update_2d_map\n"RESET_COLOUR);
-    x_start_2d_map = screenWidth - WIDTH_MAP;
-    y_start_2d_map = screenHeight - HEIGHT_MAP;
-
-    // printf("x start = %d, y start = %d\n", x_start_2d_map, y_start_2d_map);
-    /* Pintar 2d map en el mismo window*/
-    y = 0;
-    while (y < screenHeight)
-    {
-        x = 0;
-        while (x < screenWidth)
-        {
-            if (x >= x_start_2d_map && y >= y_start_2d_map)
-            {
-                /* Little test, red square */
-                my_mlx_pixel_put(data, x, y, 0x00FFFFCC);
-
-                /* Draw in image */
-                //put_walls_in_map(data); //Pintar las paredes
-                //     
-                //     
-                //     if (satellite_case == 1)
-                //         put_satellite_in_map(data); //Pintar satélite (dirección)
-            }
-                
-            x++;
-        }
-        y++;
-    }
-    put_walls_in_map(data); //Pintar las paredes
+    put_2d_map_background(data); //new
+    put_vertical_lines(data); //new - idk why no visualiza, pero creo que es prescindible
+    put_horizontal_lines(data); //new - idk why no visualiza, pero creo que es prescindible
+    //put_walls_in_map(data); //Pintar las paredes - new: por ahora voy a prescindir
     put_dot_in_map(data); //Pintar al jugador: red dot
     put_circle_around_player(data); //Pintar al jugador: circle
     put_satellite_in_map(data); //Pintar satélite (dirección)
@@ -310,16 +377,17 @@ int *render_next_frame(t_data *data)
 
     render_update_game(data);
     render_update_2d_map(data);
+    //put_2d_map_background(data);
 
-    //printf(YELLOW"\n Player information"RESET_COLOUR"  |   POSITION (dec)  |   POSITION (pixel)  | Map position (INDEX) | Map position (dec)  | DIRECTION |  DirVector (dec)   |    SAT. (pixel)   |\n");
-    printf("                     | x= %2.f, y = %.2f  |  x = %d, y = %d |     x = %d, y = %d    | x = %.2f, y = %.2f |     %c     | x = %.2f, y = %.2f |x = %d, y = %d |\n", 
-    data->cub->x_pos_dec, data->cub->y_pos_dec,
-    data->cub->x_pos_pixel, data->cub->y_pos_pixel,
-    data->cub->x_pos_ind, data->cub->y_pos_ind,
-    data->cub->x_pos_dec, data->cub->y_pos_dec,
-    data->cub->direction,
-    data->cub->x_dir_dec, data->cub->y_dir_dec,
-    data->cub->x_satellite_pixel, data->cub->y_satellite_pixel);
+    //printf(YELLOW"\n Player information"RESET_COLOUR"  |   POSITION (dec)  |   POSITION (pixel)  | Map position (INDEX) | Map position (dec)  | DIRECTION |   (dec)   |    SAT. (pixel)   |\n");
+    printf("                     |      x = %d, y = %d   | x = %.2f, y = %.2f |   x = %d, y = %d       |     %c     | x = %.2f, y = %.2f |   x = %d, y = %d |\n", 
+    
+    data->cub->x_pos_ind, data->cub->y_pos_ind, //Map position (INDEX) %d
+    data->cub->x_pos_dec, data->cub->y_pos_dec, //Map position (dec) %.2f
+    data->cub->x_pos_pixel, data->cub->y_pos_pixel, //Window Position (pixel) %d
+    data->cub->direction, //DIRECTION
+    data->cub->x_dir_dec, data->cub->y_dir_dec, //DirVector (dec)
+    data->cub->x_satellite_pixel, data->cub->y_satellite_pixel); //SAT. (pixel)
 
     
     return 0;

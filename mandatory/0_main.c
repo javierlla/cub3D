@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   0_main.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:15:26 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/13 13:53:44 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:21:05 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,28 +35,35 @@ int main(int argc, char **argv)
     data->cub->y_pos_dec = -1;
     data->cub->floor_color = -1;
     data->cub->ceiling_color = -1;
-
-    /* - Open argv[1] file*/
-    read_cub_file(cub, argv[1]);
     
-    // if (!cub->north_texture || !cub->south_texture || !cub->west_texture || !cub->east_texture ||
-    // cub->floor_color == -1 || cub->ceiling_color == -1 || cub->map == NULL ||
-    // cub->x_pos_dec == -1 || cub->y_pos_dec == -1) 
-    //     exit_with_error("Missing textures, colors, map or player start position");
+    /*data->cub->x_dir_dec = 1; // O cualquier valor significativo
+    data->cub->y_dir_dec = 0; // Para iniciar mirando hacia la derecha
+    data->cub->planeX = 0; // Ajusta según tu implementación
+    data->cub->planeY = 0.66; // Este valor puede depender de cómo se desea el FOV*/
 
-    /* - Prints read result: textures, colours and map in 'cub' structure. */
+    // - Open argv[1] file
+    read_cub_file(data, argv[1]);
+
+    // - Prints read result: textures, colours and map in 'cub' structure. 
     print_cub_data(cub);
 
     init_all(data);
 
     cub->mlx = mlx;
-    load_textures(cub); 
+    load_textures(cub);
+    
+    /*if (!cub->north_texture || !cub->south_texture || !cub->west_texture || !cub->east_texture ||
+    cub->floor_color == -1 || cub->ceiling_color == -1 || cub->map == NULL ||
+    cub->x_pos_dec < 0 || cub->x_pos_dec >= cub->map_width || 
+    cub->y_pos_dec < 0 || cub->y_pos_dec >= cub->map_height) 
+    {
+    exit_with_error("Missing textures, colors, map or player start position");
+    free_resources(data); 
+    }*/
+
 
     mlx_loop_hook(mlx->mlx_ptr, ((void *)render_next_frame(data)), cub); 
     mlx_loop(mlx->mlx_ptr); 
 
     return 0;
 }
-
-
-

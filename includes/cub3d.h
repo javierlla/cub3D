@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/13 16:11:07 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:32:35 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@
 # define screenWidth 2560 //HEIGHT_WINDOW in Uxu's branch
 # define screenHeight 1440 //HEIGHT_WINDOW in Uxu's branch
 /*---------- Dimensions | Window 2: Map (Debugging Purposes) --------*/
-#define HEIGHT_MAP 840 /*Manually calculated for cheese_maze.cub. Canva allows us 40x40 smallest. 40px x 21 boxes = 840*/
-#define WIDTH_MAP 840
+#define HEIGHT_MAP 600 /*Manually calculated for cheese_maze.cub. Canva allows us 40x40 smallest. 40px x 21 boxes = 840*/
+#define WIDTH_MAP 600
 
 /* ----- 2D Map Visualization ------*/
 #define DISTANCE_BLUE_CIRCLE 20 //Satellite
-#define SPEED_MOVE 3 //Speed of movement: each time W-A-S-D are pressed how many pixels will the player move
+#define SPEED_MOVE 0.2 //Speed of movement: each time W-A-S-D are pressed how many pixels will the player move
 #define SPEED_ROTATE 10 //Speed of rotation: each time left or right arrow are pressed how many degrees will the player rotate
 
 
@@ -64,7 +64,9 @@
 enum width_or_height
 {
     X_WIDTH,
-    Y_HEIGHT
+    Y_HEIGHT,
+    X_PX,
+    Y_PX
 };
 
 typedef struct s_mlx
@@ -130,13 +132,13 @@ typedef struct s_data
 void print_cub_data(t_cub *cub);
 int parse_color(char *line);
 char *extract_path(char *line);
-void parse_map_line(t_cub *cub, char *line);
-void validate_map(t_cub *cub);
-void parse_line(t_cub *cub, char *line);
-void read_cub_file(t_cub *cub, const char *filename);
+void parse_map_line(t_data *data, char *line);
+void validate_map(t_data *data);
+void parse_line(t_data *data, char *line);
+void read_cub_file(t_data *data, const char *filename);
 void exit_with_error(const char *message);
 void check_file_extension(const char *filename);
-void free_resources(t_cub *cub);
+void free_resources(t_data *data);
 void print_cub_data(t_cub *cub);
 char *remove_spaces(char *line);
 char *trim_whitespace(char *str);
@@ -168,6 +170,7 @@ int close_program(t_mlx *mlx);
 /* 1_read_cub_file.c */
 
 /* 2_init.c */
+int decimal_to_pixel(t_data *data, float decimal, enum width_or_height indicator);
 void init_all_default(t_data *data);
 void init_all(t_data *data);
 int is_map(t_cub *cub, int x, int y);
@@ -182,6 +185,7 @@ float pixel_to_decimal_map(int pixel, enum width_or_height indicator);
 void raycast(t_data *data);
 
 /* render.c */
+void put_2d_map_background(t_data *data);
 void render_sky_and_floor(t_data *data);
 int *render_next_frame(t_data *data);
 

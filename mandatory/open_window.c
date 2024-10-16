@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:14:32 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/12 17:33:10 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/15 20:27:06 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,5 @@ void init_window(t_mlx *mlx)
 
     /* 'ESC' */
     mlx_hook(mlx->win_ptr, 2, 1L<<0, handle_keypress, mlx);
-
+    
 }
