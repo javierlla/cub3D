@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:15:26 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/16 12:21:05 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/17 16:21:20 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ int main(int argc, char **argv)
     read_cub_file(data, argv[1]);
 
     // - Prints read result: textures, colours and map in 'cub' structure. 
-    print_cub_data(cub);
+   // print_cub_data(cub);
 
     init_all(data);
 
     cub->mlx = mlx;
-    load_textures(cub);
+    load_textures(data);
     
     /*if (!cub->north_texture || !cub->south_texture || !cub->west_texture || !cub->east_texture ||
     cub->floor_color == -1 || cub->ceiling_color == -1 || cub->map == NULL ||

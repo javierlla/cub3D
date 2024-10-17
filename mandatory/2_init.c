@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:43:44 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/16 11:42:49 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/17 17:55:21 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,7 +185,7 @@ void init_all_default(t_data *data)
 float deg_to_rad(t_data *data)
 {
     //printf("Before angle (DEGREE) = %f\n", angle);
-    data->cub->angle_radian = data->cub->angle_degree * PI / 180;
+    data->cub->angle_radian = data->cub->angle_degree * (PI / 180);
     //printf("After angle (RADIANS)= %f\n", angle);
     return (data->cub->angle_radian);
 }
@@ -206,9 +206,30 @@ void get_initial_angle(t_data *data)
 
 void angle_to_rad(t_data *data)
 {
+    float angle_radian = deg_to_rad(data);
+
+    // Normalizar el ángulo entre 0 y 2π para evitar inversiones al cruzar los 180º
+    if (angle_radian < 0)
+        angle_radian += 2 * PI;
+    else if (angle_radian >= 2 * PI)
+        angle_radian -= 2 * PI;
+
+    // Actualizar las direcciones en función del ángulo
+    data->cub->x_dir_dec = cos(angle_radian); // Dirección X
+    data->cub->y_dir_dec = sin(angle_radian); // Dirección Y
+
+    // Ajustar el plano de la cámara
+    data->cub->planeX = 0.66 * sin(angle_radian);
+    data->cub->planeY = 0.66 * -cos(angle_radian);
+
+}
+
+/*void angle_to_rad(t_data *data)
+{
     data->cub->x_dir_dec = cos(deg_to_rad(data));
     data->cub->y_dir_dec = sin(deg_to_rad(data));
-}
+}*/
+
 
 void set_player_direction_vector(t_data *data)
 {

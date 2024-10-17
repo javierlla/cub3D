@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/16 12:32:35 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/17 17:41:02 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,6 @@ void read_cub_file(t_data *data, const char *filename);
 void exit_with_error(const char *message);
 void check_file_extension(const char *filename);
 void free_resources(t_data *data);
-void print_cub_data(t_cub *cub);
 char *remove_spaces(char *line);
 char *trim_whitespace(char *str);
 /*
@@ -156,18 +155,16 @@ double calculate_wallX(t_cub *cub, double perpWallDist, double rayDirX, double r
 int calculate_texture_y(int lineHeight);*/
 
 // Funciones de carga de texturas
-int load_texture(t_cub *cub, int index, char *texture_path);
-void load_textures(t_cub *cub);
+
 
 // Función para obtener el color de una textura
-unsigned int get_texture_color(t_cub *cub, int texNum, int texX, int texY);
+
 // MLX
 void init_window(t_mlx *mlx);
 int close_program(t_mlx *mlx);
 
 /* 0_main.c */
 
-/* 1_read_cub_file.c */
 
 /* 2_init.c */
 int decimal_to_pixel(t_data *data, float decimal, enum width_or_height indicator);
@@ -190,9 +187,9 @@ void render_sky_and_floor(t_data *data);
 int *render_next_frame(t_data *data);
 
 /* textures.c */
-unsigned int get_texture_color(t_cub *cub, int texNum, int texX, int texY);
-int load_texture(t_cub *cub, int index, char *texture_path);
-void load_textures(t_cub *cub);
+unsigned int get_texture_color(t_data *data, int texNum, int texX, int texY);
+int load_texture(t_data *data, int index, char *texture_path);
+void load_textures(t_data *data);
 
 /* 99_utils.c */
 void my_mlx_pixel_put(t_data *data, int x, int y, unsigned int color);

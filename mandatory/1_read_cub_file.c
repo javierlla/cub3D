@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:33:35 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/16 12:33:12 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/17 12:10:05 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ void validate_player_position(t_data *data, int *player_count, int i, int j)
             data->cub->y_dir_dec = 0; //uxue pondría: 0
             data->cub->planeX = 0.66;
             data->cub->planeY = 0;
+            printf("\n\nx_dir_dec en E = %2f\n\n", data->cub->x_dir_dec);
         }
         else if (data->cub->map[i][j] == 'W')
         {
@@ -121,6 +122,7 @@ void validate_player_position(t_data *data, int *player_count, int i, int j)
             data->cub->y_dir_dec = 0; //uxue pondría: 0
             data->cub->planeX = -0.66;
             data->cub->planeY = 0;
+            printf("\n\nx_dir_dec en W = %2f\n\n", data->cub->x_dir_dec);
         }
         (*player_count)++;
     }
