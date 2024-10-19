@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 20:40:50 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/19 16:15:37 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/19 16:26:38 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,21 @@ float pixel_to_decimal_map(int pixel, enum width_or_height indicator)
 		return (-1);
 }
 
+int	is_map_limit(t_data *data, float tmp_x_2_check, float tmp_y_2_check)
+{
+	if (tmp_x_2_check < 0 || tmp_x_2_check > data->cub->map_width
+		|| tmp_y_2_check < 0 || tmp_y_2_check > data->cub->map_height)
+		return (1);
+	return (0);
+}
+
+int is_wall_collision(t_data *data, float tmp_x_2_check, float tmp_y_2_check)
+{
+	if (data->cub->map[(int)tmp_y_2_check][(int)tmp_x_2_check] == '1')
+		return (1);
+	return (0);
+}
+
 /* move_forward
 *
 *   step = how many px does the player move in each iteration W-S-A-D
@@ -32,7 +47,6 @@ void move_forward(t_data *data)
     float tmp_x_to_check;
     float tmp_y_to_check;
 
-    
     // if ((data->cub->x_pos_dec < 0 + SPEED_MOVE || data->cub->x_pos_dec > 21 - SPEED_MOVE) ||
     //     (data->cub->y_pos_dec < 0 + SPEED_MOVE || data->cub->y_pos_dec > 21 - SPEED_MOVE))
     //     return;
@@ -40,9 +54,12 @@ void move_forward(t_data *data)
     tmp_x_to_check = data->cub->x_pos_dec - data->cub->x_dir_dec * SPEED_MOVE * (-1);
     tmp_y_to_check = data->cub->y_pos_dec - data->cub->y_dir_dec * SPEED_MOVE * (-1);
 
-    /* Avoids movement if out of 2D map limits */
-    if (tmp_x_to_check < 0 || tmp_x_to_check > 21 || tmp_y_to_check < 0 || tmp_y_to_check > 21)
-        return;
+    /* Límites mapa 2D */
+    if (is_map_limit(data, tmp_x_to_check, tmp_y_to_check))
+		return;
+
+	if (is_wall_collision(data, tmp_x_to_check, tmp_y_to_check))
+		return;
     
     data->cub->x_pos_dec = data->cub->x_pos_dec - data->cub->x_dir_dec * SPEED_MOVE * (-1);
     data->cub->y_pos_dec = data->cub->y_pos_dec - data->cub->y_dir_dec * SPEED_MOVE * (-1);
@@ -73,9 +90,12 @@ void move_backward(t_data *data)
     tmp_x_to_check = data->cub->x_pos_dec - data->cub->x_dir_dec * SPEED_MOVE;
     tmp_y_to_check = data->cub->y_pos_dec - data->cub->y_dir_dec * SPEED_MOVE;
 
-    /* Avoids movement if out of 2D map limits */
-    if (tmp_x_to_check < 0 || tmp_x_to_check > 21 || tmp_y_to_check < 0 || tmp_y_to_check > 21)
-        return;
+    /* Límites mapa 2D */
+    if (is_map_limit(data, tmp_x_to_check, tmp_y_to_check))
+		return;
+
+	if (is_wall_collision(data, tmp_x_to_check, tmp_y_to_check))
+		return;
     
     data->cub->x_pos_dec = data->cub->x_pos_dec - data->cub->x_dir_dec * SPEED_MOVE; //to me, this one should be *(-1), but for some reason it works on the other direction
     data->cub->y_pos_dec = data->cub->y_pos_dec - data->cub->y_dir_dec * SPEED_MOVE;
@@ -105,12 +125,18 @@ void move_right(t_data *data)
     double new_x = data->cub->x_pos_dec + (x_perp * SPEED_MOVE);
     double new_y = data->cub->y_pos_dec + (y_perp * SPEED_MOVE);
 
-    // Verificar si la nueva posición es una pared
-    if (data->cub->map[(int)new_y][(int)new_x] == '0') {
-        data->cub->x_pos_dec = new_x;
-        data->cub->y_pos_dec = new_y;
-    }
+    /* Límites mapa 2D */
+    if (is_map_limit(data, new_x, new_y))
+		return;
 
+    // Verificar si la nueva posición es una pared
+    // if (data->cub->map[(int)new_y][(int)new_x] == '0') {
+    //     data->cub->x_pos_dec = new_x;
+    //     data->cub->y_pos_dec = new_y;
+    // }
+	if (is_wall_collision(data, new_x, new_y))
+		return;
+	
     // Actualizar posiciones de píxeles
     data->cub->x_pos_pixel = decimal_to_pixel(data, data->cub->x_pos_dec, X_PX);
     data->cub->y_pos_pixel = decimal_to_pixel(data, data->cub->y_pos_dec, Y_PX);
@@ -134,6 +160,13 @@ void move_left(t_data *data)
     double new_x = data->cub->x_pos_dec - (x_perp * SPEED_MOVE);
     double new_y = data->cub->y_pos_dec - (y_perp * SPEED_MOVE);
 
+    /* Límites mapa 2D */
+    if (is_map_limit(data, new_x, new_y))
+		return;
+
+	if (is_wall_collision(data, new_x, new_y))
+		return;
+    
     // Verificar si la nueva posición es una pared
     if (data->cub->map[(int)new_y][(int)new_x] == '0')
     {
