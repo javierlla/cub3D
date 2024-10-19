@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/17 17:41:02 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/19 19:12:03 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,41 @@
 # define D_MOVE_RIGHT 100
 # define ROTATE_LEFT 65361 //Left arrow
 # define ROTATE_RIGHT 65363 //Right arrow
+
+typedef struct raycast_variables
+{
+	double	cameraX;
+	double	rayDirX;
+	double	rayDirY;
+
+	/* Initial ray position based on player's decimal position*/
+	int		mapX; //data->cub->x_pos_dec;
+	int		mapY;//data->cub->y_pos_dec;
+
+	/* Distance of ray in space*/
+	double	sideDistX;
+	double	sideDistY;
+
+	
+	double	deltaDistX;
+	double	deltaDistY;
+	int		stepX;
+	int stepY;
+	// int hit;
+	
+	int side; //Which side of the wall has been hit
+	double perpWallDist;
+	int lineHeight;
+	int drawStart;
+	int drawEnd;
+	double wallX;
+	int texX;
+	int texY;
+	// unsigned int color;
+	int texNum;
+	// int y;
+	int d;
+} t_raycast_vars;
 
 enum width_or_height
 {
