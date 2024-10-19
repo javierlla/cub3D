@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:20:01 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/15 21:53:05 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/19 15:45:47 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,37 @@ void put_each_wall(t_data *data, int x_index, int y_index)
     //mlx_put_image_to_window(mlx_2->mlx_ptr, mlx_2->win_ptr, mlx_2->image_ptr, 5000, 5000); //0,0 --> position where we're gonna put the image
 }
 
+/* px_is_in_wall
+*
+* Returns:
+*   1: YES, x and y pixel position is in a wall
+*   0: NO, x and y pixel position is not in a wall
+*
+*
+*   How?
+*   > 2D Map dimensions are defined in .h file: 840 x 840 px
+*   > t_data *data stores map height and width (number of boxes).
+*   > We'll apply rule of 3 to get the x and y position
+*
+*   .h file HEIGHT_MAP (in px) ------- t_data *data
+										data->cub->map_height (number of boxes)
+*   (whatever) px position -----------> (result) box 
+*/
+int	px_is_in_wall(int x_px, int y_px, t_data *data)
+{
+	int	x_index;
+	int	y_index;
+
+	x_index = x_px * data->cub->map_width / WIDTH_MAP;
+	y_index = y_px * data->cub->map_height / HEIGHT_MAP;
+
+    //printf(GREEN"...considering pixel... x = %d, y = %d\n"RESET_COLOUR, x_px, y_px);
+	if (data->cub->map[y_index][x_index] == '1')
+		return (1);
+	else
+		return (0);
+}
+
 /* put_walls_in_map
 *
 *   It's the #1 step to visualize 2d map in window  
@@ -146,34 +177,23 @@ void put_each_wall(t_data *data, int x_index, int y_index)
 *   The funcion iterates through 2d map .cub input file and calls put_each_wall
 *   function to display each wall when '1' found.
 */
-void put_walls_in_map(t_data *data)
+void	put_walls_in_map(t_data *data)
 {
-    int y_nb_of_boxes; //Map Height
-    int x_index;
-    int y_index;
+	int	x_px;
+	int	y_px;
 
-    y_nb_of_boxes = data->cub->map_height;
-    //printf(MAGENTA"y_nb_of_boxes = %d\n", y_nb_of_boxes);¡
-    
-    /* Iterate through each line of 2d map*/
-    y_index = 0;
-    while (y_nb_of_boxes > 0)
-    {
-        x_index = 0;
-        while (is_map(data->cub, x_index, y_index))
-        {
-            //printf(BLUE"Let's see Map[%d][%d] = %d\n"RESET_COLOUR, x_index, y_index, mlx_2->cub->map[x_index][y_index]);
-            if (data->cub->map[x_index][y_index] == '1')
-                put_each_wall(data, x_index, y_index);
-            //else
-                //printf(RED"doesn't enter here = NO WALL\n"RESET_COLOUR);
-            x_index++;
-        }
-        //printf("------------------next line in 2d map ----------\n");
-        y_index++;
-        y_nb_of_boxes--;
-    }
-    // printf(GREEN"finished visualizing walls in 2d map\n"RESET_COLOUR);
+	y_px = 0;
+	while (y_px < HEIGHT_MAP)
+	{
+		x_px = 0;
+		while (x_px < WIDTH_MAP)
+		{
+			if (px_is_in_wall(x_px, y_px, data))
+				my_mlx_pixel_put(data, x_px, y_px, 0x00FF0000);
+			x_px++;
+		}
+		y_px++;
+	}
 }
 
 void put_dot_in_map(t_data *data)
@@ -356,14 +376,13 @@ void put_horizontal_lines(t_data *data)
 void render_update_2d_map(t_data *data)
 {
     put_2d_map_background(data); //new
-    put_vertical_lines(data); //new - idk why no visualiza, pero creo que es prescindible
-    put_horizontal_lines(data); //new - idk why no visualiza, pero creo que es prescindible
-    //put_walls_in_map(data); //Pintar las paredes - new: por ahora voy a prescindir
-    put_dot_in_map(data); //Pintar al jugador: red dot
-    put_circle_around_player(data); //Pintar al jugador: circle
-    put_satellite_in_map(data); //Pintar satélite (dirección)
+    // put_vertical_lines(data); //new - idk why no visualiza, pero creo que es prescindible
+    // put_horizontal_lines(data); //new - idk why no visualiza, pero creo que es prescindible
+    put_walls_in_map(data);
+    put_dot_in_map(data);
+    put_circle_around_player(data);
+    put_satellite_in_map(data);
 }
-
 
 int *render_next_frame(t_data *data)
 {
