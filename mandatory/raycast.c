@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:14:15 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/17 17:12:32 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/19 17:23:56 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,44 @@
         x++;
     }
 }*/
+
+
+/* normalize_minus_one_one
+*
+*  Before: x is an integer inside [0-ScreenWidth] range
+*
+*  After: x is a double inside [-1,1] range
+*
+*  Purpose: whatever the ScreenWidth may vary, for us we 
+*           want work with a range of [-1,1], from left to rigt
+*           of the screen.
+*
+*           -1 ------------------ 0 ------------------ 1
+*
+*  How?
+
+*  1) Rule of 3 to get double [0-2]
+*
+*     2 (total) ------------------ ScreenWidth
+*     (whatever) ------------------ (result)
+*
+*  2) -1 to get inside [-1,1] range
+*/
+double	normalize_minus_one_one(int x)
+{
+	double	result;
+
+	result = x * 2 / (double)screenWidth;
+	result = result -1;
+	return (result);
+}
+
+
+/* raycast
+*
+*
+*
+*/
 void raycast(t_data *data)
 {
     if (data->cub->map == NULL) {
@@ -166,9 +204,12 @@ void raycast(t_data *data)
 
     int x = 0; // Inicializar x para el bucle while
 
-    while (x < screenWidth) {
+    while (x < screenWidth)
+    {
         // Calcular la dirección del rayo
-        double cameraX = 2 * x / (double)screenWidth - 1; // Coordenada de cámara
+        double cameraX;
+        
+        cameraX = normalize_minus_one_one(x);
         double rayDirX = data->cub->x_dir_dec + data->cub->planeX * cameraX; // Añadir desplazamiento de cámara
         double rayDirY = data->cub->y_dir_dec + data->cub->planeY * cameraX;
 
@@ -211,7 +252,7 @@ void raycast(t_data *data)
             sideDistY = (mapY + 1.0 - data->cub->y_pos_dec) * deltaDistY;
         }
 
-        // Bucle de DDA (Digital Differential Analyzer)
+        // Bucle de DDA (Digital Differential Analyzer): wall hit detection
         while (hit == 0) {
             // Avanza en la dirección del rayo
             if (sideDistX < sideDistY) {
@@ -259,7 +300,7 @@ void raycast(t_data *data)
         int drawEnd = lineHeight / 2 + screenHeight / 2;
         if (drawEnd >= screenHeight) drawEnd = screenHeight - 1;
 
-        // Calcular las coordenadas de textura
+        // Calcular las coordenadas de textura: perpendicular wall distance
         double wallX;
         if (side == 0) {
             wallX = data->cub->y_pos_dec + perpWallDist * rayDirY;
@@ -268,7 +309,7 @@ void raycast(t_data *data)
         }
         wallX -= floor(wallX); // Asegurar que esté entre 0 y 1
 
-        // Verifica que wallX esté correctamente entre 0 y 1
+        // Verifica que wallX esté correctamente entre 0 y 1: wall height calculation
         if (wallX < 0 || wallX > 1) {
             printf("Warning: wallX fuera de rango. Valor actual: %f\n", wallX);
             wallX = fmod(wallX + 1, 1); // Normalizar wallX
@@ -276,6 +317,8 @@ void raycast(t_data *data)
 
         // Imprimir el valor de wallX
         //printf("Ray %d -> wallX: %f\n", x, wallX);
+
+       /* Texturas */
 
         // Coordenadas de textura
         int texX = (int)(wallX * (double)TEX_WIDTH);
