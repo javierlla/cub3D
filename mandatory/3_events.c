@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 20:40:50 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/15 22:02:38 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/19 13:42:33 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@
 *
 *	Returns -1 = Error, not expected result
 */
-float pixel_to_decimal_map(int pixel, enum width_or_height indicator)
+float	pixel_to_decimal_map(int pixel, enum width_or_height indicator)
 {
 	//printf("📍pixel_to_decimal_map | Before: pixel(int) = %d\n", pixel);
-    if (indicator == X_WIDTH)
+	if (indicator == X_WIDTH)
 		return ((float)pixel * 21.00 / WIDTH_MAP); //instead of 21.00 it should be as a defined in .h as well ideally
 	else if (indicator == Y_HEIGHT)
 		return ((float)pixel * 21.00 / HEIGHT_MAP);//instead of 21.00 it should be as a defined in .h as well ideally
@@ -31,120 +31,116 @@ float pixel_to_decimal_map(int pixel, enum width_or_height indicator)
 		return (-1);
 }
 
-/* Updates player position info stored in cub. Both mlx-s get data from 
+/* move_forward
+*
+*   1. Calculate new position: in decimals based on 2D Map's dimensions (index > decimal > pixel)
+*   2. Get px position updated
+*   3. Get map index updated
+*   4. Satellite position must be updated as well
+*
+*   Updates player position info stored in cub. Both mlx-s get data from 
 *   cub. This means by updated cub directly, the info both mlx are getting
 *    is updated.
 *
 *   When moving forward: (pixel language) x stays the same, y is decreased. Because (0,0) in pixels 
 * starts up on the left and increases by going right/down on the window (pixel language)*/
-void move_forward(t_data *data)
+void	move_forward(t_data *data)
 {
-    /* Calculate new position: in decimals based on 2D Map's dimensions (index > decimal > pixel)*/
-    data->cub->x_pos_dec = data->cub->x_pos_dec - data->cub->x_dir_dec * SPEED_MOVE * (-1);
-    data->cub->y_pos_dec = data->cub->y_pos_dec - data->cub->y_dir_dec * SPEED_MOVE * (-1);
-
+	/* Calculate new position: in decimals based on 2D Map's dimensions (index > decimal > pixel)*/
+	data->cub->x_pos_dec = data->cub->x_pos_dec - data->cub->x_dir_dec * SPEED_MOVE * (-1);
+	data->cub->y_pos_dec = data->cub->y_pos_dec - data->cub->y_dir_dec * SPEED_MOVE * (-1);
+	
     /* Get px position updated */
-    data->cub->x_pos_pixel = decimal_to_pixel(data, data->cub->x_pos_dec, X_PX);
-    data->cub->y_pos_pixel = decimal_to_pixel(data, data->cub->y_pos_dec, Y_PX);
-
-    /* Get map index updated */
-    data->cub->x_pos_ind = (int)data->cub->x_pos_dec;
-    data->cub->y_pos_ind = (int)data->cub->y_pos_dec;
+	data->cub->x_pos_pixel = decimal_to_pixel(data, data->cub->x_pos_dec, X_PX);
+	data->cub->y_pos_pixel = decimal_to_pixel(data, data->cub->y_pos_dec, Y_PX);
+	
+	/* Get map index updated */
+	data->cub->x_pos_ind = (int)data->cub->x_pos_dec;
+	data->cub->y_pos_ind = (int)data->cub->y_pos_dec;
 
     /* Satellite position must be updated as well */
-    data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec)*DISTANCE_BLUE_CIRCLE;
-    data->cub->y_satellite_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec)*DISTANCE_BLUE_CIRCLE;
-    
+	data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec)*DISTANCE_BLUE_CIRCLE;
+	data->cub->y_satellite_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec)*DISTANCE_BLUE_CIRCLE;
     
     render_next_frame(data);
-        
 }
 
 //I must calculate the new position in decimals, then convert it to pixels
-void move_backward(t_data *data)
-{   
-    /* Calculate new position: in decimals based on 2D Map's dimensions (index > decimal > pixel)*/
-    data->cub->x_pos_dec = data->cub->x_pos_dec - data->cub->x_dir_dec * SPEED_MOVE; //to me, this one should be *(-1), but for some reason it works on the other direction
-    data->cub->y_pos_dec = data->cub->y_pos_dec - data->cub->y_dir_dec * SPEED_MOVE;
+void	move_backward(t_data *data)
+{
+	/* Calculate new position: in decimals based on 2D Map's dimensions (index > decimal > pixel)*/
+	data->cub->x_pos_dec = data->cub->x_pos_dec - data->cub->x_dir_dec * SPEED_MOVE; //to me, this one should be *(-1), but for some reason it works on the other direction
+	data->cub->y_pos_dec = data->cub->y_pos_dec - data->cub->y_dir_dec * SPEED_MOVE;
 
     /* Get px position updated */
-    data->cub->x_pos_pixel = decimal_to_pixel(data, data->cub->x_pos_dec, X_PX);
-    data->cub->y_pos_pixel = decimal_to_pixel(data, data->cub->y_pos_dec, Y_PX);
+	data->cub->x_pos_pixel = decimal_to_pixel(data, data->cub->x_pos_dec, X_PX);
+	data->cub->y_pos_pixel = decimal_to_pixel(data, data->cub->y_pos_dec, Y_PX);
 
     /* Get map index updated */
-    data->cub->x_pos_ind = (int)data->cub->x_pos_dec;
-    data->cub->y_pos_ind = (int)data->cub->y_pos_dec;
+	data->cub->x_pos_ind = (int)data->cub->x_pos_dec;
+	data->cub->y_pos_ind = (int)data->cub->y_pos_dec;
 
     /* Satellite position must be updated as well */
-    data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec)*DISTANCE_BLUE_CIRCLE;
-    data->cub->y_satellite_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec)*DISTANCE_BLUE_CIRCLE;
-
-    
+	data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec)*DISTANCE_BLUE_CIRCLE;
+	data->cub->y_satellite_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec)*DISTANCE_BLUE_CIRCLE;
     render_next_frame(data);
-
 }
 
-void move_right(t_data *data)
+void	move_right(t_data *data)
 {    
     /* Calculate new position: in decimals based on 2D Map's dimensions (index > decimal > pixel)*/
-    data->cub->x_pos_dec = data->cub->x_pos_dec + (data->cub->y_dir_dec) * SPEED_MOVE * (-1);
-    data->cub->y_pos_dec = data->cub->y_pos_dec + (data->cub->x_dir_dec) * SPEED_MOVE;
+	data->cub->x_pos_dec = data->cub->x_pos_dec + (data->cub->y_dir_dec) * SPEED_MOVE * (-1);
+	data->cub->y_pos_dec = data->cub->y_pos_dec + (data->cub->x_dir_dec) * SPEED_MOVE;
 
     /* Get px position updated */
-    data->cub->x_pos_pixel = decimal_to_pixel(data, data->cub->x_pos_dec, X_PX);
-    data->cub->y_pos_pixel = decimal_to_pixel(data, data->cub->y_pos_dec, Y_PX);
+	data->cub->x_pos_pixel = decimal_to_pixel(data, data->cub->x_pos_dec, X_PX);
+	data->cub->y_pos_pixel = decimal_to_pixel(data, data->cub->y_pos_dec, Y_PX);
 
     /* Get map index updated */
-    data->cub->x_pos_ind = (int)data->cub->x_pos_dec;
-    data->cub->y_pos_ind = (int)data->cub->y_pos_dec;
+	data->cub->x_pos_ind = (int)data->cub->x_pos_dec;
+	data->cub->y_pos_ind = (int)data->cub->y_pos_dec;
 
     /* Satellite position must be updated as well */
-    data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec)*DISTANCE_BLUE_CIRCLE;
-    data->cub->y_satellite_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec)*DISTANCE_BLUE_CIRCLE;
-    
+	data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec)*DISTANCE_BLUE_CIRCLE;
+	data->cub->y_satellite_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec)*DISTANCE_BLUE_CIRCLE;
     render_next_frame(data);
 }
 
-void move_left(t_data *data)
+void	move_left(t_data *data)
 {
     /* Calculate new position: in decimals based on 2D Map's dimensions (index > decimal > pixel)*/
-    data->cub->x_pos_dec = data->cub->x_pos_dec + (data->cub->y_dir_dec) * SPEED_MOVE;
-    data->cub->y_pos_dec = data->cub->y_pos_dec + (data->cub->x_dir_dec) * SPEED_MOVE * (-1);
+	data->cub->x_pos_dec = data->cub->x_pos_dec + (data->cub->y_dir_dec) * SPEED_MOVE;
+	data->cub->y_pos_dec = data->cub->y_pos_dec + (data->cub->x_dir_dec) * SPEED_MOVE * (-1);
 
     /* Get px position updated */
-    data->cub->x_pos_pixel = decimal_to_pixel(data, data->cub->x_pos_dec, X_PX);
-    data->cub->y_pos_pixel = decimal_to_pixel(data, data->cub->y_pos_dec, Y_PX);
+	data->cub->x_pos_pixel = decimal_to_pixel(data, data->cub->x_pos_dec, X_PX);
+	data->cub->y_pos_pixel = decimal_to_pixel(data, data->cub->y_pos_dec, Y_PX);
 
     /* Get map index updated */
-    data->cub->x_pos_ind = (int)data->cub->x_pos_dec;
-    data->cub->y_pos_ind = (int)data->cub->y_pos_dec;
+	data->cub->x_pos_ind = (int)data->cub->x_pos_dec;
+	data->cub->y_pos_ind = (int)data->cub->y_pos_dec;
 
     /* Satellite position must be updated as well */
-    data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec)*DISTANCE_BLUE_CIRCLE;
-    data->cub->y_satellite_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec)*DISTANCE_BLUE_CIRCLE;
-    
+	data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec)*DISTANCE_BLUE_CIRCLE;
+	data->cub->y_satellite_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec)*DISTANCE_BLUE_CIRCLE;
     render_next_frame(data);
 }
 
-void update_direction_vector(t_data *data, int direction)
+void	update_direction_vector(t_data *data, int direction)
 {
-    // printf(BLUE"update_direction_vector\n");
-    // printf("> Before: Direction vector: x = %.2f, y = %.2f\n"RESET_COLOUR, data->cub->x_dir_dec, data->cub->y_dir_dec);
+	/* #1 Update angle in degrees*/
+	if (direction == ROTATE_RIGHT)
+		data->cub->angle_degree += SPEED_ROTATE;
+	else if (direction == ROTATE_LEFT)
+		data->cub->angle_degree -= SPEED_ROTATE;
     
-    /* #1 Update angle in degrees*/
-    if (direction == ROTATE_RIGHT)
-        data->cub->angle_degree += SPEED_ROTATE;
-    else if (direction == ROTATE_LEFT)
-        data->cub->angle_degree -= SPEED_ROTATE;
-    
-    /* #2 Update angle in radians */
-    angle_to_rad(data);
+	/* #2 Update angle in radians */
+	angle_to_rad(data);
     
     /* #3 Update direction vector */
-    data->cub->x_dir_dec = cos(data->cub->angle_radian);
-    data->cub->y_dir_dec = sin(data->cub->angle_radian);
+	data->cub->x_dir_dec = cos(data->cub->angle_radian);
+	data->cub->y_dir_dec = sin(data->cub->angle_radian);
     // printf("> After: Direction vector: x = %.2f, y = %.2f\n", data->cub->x_dir_dec, data->cub->y_dir_dec);
-    
 }
 
 /* rotate_right updates player's direction vector by rotating to the right
@@ -159,7 +155,7 @@ void rotate_right(t_data *data)
 {
     // printf("------------------------------ "YELLOW"Right arrow - rotate_right"RESET_COLOUR" ------------------------------\n");
     // printf("Before: Direction vector: (%.2f, %.2f)\n", data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
-    update_direction_vector(data, ROTATE_RIGHT);
+	update_direction_vector(data, ROTATE_RIGHT);
     // printf("After: Direction vector: (%.2f, %.2f)\n", data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
 
     /* Show in 2D map */
@@ -167,10 +163,8 @@ void rotate_right(t_data *data)
     // printf(" Input 1 - Player position (DECIMAL): x = %.2f, y = %.2f\n", data->cub->player_position->x_decimal, data->cub->player_position->y_decimal);
     // printf(" Input 2 - Player position (PIXELS in 2D Map): x = %d, y = %d\n\n", data->cub->player_position->x_pixel, data->cub->player_position->y_pixel);
     // printf(" Input 3 - Direction vector: x = %.2f, y = %.2f\n", data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
-
-    data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec)*DISTANCE_BLUE_CIRCLE;
-    data->cub->y_satellite_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec)*DISTANCE_BLUE_CIRCLE;
-    
+	data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec)*DISTANCE_BLUE_CIRCLE;
+	data->cub->y_satellite_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec)*DISTANCE_BLUE_CIRCLE;
     render_next_frame(data);
 }
 
@@ -178,11 +172,11 @@ void rotate_right(t_data *data)
 *  where the player is looking at.
 *
 *  Also it is shown in 2d map visually.*/
-void rotate_left(t_data *data)
+void	rotate_left(t_data *data)
 {
     // printf("------------------------------ "YELLOW"Left arrow - rotate_left"RESET_COLOUR" ------------------------------\n");
     // printf("Before: Direction vector: (%.2f, %.2f)\n", data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
-    update_direction_vector(data, ROTATE_LEFT);
+	update_direction_vector(data, ROTATE_LEFT);
     // printf("After: Direction vector: (%.2f, %.2f)\n", data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
 
     /* Show in 2D map */
@@ -190,11 +184,9 @@ void rotate_left(t_data *data)
     // printf(" Input 1 - Player position (DECIMAL): x = %.2f, y = %.2f\n", data->cub->player_position->x_decimal, data->cub->player_position->y_decimal);
     // printf(" Input 2 - Player position (PIXELS in 2D Map): x = %d, y = %d\n\n", data->cub->player_position->x_pixel, data->cub->player_position->y_pixel);
     // printf(" Input 3 - Direction vector: x = %.2f, y = %.2f\n", data->cub->player_direction_vector->x, data->cub->player_direction_vector->y);
-
-    data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec)*DISTANCE_BLUE_CIRCLE;
-    data->cub->y_satellite_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec)*DISTANCE_BLUE_CIRCLE;
-    
-    render_next_frame(data);
+	data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec)*DISTANCE_BLUE_CIRCLE;
+	data->cub->y_satellite_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec)*DISTANCE_BLUE_CIRCLE;
+	render_next_frame(data);
 }
 
 /* key_handler:
@@ -221,69 +213,58 @@ int key_handler(int keycode, t_data *data)
 	// 	close_handler(mlx);
 	// 	return (0);
 	// }
-    if (keycode == 65307) // ESC button
-    {
-        close_program(data->mlx); //should close_program not only destroy window, but also free memory?? destroy image??
-        // close_program(data->mlx_map);
-    }
+	if (keycode == 65307) // ESC button
+	{
+		close_program(data->mlx); //should close_program not only destroy window, but also free memory?? destroy image??
+		// close_program(data->mlx_map);
+	}
 	if (keycode == W_MOVE_FORWARD)
-    {
-        // printf("W key pressed - Move FORWARD\n");
-        move_forward(data);
-    }
+	{
+		// printf("W key pressed - Move FORWARD\n");
+		move_forward(data);
+	}
 	if (keycode == S_MOVE_BACKWARDS)
-    {
-        // printf("S key pressed - Move BACKWARDS\n");
-        move_backward(data);
-    }
+	{
+		// printf("S key pressed - Move BACKWARDS\n");
+		move_backward(data);
+	}
 	if (keycode == A_MOVE_LEFT)
-    {
-        // printf("S key pressed - Move LEFT\n");
-        move_left(data);
-    }
-        
+	{
+		// printf("S key pressed - Move LEFT\n");
+		move_left(data);
+	}    
 	if (keycode == D_MOVE_RIGHT)
-    {
-        // printf("D key pressed - Move RIGHT\n");
-        move_right(data);
-    }
-        
+	{
+		// printf("D key pressed - Move RIGHT\n");
+		move_right(data);
+	}  
     /* Se actualiza el vector de dirección */
-    if (keycode == ROTATE_LEFT)
-    {
-        // printf("Left arrow key pressed - Rotate LEFT\n");
-        rotate_left(data);
-    }
-    if (keycode == ROTATE_RIGHT)
-    {
-        // printf("Right arrow key pressed - Rotate RIGHT\n");
-        //Update player direction vector
-        //Print direction vector
-        rotate_right(data);
-    }
-	//ft_render(mlx); //FP: Future Problem
-	// printf(GREEN"After each KEY_HANDLER call:--------------------------------\n"RESET_COLOUR);
-    // printf("            | mlx_game   |  mlx_map  |\n");
-    // printf("x_index     |    %d       |    %d      |\n", data->mlx_game->cub->player_position->x_index, data->mlx_map->cub->player_position->x_index);
-    // printf("x_decimal   |    %.2f    |    %.2f   |\n", data->mlx_game->cub->player_position->x_decimal, data->mlx_map->cub->player_position->x_decimal);
-    // printf("x_pixel     |    %d      |    %d     |\n", data->mlx_game->cub->player_position->x_pixel, data->mlx_map->cub->player_position->x_pixel);
-    // printf("y_index     |    %d      |    %d     |\n", data->mlx_game->cub->player_position->y_index, data->mlx_map->cub->player_position->y_index);
-    // printf("y_decimal   |   %.2f    |   %.2f   |\n", data->mlx_game->cub->player_position->y_decimal, data->mlx_map->cub->player_position->y_decimal);
-    // printf("y_pixel     |    %d      |    %d     |\n", data->mlx_game->cub->player_position->x_pixel, data->mlx_map->cub->player_position->x_pixel);
-    return (0);
+	if (keycode == ROTATE_LEFT)
+	{
+		// printf("Left arrow key pressed - Rotate LEFT\n");
+		rotate_left(data);
+	}
+	if (keycode == ROTATE_RIGHT)
+	{
+		// printf("Right arrow key pressed - Rotate RIGHT\n");
+		//Update player direction vector
+		//Print direction vector
+		rotate_right(data);
+	}
+	return (0);
 }
 
 // void ft_events_init(t_mlx *mlx)
-void ft_events_init(t_data *data)
+void	ft_events_init(t_data *data)
 {
     /* 'x' closing button: evento 17 */
-    mlx_hook(data->mlx->win_ptr, 17, 0, (int (*)(void *))close_program, data->mlx);//línea Javi
+	mlx_hook(data->mlx->win_ptr, 17, 0, (int (*)(void *))close_program, data->mlx); //javi's
 
     /*Defines which is the function that is going to take care of keys: key_handler
     * When key is pressed, it will be sent to key_handler.
     *   Aim: with 2 lines, both windows can get key presses and cub will be updated for both
     *------------------------------------------------------------------------------*/
-    mlx_hook(data->mlx->win_ptr, 2, 1L << 0, key_handler, data); //previous implementatioin, when key press/release was not handled
+   mlx_hook(data->mlx->win_ptr, 2, 1L << 0, key_handler, data); //previous implementatioin, when key press/release was not handled
     
     /* Flagmanagement to handle key press/release management.
     / New implementation based on xbasabe's input*/
