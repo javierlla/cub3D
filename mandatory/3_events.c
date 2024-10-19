@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   3_events.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 20:40:50 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/17 18:24:13 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/19 16:15:37 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,27 @@ float pixel_to_decimal_map(int pixel, enum width_or_height indicator)
 		return (-1);
 }
 
+/* move_forward
+*
+*   step = how many px does the player move in each iteration W-S-A-D
+*/
 void move_forward(t_data *data)
 {
-  
+    float tmp_x_to_check;
+    float tmp_y_to_check;
+
+    
+    // if ((data->cub->x_pos_dec < 0 + SPEED_MOVE || data->cub->x_pos_dec > 21 - SPEED_MOVE) ||
+    //     (data->cub->y_pos_dec < 0 + SPEED_MOVE || data->cub->y_pos_dec > 21 - SPEED_MOVE))
+    //     return;
+
+    tmp_x_to_check = data->cub->x_pos_dec - data->cub->x_dir_dec * SPEED_MOVE * (-1);
+    tmp_y_to_check = data->cub->y_pos_dec - data->cub->y_dir_dec * SPEED_MOVE * (-1);
+
+    /* Avoids movement if out of 2D map limits */
+    if (tmp_x_to_check < 0 || tmp_x_to_check > 21 || tmp_y_to_check < 0 || tmp_y_to_check > 21)
+        return;
+    
     data->cub->x_pos_dec = data->cub->x_pos_dec - data->cub->x_dir_dec * SPEED_MOVE * (-1);
     data->cub->y_pos_dec = data->cub->y_pos_dec - data->cub->y_dir_dec * SPEED_MOVE * (-1);
 
@@ -48,8 +66,17 @@ void move_forward(t_data *data)
 
 //I must calculate the new position in decimals, then convert it to pixels
 void move_backward(t_data *data)
-{   
-   
+{
+    float tmp_x_to_check;
+    float tmp_y_to_check;
+
+    tmp_x_to_check = data->cub->x_pos_dec - data->cub->x_dir_dec * SPEED_MOVE;
+    tmp_y_to_check = data->cub->y_pos_dec - data->cub->y_dir_dec * SPEED_MOVE;
+
+    /* Avoids movement if out of 2D map limits */
+    if (tmp_x_to_check < 0 || tmp_x_to_check > 21 || tmp_y_to_check < 0 || tmp_y_to_check > 21)
+        return;
+    
     data->cub->x_pos_dec = data->cub->x_pos_dec - data->cub->x_dir_dec * SPEED_MOVE; //to me, this one should be *(-1), but for some reason it works on the other direction
     data->cub->y_pos_dec = data->cub->y_pos_dec - data->cub->y_dir_dec * SPEED_MOVE;
 
@@ -87,6 +114,14 @@ void move_right(t_data *data)
     // Actualizar posiciones de píxeles
     data->cub->x_pos_pixel = decimal_to_pixel(data, data->cub->x_pos_dec, X_PX);
     data->cub->y_pos_pixel = decimal_to_pixel(data, data->cub->y_pos_dec, Y_PX);
+
+    /* Get map index updated */
+	data->cub->x_pos_ind = (int)data->cub->x_pos_dec;
+	data->cub->y_pos_ind = (int)data->cub->y_pos_dec;
+
+    /* Satellite position must be updated as well */
+	data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec)*DISTANCE_BLUE_CIRCLE;
+	data->cub->y_satellite_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec)*DISTANCE_BLUE_CIRCLE;
     
     render_next_frame(data);
 }
@@ -100,7 +135,8 @@ void move_left(t_data *data)
     double new_y = data->cub->y_pos_dec - (y_perp * SPEED_MOVE);
 
     // Verificar si la nueva posición es una pared
-    if (data->cub->map[(int)new_y][(int)new_x] == '0') {
+    if (data->cub->map[(int)new_y][(int)new_x] == '0')
+    {
         data->cub->x_pos_dec = new_x;
         data->cub->y_pos_dec = new_y;
     }
@@ -108,6 +144,14 @@ void move_left(t_data *data)
     // Actualizar posiciones de píxeles
     data->cub->x_pos_pixel = decimal_to_pixel(data, data->cub->x_pos_dec, X_PX);
     data->cub->y_pos_pixel = decimal_to_pixel(data, data->cub->y_pos_dec, Y_PX);
+
+     /* Get map index updated */
+	data->cub->x_pos_ind = (int)data->cub->x_pos_dec;
+	data->cub->y_pos_ind = (int)data->cub->y_pos_dec;
+    
+    /* Satellite position must be updated as well */
+	data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec)*DISTANCE_BLUE_CIRCLE;
+	data->cub->y_satellite_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec)*DISTANCE_BLUE_CIRCLE;
     
     render_next_frame(data);
 }
