@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:15:26 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/19 13:17:50 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/19 15:41:24 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	main(int argc, char **argv)
 	t_data	*data;
 	t_cub	*cub;
 	t_mlx	*mlx;
-	
+
 	if (argc != 2)
 	{
 		write(2, "Usage: ./cub3D <map.cub>\n", 26);
@@ -49,10 +49,10 @@ int	main(int argc, char **argv)
 	ft_memset(cub, 0, sizeof(t_cub));
 	ft_memset(mlx, 0, sizeof(t_mlx));
 	initialize(data, mlx, cub);
-	read_cub_file(cub, argv[1]);
+	read_cub_file(data, argv[1]);
     // print_cub_data(cub); /* Debugging purposes */
 	init_all(data);
-	load_textures(cub);
+	load_textures(data);
 	mlx_loop_hook(mlx->mlx_ptr, ((void *)render_next_frame(data)), cub);
 	mlx_loop(mlx->mlx_ptr);
 	return (0);
