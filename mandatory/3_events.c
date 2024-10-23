@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 20:40:50 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/22 18:04:25 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/23 12:28:10 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ float	pixel_to_decimal_map(int pixel, enum width_or_height indicator)
 
 int	is_map_limit(t_data *data, float tmp_x_2_check, float tmp_y_2_check)
 {
-	if (tmp_x_2_check < 0 || tmp_x_2_check > data->cub->map_width || tmp_y_2_check < 0 || tmp_y_2_check > data->cub->map_height)
+	if (tmp_x_2_check < 0 || tmp_x_2_check > data->cub->map_width
+		|| tmp_y_2_check < 0 || tmp_y_2_check > data->cub->map_height)
 		return (1);
 	return (0);
 }
@@ -42,8 +43,10 @@ void	update_pixel_and_satellite_position(t_data *data)
 	data->cub->y_pos_pixel = decimal_to_pixel(data, data->cub->y_pos_dec, Y_PX);
 	data->cub->x_pos_ind = (int)data->cub->x_pos_dec;
 	data->cub->y_pos_ind = (int)data->cub->y_pos_dec;
-	data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec) * DISTANCE_BLUE_CIRCLE;
-	data->cub->y_satellite_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec) * DISTANCE_BLUE_CIRCLE;
+	data->cub->x_satellite_pixel = data->cub->x_pos_pixel
+		+ (data->cub->x_dir_dec) * DISTANCE_BLUE_CIRCLE;
+	data->cub->y_satellite_pixel = data->cub->y_pos_pixel
+		+ (data->cub->y_dir_dec) * DISTANCE_BLUE_CIRCLE;
 }
 
 bool	check_collision_and_limits(t_data *data, double new_x, double new_y)
@@ -60,7 +63,8 @@ void	move_to_new_position(t_data *data, double new_x, double new_y)
 	char	next_pos;
 
 	next_pos = data->cub->map[(int)new_y][(int)new_x];
-	if (next_pos == '0' || next_pos == ' ' || next_pos == 'N' || next_pos == 'S' || next_pos == 'E' || next_pos == 'W')
+	if (next_pos == '0' || next_pos == ' ' || next_pos == 'N'
+		|| next_pos == 'S' || next_pos == 'E' || next_pos == 'W')
 	{
 		data->cub->x_pos_dec = new_x;
 		data->cub->y_pos_dec = new_y;
@@ -70,7 +74,7 @@ void	move_to_new_position(t_data *data, double new_x, double new_y)
 void	apply_move_and_render(t_data *data, double new_x, double new_y)
 {
 	if (check_collision_and_limits(data, new_x, new_y))
-		return;
+		return ;
 	move_to_new_position(data, new_x, new_y);
 	update_pixel_and_satellite_position(data);
 	render_next_frame(data);
@@ -81,8 +85,10 @@ void	move_forward(t_data *data)
 	double	new_x;
 	double	new_y;
 
-	new_x = data->cub->x_pos_dec - data->cub->x_dir_dec * SPEED_MOVE * (-1);
-	new_y = data->cub->y_pos_dec - data->cub->y_dir_dec * SPEED_MOVE * (-1);
+	new_x = data->cub->x_pos_dec
+		- data->cub->x_dir_dec * SPEED_MOVE * (-1);
+	new_y = data->cub->y_pos_dec
+		- data->cub->y_dir_dec * SPEED_MOVE * (-1);
 	apply_move_and_render(data, new_x, new_y);
 }
 
@@ -143,23 +149,27 @@ void	update_direction_vector(t_data *data, int direction)
 void	rotate_right(t_data *data)
 {
 	update_direction_vector(data, ROTATE_RIGHT);
-	data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec) * DISTANCE_BLUE_CIRCLE;
-	data->cub->y_satellite_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec) * DISTANCE_BLUE_CIRCLE;
+	data->cub->x_satellite_pixel = data->cub->x_pos_pixel
+		+ (data->cub->x_dir_dec) * DISTANCE_BLUE_CIRCLE;
+	data->cub->y_satellite_pixel = data->cub->y_pos_pixel
+		+ (data->cub->y_dir_dec) * DISTANCE_BLUE_CIRCLE;
 	render_next_frame(data);
 }
 
 void	rotate_left(t_data *data)
 {
 	update_direction_vector(data, ROTATE_LEFT);
-	data->cub->x_satellite_pixel = data->cub->x_pos_pixel + (data->cub->x_dir_dec) * DISTANCE_BLUE_CIRCLE;
-	data->cub->y_satellite_pixel = data->cub->y_pos_pixel + (data->cub->y_dir_dec) * DISTANCE_BLUE_CIRCLE;
+	data->cub->x_satellite_pixel = data->cub->x_pos_pixel
+		+ (data->cub->x_dir_dec) * DISTANCE_BLUE_CIRCLE;
+	data->cub->y_satellite_pixel = data->cub->y_pos_pixel
+		+ (data->cub->y_dir_dec) * DISTANCE_BLUE_CIRCLE;
 	render_next_frame(data);
 }
 
 int	key_handler(int keycode, t_data *data)
 {
 	if (keycode == 65307)
-		close_program(data->mlx); // should close_program not only destroy window, but also free memory?? destroy image??
+		close_program(data->mlx);
 	if (keycode == W_MOVE_FORWARD)
 		move_forward(data);
 	if (keycode == S_MOVE_BACKWARDS)
@@ -177,6 +187,7 @@ int	key_handler(int keycode, t_data *data)
 
 void	ft_events_init(t_data *data)
 {
-	mlx_hook(data->mlx->win_ptr, 17, 0, (int (*)(void *))close_program, data->mlx);
+	mlx_hook(data->mlx->win_ptr, 17, 0,
+		(int (*)(void *))close_program, data->mlx);
 	mlx_hook(data->mlx->win_ptr, 2, 1L << 0, key_handler, data);
 }

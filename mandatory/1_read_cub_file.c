@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:33:35 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/22 18:05:36 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/23 13:08:10 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,43 +78,58 @@ void	parse_map_line(t_data *data, char *line)
 *                 -1
 *
 */
+
+void	set_orientation_north(t_data *data)
+{
+	data->cub->x_dir_dec = 0;
+	data->cub->y_dir_dec = -1;
+	data->cub->planeX = 0;
+	data->cub->planeY = 0.66;
+}
+
+void	set_orientation_south(t_data *data)
+{
+	data->cub->x_dir_dec = 0;
+	data->cub->y_dir_dec = 1;
+	data->cub->planeX = 0;
+	data->cub->planeY = -0.66;
+}
+
+void	set_orientation_east(t_data *data)
+{
+	data->cub->x_dir_dec = 1;
+	data->cub->y_dir_dec = 0;
+	data->cub->planeX = 0.66;
+	data->cub->planeY = 0;
+	printf("\n\nx_dir_dec en E = %2f\n\n", data->cub->x_dir_dec);
+}
+
+void	set_orientation_west(t_data *data)
+{
+	data->cub->x_dir_dec = -1;
+	data->cub->y_dir_dec = 0;
+	data->cub->planeX = -0.66;
+	data->cub->planeY = 0;
+	printf("\n\nx_dir_dec en W = %2f\n\n", data->cub->x_dir_dec);
+}
+
 void	validate_player_position(t_data *data, int *player_count, int i, int j)
 {
+	char	orientation;
+
+	orientation = data->cub->map[i][j];
 	if (*player_count == 0)
 	{
 		data->cub->x_pos_dec = j + 0.5;
 		data->cub->y_pos_dec = i + 0.5;
-
-		if (data->cub->map[i][j] == 'N') /* N --> y-- en cuanto a pixeles en la pantalla, la pantalla comienza (0,0) arriba a la izq. */
-		{
-			data->cub->x_dir_dec = 0; //uxue pondría: 0
-			data->cub->y_dir_dec = -1; //uxue pondría: 1
-			data->cub->planeX = 0;
-			data->cub->planeY = 0.66;
-		}
-		else if (data->cub->map[i][j] == 'S')/* S --> y++ en cuanto a pixeles en la pantalla, la pantalla comienza (0,0) arriba a la izq. */
-		{
-            data->cub->x_dir_dec = 0; //uxue pondría: 0
-            data->cub->y_dir_dec = 1; //uxue pondría: -1
-            data->cub->planeX = 0;
-            data->cub->planeY = -0.66;
-        }
-        else if (data->cub->map[i][j] == 'E')
-        {
-			data->cub->x_dir_dec = 1; //uxue pondría: 1
-			data->cub->y_dir_dec = 0; //uxue pondría: 0
-			data->cub->planeX = 0.66;
-			data->cub->planeY = 0;
-			printf("\n\nx_dir_dec en E = %2f\n\n", data->cub->x_dir_dec);
-		}
-		else if (data->cub->map[i][j] == 'W')
-		{
-			data->cub->x_dir_dec = -1; //uxue pondría: -1
-			data->cub->y_dir_dec = 0; //uxue pondría: 0
-			data->cub->planeX = -0.66;
-			data->cub->planeY = 0;
-			printf("\n\nx_dir_dec en W = %2f\n\n", data->cub->x_dir_dec);
-		}
+		if (orientation == 'N')
+			set_orientation_north(data);
+		else if (orientation == 'S')
+			set_orientation_south(data);
+		else if (orientation == 'E')
+			set_orientation_east(data);
+		else if (orientation == 'W')
+			set_orientation_west(data);
 		(*player_count)++;
 	}
 }
@@ -122,12 +137,13 @@ void	validate_player_position(t_data *data, int *player_count, int i, int j)
 void	validate_map_walls(t_cub *cub)
 {
 	int	i;
-	int j;
+	int	j;
 
 	i = 0;
 	while (i < cub->map_height)
 	{
-		if (cub->map[i][0] != '1' || cub->map[i][ft_strlen(cub->map[i]) - 1] != '1')
+		if (cub->map[i][0] != '1' ||
+			cub->map[i][ft_strlen(cub->map[i]) - 1] != '1')
 			exit_with_error("Map must be surrounded by walls (1)");
 		i++;
 	}
@@ -144,7 +160,7 @@ void	validate_map(t_data *data)
 {
 	int	player_count;
 	int	i;
-	int j;
+	int	j;
 
 	player_count = 0;
 	i = 0;
@@ -153,24 +169,26 @@ void	validate_map(t_data *data)
 		j = 0;
 		while (data->cub->map[i][j] != '\0')
 		{
-			if (data->cub->map[i][j] == 'N' || data->cub->map[i][j] == 'S' || data->cub->map[i][j] == 'E' || data->cub->map[i][j] == 'W')
+			if (data->cub->map[i][j] == 'N' || data->cub->map[i][j] == 'S'
+				|| data->cub->map[i][j] == 'E' || data->cub->map[i][j] == 'W')
 				validate_player_position(data, &player_count, i, j);
-			else if (data->cub->map[i][j] != '1' && data->cub->map[i][j] != '0' && data->cub->map[i][j] != ' ')
+			else if (data->cub->map[i][j] != '1' && data->cub->map[i][j] != '0'
+					&& data->cub->map[i][j] != ' ')
 				exit_with_error("Invalid character in map");
 			j++;
 		}
 		i++;
 	}
 	if (player_count != 1)
-		exit_with_error("There must be exactly one player start position (N, S, E, W)");
-    validate_map_walls(data->cub);
+		exit_with_error("There is more than one player");
+	validate_map_walls(data->cub);
 }
 
 void	parse_texture(char *line,
 	const char *letter, char **texture)
 {
 	if (*texture)
-		exit_with_error("Textura duplicada");
+		exit_with_error(ft_strjoin("Textura duplicada: ", letter));
 	*texture = extract_path(line + ft_strlen(letter));
 }
 
@@ -184,7 +202,7 @@ void	parse_color_line(char *line, const char *prefix, int *color)
 void	parse_line(t_data *data, char *line)
 {
 	line = trim_whitespace(line);
-
+	printf("Procesando línea: '%s'\n", line);  // Depuració
 	if (ft_strncmp(line, "NO ", 3) == 0)
 		parse_texture(line, "NO ", &data->cub->north_texture);
 	else if (ft_strncmp(line, "SO ", 3) == 0)
@@ -197,7 +215,7 @@ void	parse_line(t_data *data, char *line)
 		parse_color_line(line, "F ", &data->cub->floor_color);
 	else if (ft_strncmp(line, "C ", 2) == 0)
 		parse_color_line(line, "C ", &data->cub->ceiling_color);
-	else if (line[0] == '1' || line[0] == ' ') 
+	else if (line[0] == '1' || line[0] == ' ')
 		parse_map_line(data, line);
 	else if (*line != '\0')
 		exit_with_error("Línea inválida en el archivo .cub");
@@ -213,39 +231,63 @@ void	process_line(t_data *data, char *buffer, int start, int end)
 		parse_line(data, line);
 }
 
-void read_cub_file(t_data *data, const char *filename)
+int	open_and_validate_file(const char *filename)
 {
-    int fd = open(filename, O_RDONLY);
-    if (fd < 0)
-        exit_with_error("Fallo al abrir el archivo .cub");
+	int	fd;
 
-    char buffer[BUFFER_SIZE];
-    ssize_t bytes_read;
-    int line_start = 0;
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+		exit_with_error("Fallo al abrir el archivo .cub");
+	return (fd);
+}
 
-    while ((bytes_read = read(fd, buffer, BUFFER_SIZE - 1)) > 0)
-    {
-        buffer[bytes_read] = '\0';
-        int i = 0;
+void	process_buffer(t_data *data, char *buffer,
+	ssize_t bytes_read, int *line_start)
+{
+	int	i;
 
-        while (i < bytes_read)
-        {
-            if (buffer[i] == '\n')
-            {
-                process_line(data, buffer, line_start, i);
-                line_start = i + 1;
-            }
-            i++;
-        }
-        if (line_start < bytes_read)
-            process_line(data, buffer, line_start, bytes_read);
-        
-        line_start = 0;
-    }
+	i = 0;
+	while (i < bytes_read)
+	{
+		if (buffer[i] == '\n')
+		{
+			process_line(data, buffer, *line_start, i);
+			*line_start = i + 1;
+		}
+		i++;
+	}
+	if (*line_start < bytes_read)
+		process_line(data, buffer, *line_start, bytes_read);
+	*line_start = 0;
+}
 
-    if (bytes_read < 0)
-        exit_with_error("Error al leer el archivo");
+void	read_and_process_file(t_data *data, int fd)
+{
+	char	buffer[BUFFER_SIZE];
+	ssize_t	bytes_read;
+	int		line_start;
 
-    close(fd);
-    validate_map(data);
+	line_start = 0;
+	while ((bytes_read = read(fd, buffer, BUFFER_SIZE - 1)) > 0)
+	{
+		buffer[bytes_read] = '\0';
+		process_buffer(data, buffer, bytes_read, &line_start);
+	}
+	if (bytes_read < 0)
+		exit_with_error("Error al leer el archivo");
+}
+
+void	close_and_validate(int fd, t_data *data)
+{
+	close(fd);
+	validate_map(data);
+}
+
+void	read_cub_file(t_data *data, const char *filename)
+{
+	int	fd;
+
+	fd = open_and_validate_file(filename);
+	read_and_process_file(data, fd);
+	close_and_validate(fd, data);
 }
