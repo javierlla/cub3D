@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:20:01 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/24 20:09:49 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/24 20:53:01 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,10 @@ void	put_walls_in_map(t_data *data)
 		while (x_px < WIDTH_MAP)
 		{
 			if (px_is_in_wall(x_px, y_px, data))
+			{
 				my_mlx_pixel_put(data, x_px, y_px, 0x00FF0000);
+				//printf("pintadita\n");
+			}
 			x_px++;
 		}
 		y_px++;
@@ -270,55 +273,55 @@ void	put_2d_map_background(t_data *data)
 	mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win_ptr, data->mlx->img, 0, 0);
 }
 
-void	put_vertical_lines(t_data *data)
-{
-	int	tmp_nb_columns;
-	int	hor_size_box;
-	int	total_added_size;
-	int	x;
-	int	y;
+// void	put_vertical_lines(t_data *data)
+// {
+// 	int	tmp_nb_columns;
+// 	int	hor_size_box;
+// 	int	total_added_size;
+// 	int	x;
+// 	int	y;
 
-	tmp_nb_columns = data->cub->map_width;
-	hor_size_box = WIDTH_MAP / tmp_nb_columns;
-	total_added_size = 0;
-	x = 0;
-	while (total_added_size < WIDTH_MAP)
-	{
-		y = 0;
-		while (y < HEIGHT_MAP)
-		{
-			my_mlx_pixel_put(data, x, y, 0x00FF0000);
-			y++;
-		}
-		x = x + hor_size_box;
-		total_added_size = total_added_size + hor_size_box;
-	}
-}
+// 	tmp_nb_columns = data->cub->map_width;
+// 	hor_size_box = WIDTH_MAP / tmp_nb_columns;
+// 	total_added_size = 0;
+// 	x = 0;
+// 	while (total_added_size < WIDTH_MAP)
+// 	{
+// 		y = 0;
+// 		while (y < HEIGHT_MAP)
+// 		{
+// 			my_mlx_pixel_put(data, x, y, 0x00FF0000);
+// 			y++;
+// 		}
+// 		x = x + hor_size_box;
+// 		total_added_size = total_added_size + hor_size_box;
+// 	}
+// }
 
-void	put_horizontal_lines(t_data *data)
-{
-	int	tmp_nb_rows;
-	int	vert_size_box;
-	int	total_added_size;
-	int	x;
-	int	y;
+// void	put_horizontal_lines(t_data *data)
+// {
+// 	int	tmp_nb_rows;
+// 	int	vert_size_box;
+// 	int	total_added_size;
+// 	int	x;
+// 	int	y;
 
-	tmp_nb_rows = data->cub->map_height;
-	vert_size_box = HEIGHT_MAP / tmp_nb_rows;
-	total_added_size = 0;
-	y = 0;
-	while (total_added_size < HEIGHT_MAP)
-	{
-		x = 0;
-		while (x < WIDTH_MAP)
-		{
-			my_mlx_pixel_put(data, x, y, 0x00FF0000);
-			x++;
-		}
-		y = y + vert_size_box;
-		total_added_size = total_added_size + vert_size_box;
-    }
-}
+// 	tmp_nb_rows = data->cub->map_height;
+// 	vert_size_box = HEIGHT_MAP / tmp_nb_rows;
+// 	total_added_size = 0;
+// 	y = 0;
+// 	while (total_added_size < HEIGHT_MAP)
+// 	{
+// 		x = 0;
+// 		while (x < WIDTH_MAP)
+// 		{
+// 			my_mlx_pixel_put(data, x, y, 0x00FF0000);
+// 			x++;
+// 		}
+// 		y = y + vert_size_box;
+// 		total_added_size = total_added_size + vert_size_box;
+//     }
+// }
 
 void	render_update_2d_map(t_data *data)
 {
@@ -336,7 +339,19 @@ int	*render_next_frame(t_data *data)
 		printf("Error: Puntero a mlx o cub es nulo.\n");
 		return (NULL);
 	}
+	double lol = data->cub->x_pos_dec;
+	data->cub->x_pos_dec = data->cub->map_width - 	data->cub->x_pos_dec;
 	render_update_game(data);
+	data->cub->x_pos_dec = lol;
 	render_update_2d_map(data);
+
+	// printf("                     |      x = %d, y = %d   | x = %.2f, y = %.2f |   x = %d, y = %d       |     %c     | x = %.2f, y = %.2f |   x = %d, y = %d |\n", 
+    // data->cub->x_pos_ind, data->cub->y_pos_ind, //Map position (INDEX) %d
+    // data->cub->x_pos_dec, data->cub->y_pos_dec, //Map position (dec) %.2f
+    // data->cub->x_pos_pixel, data->cub->y_pos_pixel, //Window Position (pixel) %d
+    // data->cub->direction, //DIRECTION
+    // data->cub->x_dir_dec, data->cub->y_dir_dec, //DirVector (dec)
+    // data->cub->x_satellite_pixel, data->cub->y_satellite_pixel); //SAT. (pixel)
+
 	return (0);
 }

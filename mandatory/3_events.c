@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 20:40:50 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/23 12:28:10 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/24 20:59:27 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void	move_backward(t_data *data)
 	apply_move_and_render(data, new_x, new_y);
 }
 
-void	move_right(t_data *data)
+void	move_left(t_data *data)
 {
 	double	x_perp;
 	double	y_perp;
@@ -116,7 +116,7 @@ void	move_right(t_data *data)
 	apply_move_and_render(data, new_x, new_y);
 }
 
-void	move_left(t_data *data)
+void	move_right(t_data *data)
 {
 	double	x_perp;
 	double	y_perp;
@@ -169,15 +169,15 @@ void	rotate_left(t_data *data)
 int	key_handler(int keycode, t_data *data)
 {
 	if (keycode == 65307)
-		close_program(data->mlx);
+		close_program(data);
 	if (keycode == W_MOVE_FORWARD)
 		move_forward(data);
 	if (keycode == S_MOVE_BACKWARDS)
 		move_backward(data);
 	if (keycode == A_MOVE_LEFT)
-		move_left(data);
+        move_left(data);
 	if (keycode == D_MOVE_RIGHT)
-		move_right(data);
+        move_right(data);
 	if (keycode == ROTATE_LEFT)
 		rotate_right(data);
 	if (keycode == ROTATE_RIGHT)

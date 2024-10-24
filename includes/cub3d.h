@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/22 17:15:43 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/24 20:58:12 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,8 +196,8 @@ int calculate_texture_y(int lineHeight);*/
 // Función para obtener el color de una textura
 
 // MLX
-void init_window(t_mlx *mlx);
-int close_program(t_mlx *mlx);
+void init_window(t_data *data);
+int close_program(t_data *data);
 
 /* 0_main.c */
 

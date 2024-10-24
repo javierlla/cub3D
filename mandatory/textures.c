@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:17:54 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/17 16:33:44 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/24 20:19:38 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int load_texture(t_data *data, int index, char *texture_path)
     }
 
     data->cub->textures_data[index] = mlx_get_data_addr(data->cub->textures[index], &data->cub->bits_per_pixel, &data->cub->line_length, &data->cub->endian);
-    printf("Endian de la textura %d: %d\n", index, data->cub->endian);
+    // printf("Endian de la textura %d: %d\n", index, data->cub->endian);
 
     if (!data->cub->textures_data[index])
     {

@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:14:15 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/24 20:03:53 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/24 20:19:15 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ double	normalize_minus_one_one(int x)
 void	get_ray_dir(t_data *data, t_raycast_vars *r, int x)
 {
 	r->cameraX = normalize_minus_one_one(x); //[-1,1]
-	printf("cameraX = %.2f\n", r->cameraX);
+	// printf("cameraX = %.2f\n", r->cameraX);
 	r->rayDirX = data->cub->x_dir_dec + data->cub->planeX * r->cameraX;
 	r->rayDirY = data->cub->y_dir_dec + data->cub->planeY * r->cameraX;
 	if (fabs(r->rayDirX) < 0.0001)

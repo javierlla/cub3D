@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:43:44 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/24 17:21:42 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/24 20:56:05 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,6 +219,19 @@ void	init_all(t_data *data)
 	set_player_position(data);
 	set_player_direction_vector(data);
 	set_initial_satellite_pixel_in_window(data);
-	init_window(data->mlx);
+	init_window(data);
+ 
+    // printf(YELLOW"\n 🧍Player information"RESET_COLOUR"| Map Position (INDEX) | Map position (dec)  |Window Position (PIXEL)  | DIRECTION |   DirVector (dec)   |    SAT. (pixel)   |\n");
+    // printf("                     "BLUE"|      x = %d, y = %d   | x = %.2f, y = %.2f |   x = %d, y = %d       |     %c     | x = %.2f, y = %.2f |   x = %d, y = %d |\n"RESET_COLOUR, 
+    
+    // data->cub->x_pos_ind, data->cub->y_pos_ind, //Map position (INDEX) %d
+    // data->cub->x_pos_dec, data->cub->y_pos_dec, //Map position (dec) %.2f
+    // data->cub->x_pos_pixel, data->cub->y_pos_pixel, //Window Position (pixel) %d
+    // data->cub->direction, //DIRECTION
+    // data->cub->x_dir_dec, data->cub->y_dir_dec, //DirVector (dec)
+    // data->cub->x_satellite_pixel, data->cub->y_satellite_pixel); //SAT. (pixel)
+
 	ft_events_init(data);
+
+	
 }
