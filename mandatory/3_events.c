@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 20:40:50 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/24 20:59:27 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/25 12:28:29 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,9 +175,9 @@ int	key_handler(int keycode, t_data *data)
 	if (keycode == S_MOVE_BACKWARDS)
 		move_backward(data);
 	if (keycode == A_MOVE_LEFT)
-        move_left(data);
+		move_left(data);
 	if (keycode == D_MOVE_RIGHT)
-        move_right(data);
+		move_right(data);
 	if (keycode == ROTATE_LEFT)
 		rotate_right(data);
 	if (keycode == ROTATE_RIGHT)

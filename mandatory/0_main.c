@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:15:26 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/22 18:05:24 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/25 12:24:12 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ int	main(int argc, char **argv)
 	ft_memset(mlx, 0, sizeof(t_mlx));
 	initialize(data, mlx, cub);
 	read_cub_file(data, argv[1]);
-// print_cub_data(cub); /* Debugging purposes */
 	init_all(data);
 	load_textures(data);
 	mlx_loop_hook(mlx->mlx_ptr, ((void *)render_next_frame(data)), cub);

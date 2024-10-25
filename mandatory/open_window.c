@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:14:32 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/24 20:57:52 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/25 12:30:00 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,16 @@ void	init_window(t_data *data)
 			screenWidth, screenHeight, "Cub3D");
 	if (!data->mlx->win_ptr)
 		exit_with_error("Failed to create window");
-	data->mlx->img = mlx_new_image(data->mlx->mlx_ptr, screenWidth, screenHeight);
+	data->mlx->img = mlx_new_image(data->mlx->mlx_ptr,
+			screenWidth, screenHeight);
 	if (!data->mlx->img)
 		exit_with_error("Failed to create image.\n");
-	data->mlx->addr = mlx_get_data_addr(data->mlx->img, &data->mlx->bits_per_pixel,
+	data->mlx->addr = mlx_get_data_addr(data->mlx->img,
+			&data->mlx->bits_per_pixel,
 			&data->mlx->line_length, &data->mlx->endian);
 	if (!data->mlx->addr)
 		exit_with_error("Failed to get image address.\n");
-	mlx_hook(data->mlx->win_ptr, 17, 0, (int (*)(void *))close_program, data->mlx);
+	mlx_hook(data->mlx->win_ptr, 17, 0,
+		(int (*)(void *))close_program, data->mlx);
 	mlx_hook(data->mlx->win_ptr, 2, 1L << 0, handle_keypress, data);
 }

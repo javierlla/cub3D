@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:14:15 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/24 20:19:15 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/25 12:39:00 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ double	normalize_minus_one_one(int x)
 */
 void	get_ray_dir(t_data *data, t_raycast_vars *r, int x)
 {
-	r->cameraX = normalize_minus_one_one(x); //[-1,1]
-	// printf("cameraX = %.2f\n", r->cameraX);
+	r->cameraX = -normalize_minus_one_one(x);
 	r->rayDirX = data->cub->x_dir_dec + data->cub->planeX * r->cameraX;
 	r->rayDirY = data->cub->y_dir_dec + data->cub->planeY * r->cameraX;
 	if (fabs(r->rayDirX) < 0.0001)
@@ -130,6 +129,31 @@ void	define_ray_dir(t_data *data, t_raycast_vars *r)
 	}
 }
 
+void	dda_step(t_data *data, t_raycast_vars *r, int *hit)
+{
+	if (r->sideDistX < r->sideDistY)
+	{
+		r->sideDistX += r->deltaDistX;
+		r->mapX += r->stepX;
+		r->side = 0;
+	}
+	else
+	{
+		r->sideDistY += r->deltaDistY;
+		r->mapY += r->stepY;
+		r->side = 1;
+	}
+	if (r->mapX < 0 || r->mapX >= data->cub->map_width
+		|| r->mapY < 0 || r->mapY >= data->cub->map_height)
+	{
+		*hit = 1;
+	}
+	else if (data->cub->map[r->mapY][r->mapX] == '1')
+	{
+		*hit = 1;
+	}
+}
+
 void	dda(t_data *data, t_raycast_vars *r)
 {
 	int	hit;
@@ -137,26 +161,7 @@ void	dda(t_data *data, t_raycast_vars *r)
 	hit = 0;
 	while (hit == 0)
 	{
-		if (r->sideDistX < r->sideDistY)
-		{
-			r->sideDistX += r->deltaDistX;
-			r->mapX += r->stepX;
-			r->side = 0;
-		}
-		else
-		{
-			r->sideDistY += r->deltaDistY;
-			r->mapY += r->stepY;
-			r->side = 1;
-		}
-		if (r->mapX < 0 || r->mapX >= data->cub->map_width
-			|| r->mapY < 0 || r->mapY >= data->cub->map_height)
-		{
-			hit = 1;
-			break ;
-		}
-		if (data->cub->map[r->mapY][r->mapX] == '1' )
-			hit = 1;
+		dda_step(data, r, &hit);
 	}
 }
 
@@ -234,7 +239,6 @@ void	texture_coordinates(t_raycast_vars *r)
 	}
 }
 
-
 void	paint_wall_line(t_data *data, t_raycast_vars *r, int x)
 {
 	int				y;
@@ -255,6 +259,22 @@ void	paint_wall_line(t_data *data, t_raycast_vars *r, int x)
 	}
 }
 
+void	raycast_column(t_data *data, t_raycast_vars *r, int x)
+{
+	get_ray_dir(data, r, x);
+	set_initial_ray_pos(data, r);
+	calculate_delta_dist(r);
+	define_ray_dir(data, r);
+	dda(data, r);
+	get_perp_wall_dist(data, r);
+	get_wall_height_in_window(r);
+	set_draw_start_and_end(r);
+	get_texture_coordinates(data, r);
+	verify_wallx_zero_one(r);
+	texture_coordinates(r);
+	paint_wall_line(data, r, x);
+}
+
 void	raycast(t_data *data)
 {
 	t_raycast_vars	*r;
@@ -266,21 +286,16 @@ void	raycast(t_data *data)
 		return ;
 	}
 	r = malloc(sizeof(t_raycast_vars));
+	if (r == NULL)
+	{
+		printf("Error: Memoria no asignada para raycasting.\n");
+		return ;
+	}
 	x = 0;
 	while (x < screenWidth)
 	{
-		get_ray_dir(data, r, x);
-		set_initial_ray_pos(data, r); //mapX, mapY --> copia de posición jugador (x_pos_dec, y_pos_dec)
-		calculate_delta_dist(r); // 1/rayDirX, 1/rayDirY, lógica razón trigonométrica pdte. entender
-		define_ray_dir(data, r);
-		dda(data, r);
-		get_perp_wall_dist(data, r);
-		get_wall_height_in_window(r);
-		set_draw_start_and_end(r);
-		get_texture_coordinates(data, r);
-		verify_wallx_zero_one(r);
-		texture_coordinates(r);
-		paint_wall_line(data, r, x);
+		raycast_column(data, r, x);
 		x++;
 	}
+	free(r);
 }
