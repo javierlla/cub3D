@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:22:05 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/28 14:02:27 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/28 17:32:44 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,3 @@ void	free_resources(t_data *data)
 		free(data);
 	}
 }
-

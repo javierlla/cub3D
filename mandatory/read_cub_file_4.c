@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 14:24:29 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/28 13:00:20 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/28 17:57:48 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,19 @@ void	validate_player_position(t_data *data, int *player_count, int i, int j)
 	char	orientation;
 
 	orientation = data->cub->map[i][j];
-	if (*player_count == 0)
+	if (*player_count > 0)
 	{
-		data->cub->x_pos_dec = j + 0.5;
-		data->cub->y_pos_dec = i + 0.5;
-		if (orientation == 'N')
-			set_orientation_north(data);
-		else if (orientation == 'S')
-			set_orientation_south(data);
-		else if (orientation == 'E')
-			set_orientation_east(data);
-		else if (orientation == 'W')
-			set_orientation_west(data);
-		(*player_count)++;
+		exit_with_error("Multiple player positions found");
 	}
+	data->cub->x_pos_dec = j + 0.5;
+	data->cub->y_pos_dec = i + 0.5;
+	if (orientation == 'N')
+		set_orientation_north(data);
+	else if (orientation == 'S')
+		set_orientation_south(data);
+	else if (orientation == 'E')
+		set_orientation_east(data);
+	else if (orientation == 'W')
+		set_orientation_west(data);
+	(*player_count)++;
 }

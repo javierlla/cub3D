@@ -6,7 +6,7 @@
 #    By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 17:25:33 by jllarena          #+#    #+#              #
-#    Updated: 2024/10/28 13:27:25 by jllarena         ###   ########.fr        #
+#    Updated: 2024/10/28 17:10:25 by jllarena         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 NAME            = cub3D
 CC              = gcc
 RM              = rm -rf
-FLAGS           = -Wall -Wextra -Werror -Ilibft -Imlx -g #-g3 -fsanitize=address
+FLAGS           = -Wall -Wextra -Werror -Ilibft -Imlx  #-g3 -fsanitize=address
 
 # FILES AND PATH
 

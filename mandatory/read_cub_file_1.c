@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:33:35 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/25 14:06:12 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/28 17:29:17 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,17 @@ void	read_and_process_file(t_data *data, int fd)
 	int		line_start;
 
 	line_start = 0;
-	while ((bytes_read = read(fd, buffer, BUFFER_SIZE - 1)) > 0)
+	bytes_read = read(fd, buffer, BUFFER_SIZE - 1);
+	if (bytes_read < 0)
+		exit_with_error("Error al leer el archivo");
+	while (bytes_read > 0)
 	{
 		buffer[bytes_read] = '\0';
 		process_buffer(data, buffer, bytes_read, &line_start);
+		bytes_read = read(fd, buffer, BUFFER_SIZE - 1);
+		if (bytes_read < 0)
+			exit_with_error("Error al leer el archivo");
 	}
-	if (bytes_read < 0)
-		exit_with_error("Error al leer el archivo");
 }
 
 void	close_and_validate(int fd, t_data *data)

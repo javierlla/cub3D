@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 14:23:53 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/25 14:23:54 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/28 17:58:36 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	allocate_initial_map(t_data *data)
 	data->cub->map_width = 0;
 	data->cub->map = malloc(sizeof(char *) * 1);
 	if (!data->cub->map)
-		exit_with_error("Fallo en la asignación de memoria para el mapa");
+		exit_with_error("Failure in memory allocation for the map line");
 }
 
 void	reallocate_map(t_data *data)
@@ -28,7 +28,7 @@ void	reallocate_map(t_data *data)
 
 	new_map = malloc(sizeof(char *) * (data->cub->map_height + 1));
 	if (!new_map)
-		exit_with_error("Fallo en la asignación de memoria para el mapa");
+		exit_with_error("Failure in memory allocation for the map line");
 	i = 0;
 	while (i < data->cub->map_height)
 	{
@@ -54,7 +54,7 @@ void	parse_map_line(t_data *data, char *line)
 		reallocate_map(data);
 	data->cub->map[data->cub->map_height] = ft_strdup(trimmed_line);
 	if (!data->cub->map[data->cub->map_height])
-		exit_with_error("failure in memory allocation for the map line");
+		exit_with_error("Failure in memory allocation for the map line");
 	data->cub->map_height++;
 	free(trimmed_line);
 }
