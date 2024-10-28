@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_window.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:14:32 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/28 14:14:50 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:54:07 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ int	close_program(t_data *data)
 {
 	if (data != NULL && data->mlx != NULL && data->mlx->win_ptr != NULL)
 	{
-		printf("el puntero es \n\n%p\n\n", data->mlx);
-		printf("el puntero es %p", data->mlx->win_ptr);
 		mlx_destroy_window(data->mlx->mlx_ptr, data->mlx->win_ptr);
 		data->mlx->win_ptr = NULL;
 	}

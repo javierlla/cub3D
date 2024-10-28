@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/28 13:06:11 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/28 19:47:20 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@
 # define D_MOVE_RIGHT 100
 # define ROTATE_LEFT 65363  // Left arrow
 # define ROTATE_RIGHT 65361 // Right arrow
+# define ESC 65307
 
 typedef struct raycast_variables
 {
