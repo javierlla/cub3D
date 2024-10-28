@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:14:32 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/28 19:54:07 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/28 20:04:04 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,5 @@ void	init_window(t_data *data)
 			&data->mlx->line_length, &data->mlx->endian);
 	if (!data->mlx->addr)
 		exit_with_error("Failed to get image address.\n");
-	mlx_hook(data->mlx->win_ptr, 17, 0,
-		(int (*)(void *))close_program, data);
 	mlx_hook(data->mlx->win_ptr, 2, 1L << 0, handle_keypress, data);
 }

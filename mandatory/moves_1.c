@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 20:40:50 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/28 19:53:55 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/28 20:02:56 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,6 @@ int	key_handler(int keycode, t_data *data)
 
 void	ft_events_init(t_data *data)
 {
-	// mlx_hook(data->mlx->win_ptr, 17, 0,
-	// 	(int (*)(void *))close_program, data->mlx);
 	mlx_hook(data->mlx->win_ptr, 17, (1L << 17),
 		&close_program, data);
 	mlx_hook(data->mlx->win_ptr, 2, 1L << 0, key_handler, data);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   raycast_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:26:49 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/28 13:07:28 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/28 20:05:49 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@
 *  6 ---P---|---|---|---|-         6 units in Y direction for every 
 *  4 ---|---|---|---|---|-         step along ray's path.
 *  5 ---|---|---|---|---|-         
-*  3 ---|---|---|---|---|-  rayDirX = 1;  deltaDistX = 1 / rayDirX = 1 / 1 = 1
-*  2 ---|---|---|---|---|-rayDirY = 6;  deltaDistY= 1 / rayDirY= 1 / 6= 0.166666
-*  1 ---|---|---|---|---|-         
-*  0   1   2   3   4   5
+*  3 ---|---|---|---|---|-  rayDirX = 1;
+*  2 ---|---|---|---|---|-      deltaDistX = 1 / rayDirX = 1 / 1 = 1
+*  1 ---|---|---|---|---|-  rayDirY = 6;
+*  0   1   2   3   4   5        deltaDistY = 1 / rayDirY= 1 / 6 = 0.166666      
 *
 *
 * R (3, 2) P is more vertical than horizontalR is more horizontal than vertical

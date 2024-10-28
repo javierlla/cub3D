@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_cub_file_4.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 14:24:29 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/28 17:57:48 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/28 20:02:00 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	set_orientation_east(t_data *data)
 	data->cub->y_dir_dec = 0;
 	data->cub->plane_x = 0.66;
 	data->cub->plane_y = 0;
-	printf("\n\nx_dir_dec en E = %2f\n\n", data->cub->x_dir_dec);
 }
 
 void	set_orientation_west(t_data *data)
@@ -43,7 +42,6 @@ void	set_orientation_west(t_data *data)
 	data->cub->y_dir_dec = 0;
 	data->cub->plane_x = -0.66;
 	data->cub->plane_y = 0;
-	printf("\n\nx_dir_dec en W = %2f\n\n", data->cub->x_dir_dec);
 }
 
 void	validate_player_position(t_data *data, int *player_count, int i, int j)

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+         #
+#    By: uxmancis <uxmancis>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 17:25:33 by jllarena          #+#    #+#              #
-#    Updated: 2024/10/28 17:10:25 by jllarena         ###   ########.fr        #
+#    Updated: 2024/10/28 20:08:15 by uxmancis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,6 @@ MPATH_SRCS  = 0_main.c \
 				render_1.c \
 				render_2.c \
 				render_3.c \
-				render_4.c \
 				textures_1.c\
 				textures_2.c\
 				
