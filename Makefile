@@ -6,7 +6,7 @@
 #    By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 17:25:33 by jllarena          #+#    #+#              #
-#    Updated: 2024/10/25 14:55:04 by jllarena         ###   ########.fr        #
+#    Updated: 2024/10/28 13:27:25 by jllarena         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 NAME            = cub3D
 CC              = gcc
 RM              = rm -rf
-FLAGS           = -Wall -Wextra -Werror -Ilibft -Imlx #-g3 -fsanitize=address
+FLAGS           = -Wall -Wextra -Werror -Ilibft -Imlx -g #-g3 -fsanitize=address
 
 # FILES AND PATH
 
@@ -33,12 +33,22 @@ MPATH_SRCS  = 0_main.c \
 				init_2.c \
 				init_3.c \
 				init_aux.c \
-				3_events.c \
+				moves_1.c \
+				moves_2.c \
+				moves_3.c \
+				moves_4.c \
 				99_utils.c \
 				open_window.c \
-				parse_utils.c \
-				raycast.c \
-				render.c \
+				parse_utils_1.c \
+				parse_utils_2.c \
+				raycast_1.c \
+				raycast_2.c \
+				raycast_3.c \
+				raycast_4.c \
+				render_1.c \
+				render_2.c \
+				render_3.c \
+				render_4.c \
 				textures_1.c\
 				textures_2.c\
 				

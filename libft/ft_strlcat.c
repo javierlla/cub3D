@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 10:36:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/23 12:44:36 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/28 13:09:25 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	}
 	dst[destino + i] = '\0';
 	return (destino + origen);
-}	
-
+}
 
 /*int main(void)
 {

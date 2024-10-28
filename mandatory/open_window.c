@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/04 17:14:32 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/25 12:30:00 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/28 14:14:50 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 int	close_program(t_data *data)
 {
-	if (data->mlx && data->mlx->win_ptr)
+	if (data != NULL && data->mlx != NULL && data->mlx->win_ptr != NULL)
 	{
+		printf("el puntero es \n\n%p\n\n", data->mlx);
+		printf("el puntero es %p", data->mlx->win_ptr);
 		mlx_destroy_window(data->mlx->mlx_ptr, data->mlx->win_ptr);
 		data->mlx->win_ptr = NULL;
 	}
@@ -40,11 +42,11 @@ void	init_window(t_data *data)
 		free(data->mlx);
 	}
 	data->mlx->win_ptr = mlx_new_window(data->mlx->mlx_ptr,
-			screenWidth, screenHeight, "Cub3D");
+			SCREENWIDTH, SCREENHEIGHT, "Cub3D");
 	if (!data->mlx->win_ptr)
 		exit_with_error("Failed to create window");
 	data->mlx->img = mlx_new_image(data->mlx->mlx_ptr,
-			screenWidth, screenHeight);
+			SCREENWIDTH, SCREENHEIGHT);
 	if (!data->mlx->img)
 		exit_with_error("Failed to create image.\n");
 	data->mlx->addr = mlx_get_data_addr(data->mlx->img,
@@ -53,6 +55,6 @@ void	init_window(t_data *data)
 	if (!data->mlx->addr)
 		exit_with_error("Failed to get image address.\n");
 	mlx_hook(data->mlx->win_ptr, 17, 0,
-		(int (*)(void *))close_program, data->mlx);
+		(int (*)(void *))close_program, data);
 	mlx_hook(data->mlx->win_ptr, 2, 1L << 0, handle_keypress, data);
 }

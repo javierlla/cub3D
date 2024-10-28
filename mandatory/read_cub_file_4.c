@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 14:24:29 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/25 14:24:30 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/28 13:00:20 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,24 +16,24 @@ void	set_orientation_north(t_data *data)
 {
 	data->cub->x_dir_dec = 0;
 	data->cub->y_dir_dec = -1;
-	data->cub->planeX = 0;
-	data->cub->planeY = 0.66;
+	data->cub->plane_x = 0;
+	data->cub->plane_y = 0.66;
 }
 
 void	set_orientation_south(t_data *data)
 {
 	data->cub->x_dir_dec = 0;
 	data->cub->y_dir_dec = 1;
-	data->cub->planeX = 0;
-	data->cub->planeY = -0.66;
+	data->cub->plane_x = 0;
+	data->cub->plane_y = -0.66;
 }
 
 void	set_orientation_east(t_data *data)
 {
 	data->cub->x_dir_dec = 1;
 	data->cub->y_dir_dec = 0;
-	data->cub->planeX = 0.66;
-	data->cub->planeY = 0;
+	data->cub->plane_x = 0.66;
+	data->cub->plane_y = 0;
 	printf("\n\nx_dir_dec en E = %2f\n\n", data->cub->x_dir_dec);
 }
 
@@ -41,8 +41,8 @@ void	set_orientation_west(t_data *data)
 {
 	data->cub->x_dir_dec = -1;
 	data->cub->y_dir_dec = 0;
-	data->cub->planeX = -0.66;
-	data->cub->planeY = 0;
+	data->cub->plane_x = -0.66;
+	data->cub->plane_y = 0;
 	printf("\n\nx_dir_dec en W = %2f\n\n", data->cub->x_dir_dec);
 }
 

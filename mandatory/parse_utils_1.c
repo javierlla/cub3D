@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_utils.c                                      :+:      :+:    :+:   */
+/*   parse_utils_1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:44:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/24 17:44:50 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/28 11:22:54 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,38 +18,6 @@ void	exit_with_error(const char *message)
 	write(2, message, strlen(message));
 	write(2, "\n", 1);
 	exit(EXIT_FAILURE);
-}
-
-int	count_commas(const char *line)
-{
-	int	count;
-
-	count = 0;
-	while (*line)
-	{
-		if (*line == ',')
-			count++;
-		line++;
-	}
-	return (count);
-}
-
-int	parse_color(char *line)
-{
-	int	r;
-	int	g;
-	int	b;
-
-	if (count_commas(line) != 2)
-		exit_with_error("Color should be in format R,G,B");
-	r = ft_atoi(line);
-	line = ft_strchr(line, ',') + 1;
-	g = ft_atoi(line);
-	line = ft_strchr(line, ',') + 1;
-	b = ft_atoi(line);
-	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
-		exit_with_error("Color values must be in the range [0, 255]");
-	return ((r << 16) | (g << 8) | b);
 }
 
 char	*trim_whitespace(char *str)
@@ -79,27 +47,6 @@ char	*extract_path(char *line)
 		exit_with_error("Texture file must have a .xpm extension");
 	}
 	return (ft_strdup(path));
-}
-
-void	free_resources(t_data *data)
-{
-	int	i;
-
-	if (data)
-	{
-		i = 0;
-		while (i < 4)
-		{
-			if (data->cub->textures[i])
-				mlx_destroy_image(data->mlx->mlx_ptr, data->cub->textures[i]);
-			i++;
-		}
-		free(data->cub->textures);
-		free(data->cub->textures_data);
-		free(data->cub);
-		free(data->mlx);
-		free(data);
-	}
 }
 
 void	check_file_extension(const char *filename)

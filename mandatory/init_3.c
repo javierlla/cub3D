@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 14:33:59 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/25 14:48:12 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/28 12:59:55 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 *	Returns -1 = Error, not expected result
 */
 int	decimal_to_pixel(t_data *data, float decimal,
-	enum width_or_height indicator)
+	enum e_width_or_height indicator)
 {
 	int	height_column;
 	int	width_row;
@@ -80,6 +80,6 @@ void	angle_to_rad(t_data *data)
 		angle_radian -= 2 * PI;
 	data->cub->x_dir_dec = cos(angle_radian);
 	data->cub->y_dir_dec = sin(angle_radian);
-	data->cub->planeX = 0.66 * sin(angle_radian);
-	data->cub->planeY = 0.66 * -cos(angle_radian);
+	data->cub->plane_x = 0.66 * sin(angle_radian);
+	data->cub->plane_y = 0.66 * -cos(angle_radian);
 }
