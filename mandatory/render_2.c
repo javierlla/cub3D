@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:43:45 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/28 11:51:43 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/29 19:23:19 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ void	put_circle_around_player(t_data *data)
 		draw_blue_dot(data, i, img_circle);
 		i++;
 	}
+	mlx_destroy_image(data->mlx->mlx_ptr, img_circle);
+	// free(img_circle);
 }
 
 void	put_satellite_in_map(t_data *data)
@@ -68,6 +70,7 @@ void	put_satellite_in_map(t_data *data)
 	mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win_ptr,
 		img_satellite, data->cub->x_satellite_pixel,
 		data->cub->y_satellite_pixel);
+	mlx_destroy_image(data->mlx->mlx_ptr, img_satellite);
 }
 
 void	put_2d_map_background(t_data *data)

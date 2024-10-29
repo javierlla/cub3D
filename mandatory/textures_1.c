@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   textures_1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:17:54 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/25 14:57:12 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/29 19:17:35 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ int	load_texture_image(t_data *data, int index, char *texture_path)
 		printf("Error: Textura no cargada en %s\n", texture_path);
 		return (-1);
 	}
+	// free ()
 	return (0);
 }
 

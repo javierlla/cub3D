@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:44:01 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/28 11:51:47 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/29 19:23:27 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,6 @@ void	put_dot_in_map(t_data *data)
 		printf(RED"Error: img is NULL\n"RESET_COLOUR);
 	mlx_put_image_to_window(data->mlx->mlx_ptr, data->mlx->win_ptr, img_dot,
 		data->cub->x_pos_pixel, data->cub->y_pos_pixel);
+	// free(img_dot);
+	mlx_destroy_image(data->mlx->mlx_ptr, img_dot);
 }

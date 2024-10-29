@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/28 19:47:20 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/29 18:42:40 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ enum e_width_or_height
 
 typedef struct s_mlx
 {
-	void	*mlx_ptr;
+	void	*mlx_ptr; //=mlx_init, en fractol: mlx_connection
 	void	*win_ptr;
 	void	*img;
 	char	*addr;

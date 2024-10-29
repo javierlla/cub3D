@@ -6,7 +6,7 @@
 #    By: uxmancis <uxmancis>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 17:25:33 by jllarena          #+#    #+#              #
-#    Updated: 2024/10/28 20:08:15 by uxmancis         ###   ########.fr        #
+#    Updated: 2024/10/29 19:07:52 by uxmancis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 NAME            = cub3D
 CC              = gcc
 RM              = rm -rf
-FLAGS           = -Wall -Wextra -Werror -Ilibft -Imlx  #-g3 -fsanitize=address
+FLAGS           = -Wall -Wextra -Werror -Ilibft -Imlx  -g3 -fsanitize=address
 
 # FILES AND PATH
 
