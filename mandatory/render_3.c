@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:44:01 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/29 19:29:09 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/29 20:02:43 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,16 @@ int	px_is_in_wall(int x_px, int y_px, t_data *data)
 
 	x_index = x_px * data->cub->map_width / WIDTH_MAP;
 	y_index = y_px * data->cub->map_height / HEIGHT_MAP;
-	if (data->cub->map[y_index][x_index] == '1')
-		return (1);
+
+	// printf("x_index: %d\n", x_index);
+	// printf("y_index: %d\n----------------\n", y_index);
+	if (data->cub->map[y_index][x_index])
+	{
+		if (data->cub->map[y_index][x_index] == '1')
+			return (1);
+		else
+			return (0);
+	}
 	else
 		return (0);
 }

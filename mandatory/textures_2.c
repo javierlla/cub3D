@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   textures_2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 14:55:33 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/25 14:57:22 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/29 19:40:38 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	load_textures(t_data *data)
 		if (!data->cub->textures[i] || !data->cub->textures_data[i])
 		{
 			printf("Error: La textura %d no se ha cargado correctamente.\n", i);
+			exit(EXIT_FAILURE);
 			return ;
 		}
 		i++;

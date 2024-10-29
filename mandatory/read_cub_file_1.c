@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_cub_file_1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:33:35 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/28 17:29:17 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/29 20:13:29 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	open_and_validate_file(const char *filename)
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-		exit_with_error("Fallo al abrir el archivo .cub");
+		exit_with_error("File opening not possible");
 	return (fd);
 }
 
@@ -53,14 +53,14 @@ void	read_and_process_file(t_data *data, int fd)
 	line_start = 0;
 	bytes_read = read(fd, buffer, BUFFER_SIZE - 1);
 	if (bytes_read < 0)
-		exit_with_error("Error al leer el archivo");
+		exit_with_error("Reading not possible");
 	while (bytes_read > 0)
 	{
 		buffer[bytes_read] = '\0';
 		process_buffer(data, buffer, bytes_read, &line_start);
 		bytes_read = read(fd, buffer, BUFFER_SIZE - 1);
 		if (bytes_read < 0)
-			exit_with_error("Error al leer el archivo");
+			exit_with_error("Reading not possible");
 	}
 }
 
