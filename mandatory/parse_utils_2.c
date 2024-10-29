@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:22:05 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/29 19:19:53 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/29 19:28:52 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,36 @@ int	parse_color(char *line)
 	return ((r << 16) | (g << 8) | b);
 }
 
+void	free_resources_2(t_data *data)
+{
+	int	tmp;
+	int	index;
+
+	tmp = data->cub->map_height;
+	index = 0;
+	while (tmp > 0)
+	{
+		free(data->cub->map[index]);
+		tmp--;
+		index++;
+	}
+	free(data->cub->south_texture);
+	free(data->cub->north_texture);
+	free(data->cub->west_texture);
+	free(data->cub->east_texture);
+	free(data->cub->map);
+	free(data->cub);
+	mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img);
+	free(data->mlx->mlx_ptr);
+	free(data->mlx->win_ptr);
+	free(data->mlx);
+	free(data);
+}
+
 void	free_resources(t_data *data)
 {
 	int	i;
-	int tmp;
-	int index;
-	
-	tmp = data->cub->map_height;
-	index = 0;
+
 	if (data)
 	{
 		i = 0;
@@ -60,35 +82,12 @@ void	free_resources(t_data *data)
 			if (data->cub->textures[i])
 			{
 				mlx_destroy_image(data->mlx->mlx_ptr, data->cub->textures[i]);
-				// free (data->cub->textures_data[i]);
 				data->cub->textures[i] = NULL;
 			}
 			i++;
 		}
 		free(data->cub->textures);
 		free(data->cub->textures_data);
-		//printf(MAGENTA"testing, data->cub->map_height: %d\n"RESET_COLOUR, data->cub->map_height);
-		while (tmp > 0)
-		{
-			free(data->cub->map[index]);
-			tmp--;
-			index++;
-		}
-		// printf(GREEN"testing, data->cub->map_height: %d\n"RESET_COLOUR, data->cub->map_height);
-		free(data->cub->south_texture);
-		free(data->cub->north_texture);
-		free(data->cub->west_texture);
-		free(data->cub->east_texture);
-		free(data->cub->map);
-		free(data->cub);
-		mlx_destroy_image(data->mlx->mlx_ptr, data->mlx->img);
-		
-		/* Double free */
-		// if (data->mlx->img)
-		// 	free(data->mlx->img);
-		free(data->mlx->mlx_ptr);
-		free(data->mlx->win_ptr);
-		free(data->mlx);
-		free(data);
+		free_resources_2(data);
 	}
 }

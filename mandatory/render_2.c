@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:43:45 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/29 19:23:19 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/29 19:29:02 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void	put_circle_around_player(t_data *data)
 		i++;
 	}
 	mlx_destroy_image(data->mlx->mlx_ptr, img_circle);
-	// free(img_circle);
 }
 
 void	put_satellite_in_map(t_data *data)
