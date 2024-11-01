@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:44:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/28 11:22:54 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/01 13:54:50 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,33 +58,47 @@ void	check_file_extension(const char *filename)
 		exit_with_error("The map file must have a .cub extension");
 }
 
-char	*remove_spaces(char *line)
+char *replace_spaces_with_ones(char *line)
 {
-	char	*result;
-	char	*ptr;
-	size_t	len;
+    char *result;
+    int i = 0;
+    int length = strlen(line);
 
-	len = 0;
-	ptr = line;
-	while (*ptr)
-	{
-		if (*ptr != ' ')
-			len++;
-		ptr++;
-	}
-	result = (char *)malloc(len + 1);
-	if (!result)
-		exit_with_error("Memory allocation failed");
-	ptr = line;
-	while (*ptr)
-	{
-		if (*ptr != ' ')
-			*result++ = *ptr;
-		ptr++;
-	}
-	*result = '\0';
-	return (result - len);
+    result = malloc(length + 1);
+    if (!result)
+        exit_with_error("memory failed");
+    while (line[i] != '\0')
+    {
+        if (line[i] == ' ')
+            result[i] = '1';
+        else
+            result[i] = line[i];
+        i++;
+    }
+    result[i] = '\0';
+    return (result);
 }
+
+
+char *replace_initial_spaces_with_two(char *line, int target_width)
+{
+    int len = strlen(line);
+    char *result = malloc(target_width + 1);
+    if (!result)
+        exit_with_error("Error de asignación de memoria para eliminar espacios");
+
+    int i = 0;
+    int padding_length = target_width - len;
+
+    for (int j = 0; j < padding_length; j++) {
+        result[i++] = '2';
+    }
+    strcpy(&result[i], line);
+    
+    printf("Linea original: \"%s\"\nLinea modificada: \"%s\"\n", line, result);
+    return result;
+}
+
 /*
 void print_cub_data(t_cub *cub)
 {

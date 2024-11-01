@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/29 18:42:40 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/11/01 11:45:23 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@
 # define AQUAMARINE "\033[0;96m"
 
 # define PI 3.14159265358979323846
+
+#define BUFFER_SIZE 1024
 
 /*---------- Dimensions | Window 1: Cub D (Project--------*/
 # define SCREENWIDTH 2560  // HEIGHT_WINDOW in Uxu's branch
@@ -165,6 +167,9 @@ void			check_file_extension(const char *filename);
 void			free_resources(t_data *data);
 char			*remove_spaces(char *line);
 char			*trim_whitespace(char *str);
+char			*replace_spaces_with_ones(char *line);
+char *replace_initial_spaces_with_ones(char *line, int target_width);
+char *pad_map_line(char *line, int target_width);
 // Función para obtener el color de una textura
 // MLX
 void			init_window(t_data *data);

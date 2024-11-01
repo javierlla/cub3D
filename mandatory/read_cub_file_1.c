@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   read_cub_file_1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:33:35 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/29 20:13:29 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/11/01 09:48:03 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-#define BUFFER_SIZE 1024
 
 int	open_and_validate_file(const char *filename)
 {
