@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:17:54 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/11/04 18:03:23 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/10/29 19:39:53 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	verify_texture_params(int index, char *texture_path)
 		printf("Error: Ruta de la textura es nula %d.\n", index);
 		return (-1);
 	}
-	printf(GREEN"verify_texture_params completed\n"RESET_COLOUR);
 	return (0);
 }
 
@@ -66,13 +65,11 @@ int	load_texture_image(t_data *data, int index, char *texture_path)
 	height = TEX_HEIGHT;
 	data->cub->textures[index] = mlx_xpm_file_to_image(data->cub->mlx->mlx_ptr,
 			texture_path, &width, &height);
-	//printf(BLUE"test, void * textures = %p\n"RESET_COLOUR, data->cub->textures[index]);
 	if (!data->cub->textures[index])
 	{
 		printf("Error: Textura no cargada en %s\n", texture_path);
 		return (-1);
 	}
-	printf(GREEN"load_texture_image completed\n"RESET_COLOUR);
 	return (0);
 }
 
@@ -88,15 +85,12 @@ int	get_texture_data(t_data *data, int index)
 			data->cub->textures[index]);
 		return (-1);
 	}
-	printf(GREEN"get_texture_data completed\n"RESET_COLOUR);
 	return (0);
 }
 
 // Función principal de carga de textura que llama a las funciones auxiliares.
 int	load_texture(t_data *data, int index, char *texture_path)
 {
-	printf(RED"texture_path = %s\n"RESET_COLOUR, texture_path);
-	
 	if (verify_texture_params(index, texture_path) == -1)
 		return (-1);
 	if (load_texture_image(data, index, texture_path) == -1)

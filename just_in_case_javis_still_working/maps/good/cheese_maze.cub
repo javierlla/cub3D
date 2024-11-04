@@ -1,7 +1,7 @@
 NO ./textures/simonkraft/wet_sponge.xpm
-SO ./textures/simonkraft/basalt_top.xpm
+SO ./textures/simonkraft/basalt_top.xpm         
 WE ./textures/simonkraft/bookshelf_01.xpm
-EA ./textures/simonkraft/bookshelf.xpm
+EA ./textures/simonkraft/bookshelf.xpm    
 
 F 164,169,20        
 C 153,204,255    
