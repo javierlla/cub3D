@@ -6,7 +6,7 @@
 #    By: uxmancis <uxmancis>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 17:25:33 by jllarena          #+#    #+#              #
-#    Updated: 2024/10/15 21:26:02 by uxmancis         ###   ########.fr        #
+#    Updated: 2024/11/01 10:42:37 by uxmancis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,7 @@
 NAME            = cub3D
 CC              = gcc
 RM              = rm -rf
-FLAGS           = -Wall -Wextra -Werror -Ilibft -Imlx #-g3 -fsanitize=address
+FLAGS           = -Wall -Wextra -Werror -Ilibft -Imlx  -g3 -fsanitize=address
 
 # FILES AND PATH
 
@@ -25,15 +25,33 @@ HEADER      = $(addprefix $(HEADER_DIR), $(HEADER_SRCS))
 
 
 MPATH_SRCS  = 0_main.c \
-			  1_read_cub_file.c \
-			  2_init.c \
-			  3_events.c \
-			  99_utils.c \
-		      open_window.c \
-			  parse_utils.c \
-			  raycast.c \
-			  render.c \
-			  textures.c
+				read_cub_file_1.c \
+				read_cub_file_2.c \
+				read_cub_file_3.c \
+				read_cub_file_4.c \
+				gnl1.c \
+				gnl2.c \
+				init_1.c \
+				init_2.c \
+				init_3.c \
+				init_aux.c \
+				moves_1.c \
+				moves_2.c \
+				moves_3.c \
+				moves_4.c \
+				99_utils.c \
+				open_window.c \
+				parse_utils_1.c \
+				parse_utils_2.c \
+				raycast_1.c \
+				raycast_2.c \
+				raycast_3.c \
+				raycast_4.c \
+				render_1.c \
+				render_2.c \
+				render_3.c \
+				textures_1.c\
+				textures_2.c\
 				
 MPATH_DIR   = mandatory/
 MPATH       = $(addprefix $(MPATH_DIR), $(MPATH_SRCS))
