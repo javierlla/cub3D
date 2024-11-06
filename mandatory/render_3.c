@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_3.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:44:01 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/29 20:02:43 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/11/06 19:31:32 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	px_is_in_wall(int x_px, int y_px, t_data *data)
 	// printf("y_index: %d\n----------------\n", y_index);
 	if (data->cub->map[y_index][x_index])
 	{
-		if (data->cub->map[y_index][x_index] == '1')
+		if (data->cub->map[y_index][x_index] == '1' || data->cub->map[y_index][x_index] == '3')
 			return (1);
 		else
 			return (0);

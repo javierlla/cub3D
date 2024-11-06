@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:44:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/01 13:54:50 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/06 19:30:43 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,74 +58,137 @@ void	check_file_extension(const char *filename)
 		exit_with_error("The map file must have a .cub extension");
 }
 
-char *replace_spaces_with_ones(char *line)
+char *replace_initial_and_final_spaces_with_three(char *line)
 {
-    char *result;
-    int i = 0;
-    int length = strlen(line);
+    int end;
+    int len;
+    int start;
 
-    result = malloc(length + 1);
-    if (!result)
-        exit_with_error("memory failed");
-    while (line[i] != '\0')
+    start = 0;
+    len = ft_strlen(line);
+    while (line[start] == ' ')
+    {
+        line[start] = '3';
+        start++;
+    }
+    end = len - 1;
+    while (end >= start && line[end] == ' ')
+    {
+        line[end] = '3';
+        end--;
+    }
+    return (line);
+}
+
+
+char *replace_internal_spaces_with_ones(char *line)
+{
+    int len;
+    int i;
+
+    len = ft_strlen(line);
+    i = 0;
+    while (i < len)
     {
         if (line[i] == ' ')
-            result[i] = '1';
-        else
-            result[i] = line[i];
+            line[i] = '1';
         i++;
     }
-    result[i] = '\0';
-    return (result);
+    return (line);
 }
 
-
-char *replace_initial_spaces_with_two(char *line, int target_width)
+void fill_end_with_three(char **map, int map_height, int target_width)
 {
-    int len = strlen(line);
-    char *result = malloc(target_width + 1);
-    if (!result)
-        exit_with_error("Error de asignación de memoria para eliminar espacios");
-
     int i = 0;
-    int padding_length = target_width - len;
-
-    for (int j = 0; j < padding_length; j++) {
-        result[i++] = '2';
+    while (i < map_height)
+    {
+        int line_length = ft_strlen(map[i]);
+        if (line_length < target_width)
+        {
+            char *new_line = malloc(target_width + 1);
+            if (!new_line)
+                exit_with_error("Error de asignación de memoria al rellenar con '3'");
+            ft_strcpy(new_line, map[i]);
+            ft_memset(new_line + line_length, '3', target_width - line_length);
+            new_line[target_width] = '\0';
+            free(map[i]);
+            map[i] = new_line;
+        }
+        i++;
     }
-    strcpy(&result[i], line);
+}
+
+void validate_adjacent_to_3(t_data *data, int i, int j)
+{
+    char    valid_chars[] = {' ', '1', '3'};
     
-    printf("Linea original: \"%s\"\nLinea modificada: \"%s\"\n", line, result);
-    return result;
+    int adjacent[4][2] = {
+        {i - 1, j},    // Arriba
+        {i + 1, j},    // Abajo
+        {i, j - 1},    // Izquierda
+        {i, j + 1}     // Derecha
+    };
+    int k = 0;
+    while (k < 4) {
+        int x = adjacent[k][0];
+        int y = adjacent[k][1];
+
+        // Verificar que la posición esté dentro del límite del mapa
+        if (x >= 0 && x < data->cub->map_height && y >= 0 && y < data->cub->map_width) {
+            char adjacent_char = data->cub->map[x][y];
+            int valid = 0;
+
+            int v = 0;
+            while (v < 3)
+            {
+                if (adjacent_char == valid_chars[v])
+                {
+                    valid = 1;
+                    break;
+                }
+                v++;
+            }
+            if (!valid)
+                exit_with_error("Caracter no válido encontrado adyacente a '3'.");
+        }
+        k++;
+    }
 }
 
-/*
-void print_cub_data(t_cub *cub)
+void validate_map_borders(t_data *data)
 {
-    printf("North Texture: %s\n", cub->north_texture
-		? cub->north_texture : "Not Set");
-    printf("South Texture: %s\n", cub->south_texture
-		? cub->south_texture : "Not Set");
-    printf("West Texture: %s\n", cub->west_texture
-		? cub->west_texture : "Not Set");
-    printf("East Texture: %s\n", cub->east_texture
-		? cub->east_texture : "Not Set");
-
-    printf("Floor Color: R=%d, G=%d, B=%d\n", 
-        (cub->floor_color >> 16) & 0xFF,
-        (cub->floor_color >> 8) & 0xFF,
-        cub->floor_color & 0xFF);
-
-    printf("Ceiling Color: R=%d, G=%d, B=%d\n", 
-        (cub->ceiling_color >> 16) & 0xFF,
-        (cub->ceiling_color >> 8) & 0xFF,
-        cub->ceiling_color & 0xFF);
-
-    printf("Map:\n");
-    int i = 0;
-    while (i < cub->map_height)
-	{
-        printf("%s\n", cub->map[i]);
+    int j;
+    int i;
+    printf("Penultima fila del mapa antes de la validación: '%s'\n", data->cub->map[data->cub->map_height - 2]);
+    printf("Última fila del mapa antes de la validación: '%s'\n", data->cub->map[data->cub->map_height - 1]);
+    j = 0;
+    while (j < data->cub->map_width) 
+    {
+        if (data->cub->map[0][j] != '1' && data->cub->map[0][j] != '3')
+            exit_with_error("El borde superior debe estar rodeado por paredes (1)");
+        if (data->cub->map[data->cub->map_height - 1][j] != '1' && data->cub->map[data->cub->map_height - 1][j] != '3')
+            exit_with_error("El borde inferior debe estar rodeado por paredes (1)");
+        j++;
+    }
+    i = 0;
+    while (i < data->cub->map_height)
+    {
+        if (data->cub->map[i][0] != '1' && data->cub->map[i][0] != '3')
+            exit_with_error("El borde izquierdo debe estar rodeado por paredes (1)");
+        if (data->cub->map[i][data->cub->map_width - 1] != '1' && data->cub->map[i][data->cub->map_width - 1] != '3')
+            exit_with_error("El borde derecho debe estar rodeado por paredes (1)");
         i++;
     }
-}*/
+    i = 0;
+    while (i < data->cub->map_height)
+    {
+        j = 0;
+        while (j < data->cub->map_width)
+        {
+            if (data->cub->map[i][j] == '3')
+                validate_adjacent_to_3(data, i, j);
+            j++;
+        }
+        i++;
+    }
+}

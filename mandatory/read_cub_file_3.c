@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 14:24:01 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/01 13:52:15 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/06 19:09:06 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ void parse_line(t_data *data, char *line)
     {
         while (*line == ' ')
             line++;
-
         if (*line == '\0')
             return;
         if (ft_strncmp(line, "NO ", 3) == 0)
@@ -70,11 +69,12 @@ void parse_line(t_data *data, char *line)
     }
     else
     {
-        char *line_with_ones = replace_spaces_with_ones(line); 
-        parse_map_line(data, line_with_ones);
-        free(line_with_ones);
+        line = replace_initial_and_final_spaces_with_three(line);
+        line = replace_internal_spaces_with_ones(line);
+        parse_map_line(data, line);
     }
 }
+
 
 void process_line(t_data *data, char *buffer, int start, int end)
 {
@@ -84,4 +84,3 @@ void process_line(t_data *data, char *buffer, int start, int end)
     if (*line != '\0')
         parse_line(data, line);
 }
-
