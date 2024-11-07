@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils_1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:44:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/06 19:30:43 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/07 20:26:05 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,7 @@ void validate_adjacent_to_3(t_data *data, int i, int j)
                 v++;
             }
             if (!valid)
-                exit_with_error("Caracter no válido encontrado adyacente a '3'.");
+                exit_with_error("Map must be surrounded by walls (1).");
         }
         k++;
     }
@@ -165,18 +165,18 @@ void validate_map_borders(t_data *data)
     while (j < data->cub->map_width) 
     {
         if (data->cub->map[0][j] != '1' && data->cub->map[0][j] != '3')
-            exit_with_error("El borde superior debe estar rodeado por paredes (1)");
+            exit_with_error("North border of map must be surrounded by walls (1)");
         if (data->cub->map[data->cub->map_height - 1][j] != '1' && data->cub->map[data->cub->map_height - 1][j] != '3')
-            exit_with_error("El borde inferior debe estar rodeado por paredes (1)");
+            exit_with_error("South border of map must be surrounded by walls (1)");
         j++;
     }
     i = 0;
     while (i < data->cub->map_height)
     {
         if (data->cub->map[i][0] != '1' && data->cub->map[i][0] != '3')
-            exit_with_error("El borde izquierdo debe estar rodeado por paredes (1)");
+            exit_with_error("Left boder of map must be surrounded by walls (1)");
         if (data->cub->map[i][data->cub->map_width - 1] != '1' && data->cub->map[i][data->cub->map_width - 1] != '3')
-            exit_with_error("El borde derecho debe estar rodeado por paredes (1)");
+            exit_with_error("Right boder of map must be surrounded by walls (1)");
         i++;
     }
     i = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/04 19:44:53 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/07 19:18:01 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,12 @@ typedef struct s_cub
 	char	**textures_data;
 	int		floor_color;
 	int		ceiling_color;
+
+	/* File */
+	char 	**file;
+	int		nb_lines_file;
+	char	*file_lines_type;
+	
 	char	**map;
 	int		map_height;
 	int		map_width;
@@ -236,5 +242,20 @@ void			load_textures(t_data *data);
 /* 99_utils.c */
 void			my_mlx_pixel_put(t_data *data, int x,
 					int y, unsigned int color);
+
+/* gnl1.c */
+int	ft_read(int fd, char **buffer);
+void	ft_join(char ***holder, char *buffer);
+void	ft_gnl_and_update_holder(char **holder, int index_lb, char **next_line);
+int	ft_read_and_go(int fd, char **holder, char *buffer, char **next_line);
+char	*get_next_line(int fd);
+
+
+/* gnl2.c */
+char	*ft_join2(int new_l_hol, char *holder, int l_hol, char *buffer);
+int	ft_lb_l(char *str, char c, int ind);
+char	*ft_cp_f(char *src, char *dst, int size, int ind);
+char	*ft_free2fill(char ***src, char *dst);
+int	check_lb(char *holder, int len_holder);
 
 #endif

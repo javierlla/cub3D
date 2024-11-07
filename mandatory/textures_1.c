@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:17:54 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/29 19:39:53 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/11/07 18:50:39 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	verify_texture_params(int index, char *texture_path)
 		printf("Error: Ruta de la textura es nula %d.\n", index);
 		return (-1);
 	}
+	printf(GREEN"verify_texture_params COMPLETED\n"RESET_COLOUR);
 	return (0);
 }
 
@@ -61,10 +62,14 @@ int	load_texture_image(t_data *data, int index, char *texture_path)
 	int	width;
 	int	height;
 
+	printf("load_texture_image\n");
 	width = TEX_WIDTH;
 	height = TEX_HEIGHT;
+	printf(" > mlx_ptr = %p\n", data->cub->mlx->mlx_ptr);
+	printf(" > texture_path = %s\n", texture_path);
 	data->cub->textures[index] = mlx_xpm_file_to_image(data->cub->mlx->mlx_ptr,
 			texture_path, &width, &height);
+	printf(" > RESULT: textures[%d] = %p\n", index, data->cub->textures[index]);
 	if (!data->cub->textures[index])
 	{
 		printf("Error: Textura no cargada en %s\n", texture_path);

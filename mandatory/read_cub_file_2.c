@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_cub_file_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 14:23:53 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/06 19:07:29 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/07 20:23:34 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,8 @@ void	validate_map_characters(t_data *data, int *player_count)
 	i = 0;
 	while (i < data->cub->map_height)
 	{
-		printf("Processing line %d: %s\n", i, data->cub->map[i]);
-		printf("Processed line: '%s|' (length: %d)\n", data->cub->map[i], (int)strlen(data->cub->map[i]));
+		// printf("Processing line %d: %s\n", i, data->cub->map[i]);
+		// printf("Processed line: '%s|' (length: %d)\n", data->cub->map[i], (int)strlen(data->cub->map[i]));
 		j = 0;
 		while (j < data->cub->map_width)
 		{
@@ -92,7 +92,7 @@ void	finalize_map_validation(t_data *data, int player_count)
 	int	i;
 
 	if (player_count != 1)
-		exit_with_error("There is more than one player");
+		exit_with_error("There must be one and only one player.");
 	fill_end_with_three(data->cub->map, data->cub->map_height, data->cub->map_width);
 	printf("Mapa después de añadir los '3':\n");
 	i = 0;

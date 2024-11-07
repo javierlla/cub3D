@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+         #
+#    By: uxmancis <uxmancis>                        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 17:25:33 by jllarena          #+#    #+#              #
-#    Updated: 2024/11/06 20:36:52 by jllarena         ###   ########.fr        #
+#    Updated: 2024/11/07 19:15:31 by uxmancis         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,8 @@ HEADER      = $(addprefix $(HEADER_DIR), $(HEADER_SRCS))
 
 
 MPATH_SRCS  = 0_main.c \
+				gnl1.c \
+				gnl2.c \
 				read_cub_file_1.c \
 				read_cub_file_2.c \
 				read_cub_file_3.c \
