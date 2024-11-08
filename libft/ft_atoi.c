@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/22 09:48:14 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/28 19:57:36 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/11/08 20:39:07 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ int	ft_atoi(const char *str)
 	}
 	return ((int)(res * sign));
 }
-/*
-int main(void)
-{
-   char *s = " --98764 987";
-   printf("%d %d", ft_atoi(s), atoi(s));
-   return (0);
-}*/
+
+// int main(void)
+// {
+//    char *s = "    ";
+//    printf("%d %d", ft_atoi(s), atoi(s));
+//    return (0);
+// }

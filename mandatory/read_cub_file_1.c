@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_cub_file_1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:33:35 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/07 19:30:35 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/11/08 21:24:21 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ void	read_and_process_file(t_data *data, int fd)
 	ssize_t	bytes_read;
 	int		line_start;
 
+	// printf("jejeeeeeeeeeee\n");
 	line_start = 0;
 	bytes_read = read(fd, buffer, BUFFER_SIZE - 1);
 	if (bytes_read < 0)
@@ -448,22 +449,19 @@ void mandatory_checks(t_data *data)
 void	read_cub_file(t_data *data, const char *filename)
 {
 	int	fd;
+	int	lenght;
 
+	lenght = ft_strlen(filename);
+	if (lenght < 4 || ft_strcmp(".cub", filename + lenght - 4) != 0)
+		exit_with_error("the file extension must be:.cub");
 	fd = open_and_validate_file(filename);
-
-	//#1 apertura archivo: para contar longitud para malloc
 	data->cub->nb_lines_file = open_close_first_to_count(filename);
-
-	//#2 apertura de archivo, para copiar líneas en data->cub->file: Get file as it is
 	open_close_second_to_copy(data, filename);
-	
 	gen_file_line_info(data);
-	
 	mandatory_checks(data);
-
 	trim_when_necessary(data);
-
-	
+	printf(GREEN"perfect - now lets read_and_process_file\n"RESET_COLOUR);
 	read_and_process_file(data, fd);
+	
 	close_and_validate(fd, data);
 }

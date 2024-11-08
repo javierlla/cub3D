@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/07 19:18:01 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/11/08 20:46:15 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,13 @@
 # define ROTATE_LEFT 65363  // Left arrow
 # define ROTATE_RIGHT 65361 // Right arrow
 # define ESC 65307
+
+typedef struct s_colour_rgb
+{
+	int r;
+	int g;
+	int b;
+} t_colour_rgb;
 
 typedef struct raycast_variables
 {
