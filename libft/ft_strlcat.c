@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42urduliz.co    +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/19 10:36:42 by jllarena          #+#    #+#             */
-/*   Updated: 2023/10/23 18:24:33 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/28 13:09:25 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,9 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 	}
 	dst[destino + i] = '\0';
 	return (destino + origen);
-}	
+}
 
-
-int main(void)
+/*int main(void)
 {
 	char destino[50] = "holajuan";
 	char origen [20] = "adiosivan";
@@ -43,4 +42,4 @@ int main(void)
 	printf("el string origen es: %s\n", origen);
 	printf("la funcion original suma: %lu\n", ft_strlcat(destino, origen, 10));
 	printf("el final es: %s\n", destino); 
-}
+}*/

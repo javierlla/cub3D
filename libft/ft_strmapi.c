@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 11:30:07 by jllarena          #+#    #+#             */
-/*   Updated: 2024/05/20 12:22:54 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/10/28 13:08:56 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,13 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	return (str);
 }
 
-char funcioncreada(unsigned int i, char str) 
+/*char funcioncreada(unsigned int i, char str) 
 {
 	(void)i;
     if (isupper(str)) 
-		return tolower(str); 
+		return (tolower(str)); 
     else 
-    	return str; 
+    	return (str); 
 }
 int main(void)
 {
@@ -47,4 +47,4 @@ int main(void)
 	char *res = ft_strmapi(st, funcioncreada);
 	printf("despues es: %s\n",res);
 
-}
+}*/
