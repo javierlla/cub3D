@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_cub_file_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 14:23:53 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/07 20:23:34 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/11/12 17:29:40 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	reallocate_map(t_data *data)
 	char	**new_map;
 
 	new_map = malloc(sizeof(char *) * (data->cub->map_height + 1));
+	printf("map height %d \n", data->cub->map_height);
 	if (!new_map)
 		exit_with_error("Failure in memory allocation for the map line");
 	i = 0;
@@ -43,7 +44,7 @@ void	parse_map_line(t_data *data, char *line)
 {
 	int	line_length;
 
-	line_length = strlen(line);
+	line_length = ft_strlen(line);
 	if (line_length > data->cub->map_width)
 		data->cub->map_width = line_length;
 	if (data->cub->map == NULL)

@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:33:35 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/08 21:24:21 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/13 11:34:47 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void where_is_map(t_data *data)
 			// printf(MAGENTA"line %d, len = %d\n"RESET_COLOUR, line_nb + 1, tmp_line_len);
 			while (tmp_line_len > 0)
 			{
-				if ((data->cub->file[line_nb][y] == '0' || data->cub->file[line_nb][y] == '1') && data->cub->file_lines_type[line_nb] != 'C')
+				if ((data->cub->file[line_nb][y] == '0' || data->cub->file[line_nb][y] == '1') && data->cub->file_lines_type[line_nb] != 'C'
+					&& data->cub->file_lines_type[line_nb] != 'T')
 				{
 					data->cub->file_lines_type[line_nb] = 'M';
 					// printf(GREEN"    > yes == 'M' assigned\n"RESET_COLOUR);
@@ -424,6 +425,36 @@ int no_other_content_found (t_data *data)
 	return (1);
 }
 
+
+int another_condition(t_data *data)
+{
+    int i = 0;
+    int map_started = 0;
+    int found_blank_line = 0;
+	char line_type;
+
+    while (i < data->cub->nb_lines_file)
+    {
+        line_type = data->cub->file_lines_type[i];
+        if (line_type == 'M')
+        {
+            if (found_blank_line)
+            {
+				exit_with_error("invalid position map");
+                return (0);
+            }
+            map_started = 1;
+        }
+        else if (line_type == 'X')
+        {
+            if (map_started)
+                found_blank_line = 1;
+        }
+        i++;
+    }
+	return (1);
+}
+
 /* is_basic_info 
 *
 *	Checks:
@@ -440,7 +471,8 @@ void mandatory_checks(t_data *data)
 	if (are_four_textures_defined(data) == 1
 		&& are_two_colours_defined(data) == 1
 		&& is_map_defined(data) == 1
-		&& no_other_content_found(data) == 1)
+		&& no_other_content_found(data) == 1
+		&& another_condition(data) == 1)
 		return;
 	else
 		exit(EXIT_FAILURE);

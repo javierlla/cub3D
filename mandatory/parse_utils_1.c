@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils_1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:44:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/07 20:26:05 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/11/13 12:18:04 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,57 @@ void fill_end_with_three(char **map, int map_height, int target_width)
 
 void validate_adjacent_to_3(t_data *data, int i, int j)
 {
-    char    valid_chars[] = {' ', '1', '3'};
+    if (i > 0 && data->cub->map[i - 1][j] != '1' && data->cub->map[i - 1][j] != ' ' && data->cub->map[i - 1][j] != '3')
+        exit_with_error("map must be surrounded by walls (1)");
+    if (i < data->cub->map_height - 1 && data->cub->map[i + 1][j] != '1' && data->cub->map[i + 1][j] != ' ' && data->cub->map[i + 1][j] != '3')
+        exit_with_error("map must be surrounded by walls (1)");
+    if (j > 0 && data->cub->map[i][j - 1] != '1' && data->cub->map[i][j - 1] != ' ' && data->cub->map[i][j - 1] != '3')
+        exit_with_error("map must be surrounded by walls (1)");
+    if (j < data->cub->map_width - 1 && data->cub->map[i][j + 1] != '1' && data->cub->map[i][j + 1] != ' ' && data->cub->map[i][j + 1] != '3')
+        exit_with_error("map must be surrounded by walls (1)");
+}
+
+void validate_map_borders(t_data *data)
+{
+    int i, j;
+
+    j = 0;
+    while (j < data->cub->map_width) 
+    {
+        if (data->cub->map[0][j] != '1' && data->cub->map[0][j] != '3')
+            exit_with_error("North border of map must be surrounded by walls (1)");
+        if (data->cub->map[data->cub->map_height - 1][j] != '1' && data->cub->map[data->cub->map_height - 1][j] != '3')
+            exit_with_error("South border of map must be surrounded by walls (1)");
+        j++;
+    }
+    i = 0;
+    while (i < data->cub->map_height)
+    {
+        if (data->cub->map[i][0] != '1' && data->cub->map[i][0] != '3')
+            exit_with_error("Left border of map must be surrounded by walls (1)");
+        if (data->cub->map[i][data->cub->map_width - 1] != '1' && data->cub->map[i][data->cub->map_width - 1] != '3')
+            exit_with_error("Right border of map must be surrounded by walls (1)");
+        i++;
+    }
+
+    i = 0;
+    while (i < data->cub->map_height) 
+    {
+        j = 0;
+        while (j < data->cub->map_width) 
+        {
+            if (data->cub->map[i][j] == '3') 
+                validate_adjacent_to_3(data, i, j);
+            j++;
+        }
+        i++;
+    }
+}
+
+
+/*void validate_adjacent_to_3(t_data *data, int i, int j)
+{
+    char valid_chars[] = {' ', '1', '3'};
     
     int adjacent[4][2] = {
         {i - 1, j},    // Arriba
@@ -129,7 +179,8 @@ void validate_adjacent_to_3(t_data *data, int i, int j)
         {i, j + 1}     // Derecha
     };
     int k = 0;
-    while (k < 4) {
+    while (k < 4)
+    {
         int x = adjacent[k][0];
         int y = adjacent[k][1];
 
@@ -159,8 +210,7 @@ void validate_map_borders(t_data *data)
 {
     int j;
     int i;
-    printf("Penultima fila del mapa antes de la validación: '%s'\n", data->cub->map[data->cub->map_height - 2]);
-    printf("Última fila del mapa antes de la validación: '%s'\n", data->cub->map[data->cub->map_height - 1]);
+    
     j = 0;
     while (j < data->cub->map_width) 
     {
@@ -191,4 +241,4 @@ void validate_map_borders(t_data *data)
         }
         i++;
     }
-}
+}*/

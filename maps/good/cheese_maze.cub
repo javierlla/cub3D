@@ -3,7 +3,7 @@ SO ./textures/simonkraft/basalt_top.xpm
 WE ./textures/simonkraft/bookshelf_01.xpm
 EA ./textures/simonkraft/bookshelf.xpm    
 
-F 164,169,        
+F 164,169,      125  
 C 153,204,255    
 
 111111111111111111111

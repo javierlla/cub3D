@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:22:05 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/08 21:23:56 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/12 17:12:38 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,10 +102,6 @@ t_colour_rgb valid_colours (char *line, int ind_first_coma, int ind_sec_coma)
 	r = get_colour_str(line, 0, ind_first_coma - 1);
 	g = get_colour_str(line, ind_first_coma + 1, ind_sec_coma - 1);
 	b = get_colour_str(line, ind_sec_coma + 1, ft_strlen(line) - 1);
-
-	// printf(RED"r = %s\n"RESET_COLOUR, r);
-	// printf(GREEN"g = %s\n"RESET_COLOUR, g);
-	// printf(BLUE"b = %s\n"RESET_COLOUR, b);
 	colour = valid_colour_range (r, g, b);
 	return (colour);
 }
@@ -132,25 +128,14 @@ t_colour_rgb parse_colour_2(char *line)
 		ind_sec_coma = i;
 		i++;
 	}
-	// printf("-------------------parsse_colour_2 -------------------\n");
-	// printf("line = %s\n", line);
-	// printf(MAGENTA"ind_first_coma = %d\n"RESET_COLOUR, ind_first_coma);
-	// printf(MAGENTA"ind_sec_coma = %d\n"RESET_COLOUR, ind_sec_coma);
-	// printf("-------------------------------------------------------\n");
-	
+
 	colour = valid_colours(line, ind_first_coma, ind_sec_coma);
 	return (colour);
 }
 
-// 	r = ft_strdup_end_start(line);
-	
-// }
-
 int	parse_color(char *line)
 {
-	// int	r;
-	// int	g;
-	// int	b;
+
 	t_colour_rgb colour;
 	int i = 0;
 
@@ -165,18 +150,6 @@ int	parse_color(char *line)
 			exit_with_error("invalid color");
 	}
 	colour = parse_colour_2(line);	
-	// r = ft_atoi(line);
-
-	// line = ft_strchr(line, ',') + 1;
-	// /*if (line != nums)
-	// 	exit_with_error("Invalid color");*/
-	// g = ft_atoi(line);
-	// line = ft_strchr(line, ',') + 1;
-	// /*if (line != nums)
-	// 	exit_with_error("Invalid color");*/
-	// b = ft_atoi(line);
-	// printf("el valor de 'b' = %d\n\n", b);
-	
 	return ((colour.r << 16) | (colour.g << 8) | colour.b);
 }
 

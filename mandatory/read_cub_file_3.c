@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 14:24:01 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/08 19:32:05 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/13 11:27:17 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,9 @@ int is_not_map_line(char *line)
     {
         return (1);
     }
-
-    return !(*line == '1' || *line == '0');
+    return (0);
 }
-
+    
 void parse_line(t_data *data, char *line)
 {
     if (is_not_map_line(line))
@@ -74,7 +73,6 @@ void parse_line(t_data *data, char *line)
         parse_map_line(data, line);
     }
 }
-
 
 void process_line(t_data *data, char *buffer, int start, int end)
 {
