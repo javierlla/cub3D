@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:33:35 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/13 11:34:47 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/13 18:31:15 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,12 @@ void where_is_map(t_data *data)
 		{
 			y = 0;
 			tmp_line_len = ft_strlen(data->cub->file[line_nb]);
-			// printf(MAGENTA"line %d, len = %d\n"RESET_COLOUR, line_nb + 1, tmp_line_len);
 			while (tmp_line_len > 0)
 			{
 				if ((data->cub->file[line_nb][y] == '0' || data->cub->file[line_nb][y] == '1') && data->cub->file_lines_type[line_nb] != 'C'
 					&& data->cub->file_lines_type[line_nb] != 'T')
 				{
 					data->cub->file_lines_type[line_nb] = 'M';
-					// printf(GREEN"    > yes == 'M' assigned\n"RESET_COLOUR);
-					//printf("data->cub->file_lines_type[%d] = %c\n", line_nb, data->cub->file_lines_type[line_nb]);
 					break;
 				}
 				tmp_line_len--;
@@ -154,7 +151,6 @@ void open_close_second_to_copy(t_data *data, const char *filename)
 	int		ind_line_file;
 
 	data->cub->file = malloc(sizeof(char *) * data->cub->nb_lines_file);
-	// data->cub->file[tmp_nb_lines_file + 1][0] = '\0';
 	fd = open_and_validate_file(filename);
 	nl = get_next_line(fd);
 	ind_line_file = 0;
@@ -187,8 +183,7 @@ void trim_when_necessary(t_data *data)
 		tmp_nb_lines_file--;
 		ind++;
 	}
-
-	printf(MAGENTA"After trimming: \n"); //debugging purposes
+	printf(MAGENTA"After trimming: \n");
 	tmp_nb_lines_file = data->cub->nb_lines_file;
 	ind = 0;
 	while (tmp_nb_lines_file > 0)
@@ -235,92 +230,87 @@ int	ft_isspace(char c)
 	return (0);
 }
 
+int process_line_for_texture(char *line, char *direction, t_data *data, int x)
+{
+    int y = 0;
+    int line_len = ft_strlen(line);
+
+    while (y < line_len)
+    {
+        while (y < line_len && ft_isspace(line[y]) && line[y] != '\0') 
+        {
+            y++;
+        }
+        if (y < line_len && line[y] == direction[0] && line[y + 1] == direction[1] && line[y + 2] == ' ')
+        {
+            data->cub->file_lines_type[x] = 'T';
+            return (1);
+        }
+
+        y++;
+    }
+    return (0); 
+}
+
 int is_texture_defined(char *direction, t_data *data)
 {
-	int		x;
-	int 	y;
-	int		tmp_nb_lines_file;
-	int		counter;
-	int 	line_len;
+    int x = 0;
+    int tmp_nb_lines_file = data->cub->nb_lines_file;
+    int counter = 0;
 
-	x = 0;
-	y = 0;
-	tmp_nb_lines_file = data->cub->nb_lines_file;
-	counter = 0;
-	// printf("\ndirection = %s\n", direction);
-	while (tmp_nb_lines_file > 0)
-	{
-		//printf(MAGENTA"\nfile[%d] = %s"RESET_COLOUR, x, data->cub->file[x]);
-		y = 0;
-		//printf("x = %d, y = %d\n", x, y);
-		line_len = ft_strlen(data->cub->file[x]);
-		//printf("line_len = %d\n", line_len);
-		while (line_len > 0)
-		{
-			//printf("seguimos en linea\n");
-			while (ft_isspace(data->cub->file[x][y] && data->cub->file[x][y] != '\0'))
-			{
-				y++;
-				line_len--;
-			}
-			//else if (ft_strncmp_2(data->cub->file[x][y], y, direction, 3) == 0)
-			if (data->cub->file[x][y] == direction[0] && data->cub->file[x][y + 1] == direction[1] && data->cub->file[x][y + 2] == ' ')
-			{
-				counter++;
-				data->cub->file_lines_type[x] = 'T';
-				// printf(RED"   > counter++, y = %d, :)\n"RESET_COLOUR, y);
-				break;
-			}
-			y++;
-			line_len--;
-			//printf(YELLOW"y = %d, file[%d][%d] = %c\n"RESET_COLOUR, y, x, y, data->cub->file[x][y]);
-			
-		}
-		x++;
-		tmp_nb_lines_file--;
-		//printf(YELLOW"x = %d\n"RESET_COLOUR, x);
-	}
-	return (counter);
+    while (tmp_nb_lines_file > 0)
+    {
+        if (process_line_for_texture(data->cub->file[x], direction, data, x))
+        {
+            counter++;
+        }
+        x++;
+        tmp_nb_lines_file--;
+    }
+
+    return (counter);
+}
+
+int process_line_for_colour(char *line, char colour, t_data *data, int x)
+{
+    int y = 0;
+    int line_len = ft_strlen(line);
+
+    while (y < line_len)
+    {
+        while (y < line_len && ft_isspace(line[y]) && line[y] != '\0')
+        {
+            y++;
+        }
+
+        if (y < line_len && line[y] == colour && line[y + 1] == ' ')
+        {
+            data->cub->file_lines_type[x] = 'C';
+            return 1;
+        }
+
+        y++;
+    }
+    return (0);
 }
 
 int is_colour_defined(char colour, t_data *data)
 {
-	int		x;
-	int 	y;
-	int		tmp_nb_lines_file;
-	int		counter;
-	int 	line_len;
+    int x = 0;
+    int tmp_nb_lines_file = data->cub->nb_lines_file;
+    int counter = 0;
 
-	x = 0;
-	y = 0;
-	tmp_nb_lines_file = data->cub->nb_lines_file;
-	counter = 0;
-	while (tmp_nb_lines_file > 0)
-	{
-		y = 0;
-		line_len = ft_strlen(data->cub->file[x]);
-		while (line_len > 0)
-		{
-			while (ft_isspace(data->cub->file[x][y] && data->cub->file[x][y] != '\0'))
-			{
-				y++;
-				line_len--;
-			}
-			if (data->cub->file[x][y] == colour && data->cub->file[x][y + 1] == ' ')
-			{
-				counter++;
-				data->cub->file_lines_type[x] = 'C';
-				break; //por cada línea quiero que me pueda contar solo 1 vez
-			}
-				
-			y++;
-			line_len--;
-			
-		}
-		x++;
-		tmp_nb_lines_file--;
-	}
-	return (counter);
+    while (tmp_nb_lines_file > 0)
+    {
+        if (process_line_for_colour(data->cub->file[x], colour, data, x))
+        {
+            counter++;
+        }
+        x++;
+        tmp_nb_lines_file--;
+    }
+
+    return (counter);
 }
 
 /* four_textures_defined
@@ -339,17 +329,10 @@ int are_four_textures_defined(t_data *data)
 	int nb_we;
 	int nb_ea;
 
-	
 	nb_no = is_texture_defined("NO", data);
 	nb_so = is_texture_defined("SO", data);
 	nb_we = is_texture_defined("WE", data);
 	nb_ea = is_texture_defined("EA", data);
-	
-	// printf("nb_no = %d\n", nb_no);
-	// printf("nb_so = %d\n", nb_so);
-	// printf("nb_we = %d\n", nb_we);
-	// printf("nb_ea = %d\n", nb_ea);
-	
 	nb_textures_defined = nb_no + nb_so + nb_we + nb_ea;
 		
 	if (nb_textures_defined == 4)
@@ -374,12 +357,6 @@ int are_two_colours_defined(t_data *data)
 	
 	nb_f = is_colour_defined('F', data);
 	nb_c = is_colour_defined('C', data);
-	
-	// printf("nb_no = %d\n", nb_no);
-	// printf("nb_so = %d\n", nb_so);
-	// printf("nb_we = %d\n", nb_we);
-	// printf("nb_ea = %d\n", nb_ea);
-	
 	nb_colours_defined = nb_f + nb_c;
 
 	if (nb_colours_defined == 2)
@@ -400,10 +377,8 @@ int no_other_content_found (t_data *data)
 {
 	int tmp_nb_lines_file;
 	int ind;
-	// int tmp_len_line;
 
 	put_file_content(data);
-
 	tmp_nb_lines_file = data->cub->nb_lines_file;
 	ind = 0;
 	while (tmp_nb_lines_file > 0)
@@ -497,3 +472,78 @@ void	read_cub_file(t_data *data, const char *filename)
 	
 	close_and_validate(fd, data);
 }
+
+/*int is_colour_defined(char colour, t_data *data)
+{
+	int		x;
+	int 	y;
+	int		tmp_nb_lines_file;
+	int		counter;
+	int 	line_len;
+
+	x = 0;
+	y = 0;
+	tmp_nb_lines_file = data->cub->nb_lines_file;
+	counter = 0;
+	while (tmp_nb_lines_file > 0)
+	{
+		y = 0;
+		line_len = ft_strlen(data->cub->file[x]);
+		while (line_len > 0)
+		{
+			while (ft_isspace(data->cub->file[x][y] && data->cub->file[x][y] != '\0'))
+			{
+				y++;
+				line_len--;
+			}
+			if (data->cub->file[x][y] == colour && data->cub->file[x][y + 1] == ' ')
+			{
+				counter++;
+				data->cub->file_lines_type[x] = 'C';
+				break; //por cada línea quiero que me pueda contar solo 1 vez
+			}
+			y++;
+			line_len--;
+		}
+		x++;
+		tmp_nb_lines_file--;
+	}
+	return (counter);
+}*/
+/*int is_texture_defined(char *direction, t_data *data)
+{
+	int		x;
+	int 	y;
+	int		tmp_nb_lines_file;
+	int		counter;
+	int 	line_len;
+
+	x = 0;
+	y = 0;
+	tmp_nb_lines_file = data->cub->nb_lines_file;
+	counter = 0;
+	while (tmp_nb_lines_file > 0)
+	{
+		y = 0;
+		line_len = ft_strlen(data->cub->file[x]);
+		while (line_len > 0)
+		{
+			while (ft_isspace(data->cub->file[x][y] && data->cub->file[x][y] != '\0'))
+			{
+				y++;
+				line_len--;
+			}
+			if (data->cub->file[x][y] == direction[0] && data->cub->file[x][y + 1] == direction[1] && data->cub->file[x][y + 2] == ' ')
+			{
+				counter++;
+				data->cub->file_lines_type[x] = 'T';
+				break;
+			}
+			y++;
+			line_len--;
+		}
+		x++;
+		tmp_nb_lines_file--;
+	}
+	return (counter);
+}*/

@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: uxmancis <uxmancis>                        +#+  +:+       +#+         #
+#    By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 17:25:33 by jllarena          #+#    #+#              #
-#    Updated: 2024/11/07 19:15:31 by uxmancis         ###   ########.fr        #
+#    Updated: 2024/11/13 18:01:44 by jllarena         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,7 @@ MPATH_SRCS  = 0_main.c \
 				open_window.c \
 				parse_utils_1.c \
 				parse_utils_2.c \
+				parse_utils_3.c \
 				raycast_1.c \
 				raycast_2.c \
 				raycast_3.c \
@@ -52,6 +53,8 @@ MPATH_SRCS  = 0_main.c \
 				render_3.c \
 				textures_1.c\
 				textures_2.c\
+				validate_borders.c\
+				validate_borders_2.c\
 				
 MPATH_DIR   = mandatory/
 MPATH       = $(addprefix $(MPATH_DIR), $(MPATH_SRCS))

@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/08 20:46:15 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/13 18:12:30 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,10 +183,17 @@ char			*trim_whitespace(char *str);
 char			*replace_spaces_with_ones(char *line);
 char			*replace_initial_spaces_with_ones(char *line, int target_width);
 void fill_end_with_three(char **map, int map_height, int target_width);
-char			*pad_map_line(char *line, int target_width);
+//char			*pad_map_line(char *line, int target_width);
 char *replace_internal_spaces_with_ones(char *line);
 char *replace_initial_and_final_spaces_with_three(char *line);
 void validate_map_borders(t_data *data);
+void	validate_adjacent_to_3(t_data *data, int i, int j);
+void	validate_vertical_border(t_data *data, int col);
+void	validate_horizontal_border(t_data *data, int row);
+//int	count_commas(const char *line);
+int	is_num(char c);
+t_colour_rgb	valid_colours(char *line, int ind_first_coma, int ind_sec_coma);
+
 // Función para obtener el color de una textura
 // MLX
 void			init_window(t_data *data);
