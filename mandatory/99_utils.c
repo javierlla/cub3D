@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   99_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:17:09 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/11/13 18:09:10 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/13 21:35:30 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,16 @@ void	free_resources_2(t_data *data)
 		tmp--;
 		index++;
 	}
+	tmp = data->cub->nb_lines_file;
+	index = 0;
+	while (tmp > 0)
+	{
+       free(data->cub->file[index]);
+       tmp--;
+       index++;
+	}
+	free(data->cub->file);
+	free(data->cub->file_lines_type);
 	free(data->cub->south_texture);
 	free(data->cub->north_texture);
 	free(data->cub->west_texture);

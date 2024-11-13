@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils_3.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 17:53:41 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/13 18:10:45 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/13 21:34:17 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,8 @@ t_colour_rgb	valid_colours(char *line, int ind_first_coma, int ind_sec_coma)
 	g = get_colour_str(line, ind_first_coma + 1, ind_sec_coma - 1);
 	b = get_colour_str(line, ind_sec_coma + 1, ft_strlen(line) - 1);
 	colour = valid_colour_range (r, g, b);
+	free(r);
+	free(g);
+	free(b);
 	return (colour);
 }
