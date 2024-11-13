@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_cub_file_1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:33:35 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/13 19:28:06 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/13 22:23:35 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,6 +161,7 @@ void	open_close_second_to_copy(t_data *data, const char *filename)
 	while (nl)
 	{
 		data->cub->file[ind_line_file] = ft_strdup(nl);
+		printf(MAGENTA"open_close_second_to_copy: data->cub->file[%d] = %p\n"RESET_COLOUR, ind_line_file, data->cub->file[ind_line_file]);
 		printf(BLUE"file[%d] = %s"RESET_COLOUR,
 			ind_line_file + 1, data->cub->file[ind_line_file]);
 		if (nl)
@@ -183,7 +184,10 @@ void	trim_when_necessary(t_data *data)
 		if (data->cub->file_lines_type[ind] == 'T'
 			|| data->cub->file_lines_type[ind] == 'C')
 		{
-			data->cub->file[ind] = trim_whitespace(data->cub->file[ind]);
+			// printf("RETURN TRIMMED = %s\n", trim_whitespace_indexes(data->cub->file[ind]));
+			// data->cub->file[ind] = trim_whitespace(data->cub->file[ind]);
+			// free (data->cub->file[ind]);
+			data->cub->file[ind] = trim_whitespace_indexes(data->cub->file[ind]);
 		}
 		tmp_nb_lines_file--;
 		ind++;

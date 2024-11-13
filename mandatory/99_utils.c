@@ -6,7 +6,7 @@
 /*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:17:09 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/11/13 21:35:30 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/11/13 22:22:53 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	free_resources_2(t_data *data)
 	index = 0;
 	while (tmp > 0)
 	{
+		printf(RED"free_resources_2: data->cub->file[%d] = %p\n"RESET_COLOUR, index, data->cub->file[index]);
        free(data->cub->file[index]);
        tmp--;
        index++;

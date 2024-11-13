@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils_1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:44:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/13 17:40:24 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/13 22:11:21 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ char	*trim_whitespace(char *str)
 {
 	char	*end;
 
+    printf(RED"trim_whitespace: str = %s"RESET_COLOUR, str);
 	while (*str == ' ' || *str == '\t')
 		str++;
 	if (*str == '\0')
@@ -33,6 +34,120 @@ char	*trim_whitespace(char *str)
 		end--;
 	*(end + 1) = '\0';
 	return (str);
+}
+
+int get_trimmed_len(char *str)
+{
+    int len_str;
+    int len_trimmed_str;
+    int i;
+    int start;
+
+    // printf(YELLOW"trim_whitespace_indexes: str = %s"RESET_COLOUR, str);
+    len_str = ft_strlen(str);
+    // printf("len_str = %d\n", len_str);
+    len_trimmed_str = 0;
+    i = 0;
+    while (len_str > 0)
+    {
+        while(ft_isspace(str[i]) && str[i] != '\0')
+        {
+            i++;
+            len_str--;
+        }
+        if (len_str > 0)
+        {
+            start = i;
+            break;
+        }
+    }
+    if (start > 0)
+    {
+        while (str[start] != '\0')
+        {
+            len_trimmed_str++;
+            start++;
+        }
+    }
+    return (len_trimmed_str);
+    // printf("trimmed_len_str = %d\n", len_trimmed_str);
+}
+
+int get_index_start_trimmed(char *str)
+{
+    int len_str;
+    int i;
+    int start;
+
+    // printf(YELLOW"trim_whitespace_indexes: str = %s"RESET_COLOUR, str);
+    len_str = ft_strlen(str);
+    // printf("len_str = %d\n", len_str);
+    i = 0;
+    while (len_str > 0)
+    {
+        while(ft_isspace(str[i]) && str[i] != '\0')
+        {
+            i++;
+            len_str--;
+        }
+        if (len_str > 0)
+        {
+            start = i;
+            break;
+        }
+    }
+    return (start);
+}
+
+bool are_there_any_whitespaces_at_the_beginning(char *str)
+{
+    if (ft_isspace(str[0]))
+        return (true);
+    return (false);
+}
+
+char *trim_whitespace_indexes(char *str)
+{
+    int len_str;
+    int len_trimmed_str;
+    char *trimmed_str;
+    int start_trimmed;
+    int i;
+    bool whitespaces_beginning;
+
+    whitespaces_beginning = are_there_any_whitespaces_at_the_beginning(str);
+    printf("whitespaces_beginning = %d\n", whitespaces_beginning);
+    if (whitespaces_beginning)
+    {
+        // printf(YELLOW"trim_whitespace_indexes: str = %s"RESET_COLOUR, str);
+        // printf("len_str = %ld\n", ft_strlen(str));
+        len_trimmed_str = get_trimmed_len(str);
+        trimmed_str = malloc(sizeof(char) * (len_trimmed_str + 1));
+        printf(GREEN"trimmed_str = %p\n"RESET_COLOUR, trimmed_str);
+        if (!trimmed_str)
+            exit_with_error("malloc failed");
+        trimmed_str[len_trimmed_str] = '\0';
+        start_trimmed = get_index_start_trimmed(str);
+        i = 0;
+        // printf(BLUE"     >> start_trimmed = %d\n"RESET_COLOUR, start_trimmed);
+        len_str = ft_strlen(str);
+        while (start_trimmed < len_str)
+        {
+            trimmed_str[i] = str[start_trimmed];
+            // printf("                  >> trimmed_str[%d] = %c\n", i, trimmed_str[i]);
+            i++;
+            start_trimmed++;
+        }
+        // printf("trimmed_len_str = %d\n", len_trimmed_str);
+        printf("Return trimmed_str = %s\n", trimmed_str);
+        return (trimmed_str);
+    }
+    else
+    {
+        printf(" ////////// No whitespaces at the beginning\n");
+        printf("Return SAME: %s\n", str);
+        return (str);
+    }
 }
 
 char	*extract_path(char *line)

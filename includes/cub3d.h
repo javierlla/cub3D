@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
+/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/13 18:12:30 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/13 22:04:40 by uxmancis         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,5 +271,8 @@ int	ft_lb_l(char *str, char c, int ind);
 char	*ft_cp_f(char *src, char *dst, int size, int ind);
 char	*ft_free2fill(char ***src, char *dst);
 int	check_lb(char *holder, int len_holder);
+
+char *trim_whitespace_indexes(char *str);
+int	ft_isspace(char c);
 
 #endif
