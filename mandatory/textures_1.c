@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   textures_1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:17:54 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/11/07 18:50:39 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/11/13 19:52:02 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ unsigned int	get_texture_color(t_data *data, int texNum, int texX, int texY)
 	if (data->cub->textures_data[texNum] == NULL)
 	{
 		printf("Error: La textura %d no está cargada.\n", texNum);
-		// return (0);
 		exit(EXIT_FAILURE);
 	}
 	if (texX < 0 || texX >= TEX_WIDTH || texY < 0 || texY >= TEX_HEIGHT)
@@ -48,7 +47,6 @@ int	verify_texture_params(int index, char *texture_path)
 	}
 	if (!texture_path)
 	{
-		//		exit(EXIT_FAILURE);
 		printf("Error: Ruta de la textura es nula %d.\n", index);
 		return (-1);
 	}
