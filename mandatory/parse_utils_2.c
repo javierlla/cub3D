@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:22:05 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/13 18:10:50 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/14 14:39:49 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,32 +78,12 @@ int	parse_color(char *line)
 	return ((colour.r << 16) | (colour.g << 8) | colour.b);
 }
 
-/*char	*get_colour_str(char *line, int start, int end)
+int	find_first_non_space(char *str)
 {
-	int		i;
-	int		len;
-	char	*colour;
-	int		ind_is_colour;
+	int	i;
 
-	len = end - start + 1;
-	colour = malloc(sizeof(char) * len + 1);
-	colour[len] = '\0';
 	i = 0;
-	while (start <= end)
-	{
-		colour[i] = line[start];
+	while (str[i] != '\0' && ft_isspace(str[i]))
 		i++;
-		start++;
-	}
-	i = 0;
-	ind_is_colour = 0;
-	while (colour[i] != '\0')
-	{
-		if (is_num(colour[i]))
-			ind_is_colour = 1;
-		i++;
-	}
-	if (ind_is_colour == 0)
-		exit_with_error("Invalid colour");
-	return (colour);
-}*/
+	return (i);
+}

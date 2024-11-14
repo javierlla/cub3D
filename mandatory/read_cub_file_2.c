@@ -6,20 +6,11 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 14:23:53 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/13 19:33:49 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/14 14:42:20 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3d.h"
-
-void	allocate_initial_map(t_data *data)
-{
-	data->cub->map_height = 0;
-	data->cub->map_width = 0;
-	data->cub->map = malloc(sizeof(char *) * 1);
-	if (!data->cub->map)
-		exit_with_error("Failure in memory allocation for the map line");
-}
 
 void	reallocate_map(t_data *data)
 {

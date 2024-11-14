@@ -6,7 +6,7 @@
 #    By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/09/02 17:25:33 by jllarena          #+#    #+#              #
-#    Updated: 2024/11/13 18:01:44 by jllarena         ###   ########.fr        #
+#    Updated: 2024/11/14 14:35:00 by jllarena         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,6 +31,10 @@ MPATH_SRCS  = 0_main.c \
 				read_cub_file_2.c \
 				read_cub_file_3.c \
 				read_cub_file_4.c \
+				read_cub_file_utils.c \
+				read_cub_file_utils_2.c \
+				read_cub_file_utils_3.c \
+				read_cub_file_utils_4.c \
 				init_1.c \
 				init_2.c \
 				init_3.c \
@@ -44,6 +48,7 @@ MPATH_SRCS  = 0_main.c \
 				parse_utils_1.c \
 				parse_utils_2.c \
 				parse_utils_3.c \
+				parse_utils_4.c \
 				raycast_1.c \
 				raycast_2.c \
 				raycast_3.c \

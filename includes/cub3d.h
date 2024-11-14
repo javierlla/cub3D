@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/13 22:04:40 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/11/14 14:51:20 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@
 
 # define PI 3.14159265358979323846
 
-#define BUFFER_SIZE 1024
+# define BUFFER_SIZE 1024
 
 /*---------- Dimensions | Window 1: Cub D (Project--------*/
 # define SCREENWIDTH 2560  // HEIGHT_WINDOW in Uxu's branch
@@ -66,10 +66,10 @@
 
 typedef struct s_colour_rgb
 {
-	int r;
-	int g;
-	int b;
-} t_colour_rgb;
+	int	r;
+	int	g;
+	int	b;
+}	t_colour_rgb;
 
 typedef struct raycast_variables
 {
@@ -130,10 +130,10 @@ typedef struct s_cub
 	int		ceiling_color;
 
 	/* File */
-	char 	**file;
+	char	**file;
 	int		nb_lines_file;
 	char	*file_lines_type;
-	
+
 	char	**map;
 	int		map_height;
 	int		map_width;
@@ -182,17 +182,27 @@ char			*remove_spaces(char *line);
 char			*trim_whitespace(char *str);
 char			*replace_spaces_with_ones(char *line);
 char			*replace_initial_spaces_with_ones(char *line, int target_width);
-void fill_end_with_three(char **map, int map_height, int target_width);
-//char			*pad_map_line(char *line, int target_width);
-char *replace_internal_spaces_with_ones(char *line);
-char *replace_initial_and_final_spaces_with_three(char *line);
-void validate_map_borders(t_data *data);
-void	validate_adjacent_to_3(t_data *data, int i, int j);
-void	validate_vertical_border(t_data *data, int col);
-void	validate_horizontal_border(t_data *data, int row);
-//int	count_commas(const char *line);
-int	is_num(char c);
+void			fill_end_with_three(char **map, int map_height,
+					int target_width);
+char			*replace_internal_spaces_with_ones(char *line);
+char			*replace_initial_and_final_spaces_with_three(char *line);
+void			validate_map_borders(t_data *data);
+void			validate_adjacent_to_3(t_data *data, int i, int j);
+void			validate_vertical_border(t_data *data, int col);
+void			validate_horizontal_border(t_data *data, int row);
+int				is_num(char c);
 t_colour_rgb	valid_colours(char *line, int ind_first_coma, int ind_sec_coma);
+int				is_map_defined(t_data *data);
+void			read_and_process_file(t_data *data, int fd);
+void			mandatory_checks(t_data *data);
+void			trim_when_necessary(t_data *data);
+void			close_and_validate(int fd, t_data *data);
+int				are_two_colours_defined(t_data *data);
+int				are_four_textures_defined(t_data *data);
+int				is_texture_defined(char *direction, t_data *data);
+int				find_first_non_space(char *str);
+char			*trim_space_index(char *str);
+void			allocate_initial_map(t_data *data);
 
 // Función para obtener el color de una textura
 // MLX
@@ -258,21 +268,21 @@ void			my_mlx_pixel_put(t_data *data, int x,
 					int y, unsigned int color);
 
 /* gnl1.c */
-int	ft_read(int fd, char **buffer);
-void	ft_join(char ***holder, char *buffer);
-void	ft_gnl_and_update_holder(char **holder, int index_lb, char **next_line);
-int	ft_read_and_go(int fd, char **holder, char *buffer, char **next_line);
-char	*get_next_line(int fd);
-
+int				ft_read(int fd, char **buffer);
+void			ft_join(char ***holder, char *buffer);
+void			ft_gnl_and_update_holder(char **holder,
+					int index_lb, char **next_line);
+int				ft_read_and_go(int fd, char **holder, char *buffer,
+					char **next_line);
+char			*get_next_line(int fd);
 
 /* gnl2.c */
-char	*ft_join2(int new_l_hol, char *holder, int l_hol, char *buffer);
-int	ft_lb_l(char *str, char c, int ind);
-char	*ft_cp_f(char *src, char *dst, int size, int ind);
-char	*ft_free2fill(char ***src, char *dst);
-int	check_lb(char *holder, int len_holder);
-
-char *trim_whitespace_indexes(char *str);
-int	ft_isspace(char c);
+char			*ft_join2(int new_l_hol, char *holder, int l_hol, char *buffer);
+int				ft_lb_l(char *str, char c, int ind);
+char			*ft_cp_f(char *src, char *dst, int size, int ind);
+char			*ft_free2fill(char ***src, char *dst);
+int				check_lb(char *holder, int len_holder);
+char			*trim_space_index(char *str);
+int				ft_isspace(char c);
 
 #endif
