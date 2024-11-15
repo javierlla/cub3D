@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 14:23:53 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/14 14:42:20 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/15 17:24:55 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void	reallocate_map(t_data *data)
 	char	**new_map;
 
 	new_map = malloc(sizeof(char *) * (data->cub->map_height + 1));
-	printf("map height %d \n", data->cub->map_height);
 	if (!new_map)
 		exit_with_error("Failure in memory allocation for the map line");
 	i = 0;
@@ -85,11 +84,9 @@ void	finalize_map_validation(t_data *data, int player_count)
 		exit_with_error("There must be one and only one player.");
 	fill_end_with_three(data->cub->map, data->cub->map_height,
 		data->cub->map_width);
-	printf("Mapa después de añadir los '3':\n");
 	i = 0;
 	while (i < data->cub->map_height)
 	{
-		printf("%s\n", data->cub->map[i]);
 		i++;
 	}
 	validate_map_borders(data);

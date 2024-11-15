@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 13:59:00 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/14 14:26:18 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/15 17:26:27 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,10 @@ int	is_map_defined(t_data *data)
 	{
 		if (data->cub->file_lines_type[i] == 'M')
 		{
-			printf("> M: Map defined - "GREEN"OK\n"RESET_COLOUR);
-			printf("About file lines'content: %s (%d lines in total)\n\n",
-				data->cub->file_lines_type, data->cub->nb_lines_file);
 			return (1);
 		}
 		i++;
 	}
-	printf("> M: Map NOT defined - "RED"KO\n"RESET_COLOUR);
 	return (0);
 }
 

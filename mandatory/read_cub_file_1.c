@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:33:35 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/14 14:34:17 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/15 17:54:28 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,18 +31,13 @@ int	open_close_first_to_count(const char *filename)
 	fd = open_and_validate_file(filename);
 	nl = get_next_line(fd);
 	nb_lines_file = 0;
-	printf("Get next line, 1st read: \n");
 	while (nl)
 	{
-		printf("nl = %s", nl);
 		if (nl)
 			free (nl);
 		nl = get_next_line(fd);
 		nb_lines_file++;
 	}
-	printf("\n-----------------------------------\n");
-	printf("Result: nb_lines_file = %d\n", nb_lines_file);
-	printf("\n-----------------------------------\n");
 	close(fd);
 	return (nb_lines_file);
 }
@@ -57,7 +52,6 @@ void	open_close_second_to_copy(t_data *data, const char *filename)
 	fd = open_and_validate_file(filename);
 	nl = get_next_line(fd);
 	ind_line_file = 0;
-	printf(BLUE"After copying to our FILE variable: \n");
 	while (nl)
 	{
 		data->cub->file[ind_line_file] = ft_strdup(nl);
@@ -92,7 +86,6 @@ void	read_cub_file(t_data *data, const char *filename)
 	gen_file_line_info(data);
 	mandatory_checks(data);
 	trim_when_necessary(data);
-	printf(GREEN"perfect - now lets read_and_process_file\n"RESET_COLOUR);
 	read_and_process_file(data, fd);
 	close_and_validate(fd, data);
 }

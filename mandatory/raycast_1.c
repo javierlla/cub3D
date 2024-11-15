@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:14:15 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/28 13:00:00 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/15 17:23:38 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,13 @@ void	raycast(t_data *data)
 
 	if (data->cub->map == NULL)
 	{
-		printf("Error: El mapa no está inicializado.\n");
+		exit_with_error("the map is not running.\n");
 		return ;
 	}
 	r = malloc(sizeof(t_raycast_vars));
 	if (r == NULL)
 	{
-		printf("Error: Memoria no asignada para raycasting.\n");
+		exit_with_error("memory failed.");
 		return ;
 	}
 	x = 0;

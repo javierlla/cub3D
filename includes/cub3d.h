@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 16:28:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/14 14:51:20 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/15 18:30:34 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,6 +203,7 @@ int				is_texture_defined(char *direction, t_data *data);
 int				find_first_non_space(char *str);
 char			*trim_space_index(char *str);
 void			allocate_initial_map(t_data *data);
+int				map_last(t_data *data);
 
 // Función para obtener el color de una textura
 // MLX

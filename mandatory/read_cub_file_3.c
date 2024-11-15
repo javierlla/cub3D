@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 14:24:01 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/13 19:43:01 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/15 17:47:54 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	parse_line(t_data *data, char *line)
 {
 	if (is_not_map_line(line))
 	{
-		while (*line == ' ')
+		while (ft_isspace(*line))
 			line++;
 		if (*line == '\0')
 			return ;

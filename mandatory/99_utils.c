@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:17:09 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/11/14 13:10:44 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/15 17:19:26 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ void	free_resources_2(t_data *data)
 	index = 0;
 	while (tmp > 0)
 	{
-		printf(RED"free_resources_2: data->cub->file[%d] = %p\n"RESET_COLOUR,
-			index, data->cub->file[index]);
 		free(data->cub->file[index]);
 		tmp--;
 		index++;

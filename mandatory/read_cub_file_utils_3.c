@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 13:59:07 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/14 14:33:46 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/15 17:19:00 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,19 +85,11 @@ int	are_four_textures_defined(t_data *data)
 	nb_we = is_texture_defined("WE", data);
 	nb_ea = is_texture_defined("EA", data);
 	nb_textures_defined = nb_no + nb_so + nb_we + nb_ea;
-	if (nb_textures_defined == 4)
-		printf("> 4: nb_textures_defined = %d - "GREEN"OK\n"RESET_COLOUR,
-			nb_textures_defined);
-	else
-		printf("> 4: nb_textures_defined = %d - "RED"KO\n"RESET_COLOUR,
-			nb_textures_defined);
 	if (nb_textures_defined != 4)
 	{
-		printf("Error: incorrect amount of textures defined\n");
+		exit_with_error("incorrect amount of textures defined\n");
 		return (0);
 	}
-	printf("About file lines'content: %s (%d lines in total)\n\n",
-		data->cub->file_lines_type, data->cub->nb_lines_file);
 	return (1);
 }
 
@@ -110,18 +102,10 @@ int	are_two_colours_defined(t_data *data)
 	nb_f = is_colour_defined('F', data);
 	nb_c = is_colour_defined('C', data);
 	nb_colours_defined = nb_f + nb_c;
-	if (nb_colours_defined == 2)
-		printf("> 2: nb_colours_defined = %d - "GREEN"OK\n"RESET_COLOUR,
-			nb_colours_defined);
-	else
-		printf("> 2: nb_colours_defined = %d - "RED"KO\n"RESET_COLOUR,
-			nb_colours_defined);
 	if (nb_colours_defined != 2)
 	{
-		printf("Error: incorrect amount of floor/ceiling colours defined\n");
+		exit_with_error("incorrect amount of floor/ceiling colours defined\n");
 		return (0);
 	}
-	printf("About file lines'content: %s (%d lines in total)\n\n",
-		data->cub->file_lines_type, data->cub->nb_lines_file);
 	return (1);
 }

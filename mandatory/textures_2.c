@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/25 14:55:33 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/13 19:54:03 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/15 17:52:54 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	init_textures_arrays(t_data *data)
 	data->cub->textures_data = malloc(sizeof(char *) * 4);
 	if (!data->cub->textures || !data->cub->textures_data)
 	{
-		printf("Error: No se pudo asignar memoria para las texturas.\n");
 		exit(EXIT_FAILURE);
 	}
 	i = 0;
@@ -40,16 +39,16 @@ void	load_textures(t_data *data)
 
 	init_textures_arrays(data);
 	if (load_texture(data, 0, data->cub->north_texture))
-		printf("Error: No se pudo cargar la textura del Norte: %s\n",
+		printf("Error: North texture not loaded: %s\n",
 			data->cub->north_texture);
 	if (load_texture(data, 1, data->cub->south_texture))
-		printf("Error: No se pudo cargar la textura del Sur: %s\n",
+		printf("Error: South texture not loaded: %s\n",
 			data->cub->south_texture);
 	if (load_texture(data, 2, data->cub->west_texture))
-		printf("Error: No se pudo cargar la textura del Oeste: %s\n",
+		printf("Error: West texture not loaded: %s\n",
 			data->cub->west_texture);
 	if (load_texture(data, 3, data->cub->east_texture))
-		printf("Error: No se pudo cargar la textura del Este: %s\n",
+		printf("Error: East texture not loaded: %s\n",
 			data->cub->east_texture);
 	i = 0;
 	while (i < 4)

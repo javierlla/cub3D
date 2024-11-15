@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   render_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: uxmancis <uxmancis>                        +#+  +:+       +#+        */
+/*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:43:45 by jllarena          #+#    #+#             */
-/*   Updated: 2024/10/29 20:07:53 by uxmancis         ###   ########.fr       */
+/*   Updated: 2024/11/15 17:51:19 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	put_circle_around_player(t_data *data)
 			relative_path, &img_width, &img_height);
 	if (!img_circle)
 	{
-		printf("Error: No se pudo cargar la textura del círculo.\n");
+		printf("Error: circle around player not loading.\n");
 		return ;
 	}
 	i = 0;

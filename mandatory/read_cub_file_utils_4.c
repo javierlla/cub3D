@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 13:59:11 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/14 14:42:32 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/15 17:51:33 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,16 +27,13 @@ void	trim_when_necessary(t_data *data)
 		tmp_nb_lines_file--;
 		ind++;
 	}
-	printf(MAGENTA"After trimming: \n");
 	tmp_nb_lines_file = data->cub->nb_lines_file;
 	ind = 0;
 	while (tmp_nb_lines_file > 0)
 	{
-		printf("file[%d] = %s", ind, data->cub->file[ind]);
 		tmp_nb_lines_file--;
 		ind++;
 	}
-	printf(RESET_COLOUR"\n");
 }
 
 int	process_line_for_texture(char *line, char *direction, t_data *data, int x)

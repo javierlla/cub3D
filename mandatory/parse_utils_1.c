@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/11 18:44:42 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/14 14:38:34 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/15 17:54:10 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ char	*trim_whitespace(char *str)
 {
 	char	*end;
 
-	printf(RED"trim_whitespace: str = %s"RESET_COLOUR, str);
 	while (*str == ' ' || *str == '\t')
 		str++;
 	if (*str == '\0')

@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 14:35:13 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/14 14:41:09 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/15 17:20:41 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,16 @@ char	*trim_space_index(char *str)
 	int		len_trimmed_str;
 	int		start_trimmed;
 	bool	whitespaces_beginning;
+	char	*trimmed_str;
 
 	whitespaces_beginning = are_there_any_whitespaces_at_the_beginning(str);
 	if (whitespaces_beginning)
 	{
 		len_trimmed_str = get_trimmed_len(str);
 		start_trimmed = get_index_start_trimmed(str);
-		return (copy_trimmed_str(str, start_trimmed, len_trimmed_str));
+		trimmed_str = copy_trimmed_str(str, start_trimmed, len_trimmed_str);
+		free(str);
+		return (trimmed_str);
 	}
 	return (str);
 }

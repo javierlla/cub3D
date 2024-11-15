@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/12 17:20:01 by uxmancis          #+#    #+#             */
-/*   Updated: 2024/10/28 12:04:59 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/15 17:26:32 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ int	*render_next_frame(t_data *data)
 {
 	if (!data->mlx || !data->cub)
 	{
-		printf("Error: Puntero a mlx o cub es nulo.\n");
 		return (NULL);
 	}
 	render_update_game(data);

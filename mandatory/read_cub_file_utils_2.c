@@ -6,7 +6,7 @@
 /*   By: jllarena <jllarena@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 13:59:04 by jllarena          #+#    #+#             */
-/*   Updated: 2024/11/14 14:33:42 by jllarena         ###   ########.fr       */
+/*   Updated: 2024/11/15 18:22:27 by jllarena         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@ void	put_file_content(t_data *data)
 	i = 0;
 	while (tmp_nb_lines_file > 0)
 	{
-		printf("file_content_line[%d] = %c\n",
-			i + 1, data->cub->file_lines_type[i]);
 		tmp_nb_lines_file--;
 		i++;
 	}
@@ -43,16 +41,12 @@ int	no_other_content_found(t_data *data)
 			if (data->cub->file[ind][0] != '\n'
 				&& ft_strlen(data->cub->file[ind]) > 1)
 			{
-				printf("Error: unexpected content found, line %d\n", ind + 1);
 				return (0);
 			}
 		}
 		tmp_nb_lines_file--;
 		ind++;
 	}
-	printf("> X: No other content found - "GREEN"OK\n"RESET_COLOUR);
-	printf("About file lines'content: %s (%d lines in total)\n\n",
-		data->cub->file_lines_type, data->cub->nb_lines_file);
 	return (1);
 }
 
@@ -107,13 +101,13 @@ int	another_condition(t_data *data)
 */
 void	mandatory_checks(t_data *data)
 {
-	printf("\nMandatory checks: ------------------------ \n");
 	if (are_four_textures_defined(data) == 1
 		&& are_two_colours_defined(data) == 1
 		&& is_map_defined(data) == 1
 		&& no_other_content_found(data) == 1
-		&& another_condition(data) == 1)
+		&& another_condition(data) == 1
+		&& map_last(data) == 1)
 		return ;
 	else
-		exit(EXIT_FAILURE);
+		exit_with_error("Mandatory checks not passed");
 }
